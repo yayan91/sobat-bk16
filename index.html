@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOBAT-BK16 | Sistem Online BK</title>
+    <title>SOBAT-BK16</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -73,6 +73,12 @@
             color: #374151;
             border: 1px solid #d1d5db;
         }
+        
+        /* Footer Light Mode */
+        body.light-mode footer {
+            background: #ffffff;
+            border-top: 1px solid #e5e7eb;
+        }
 
         /* Hide Scrollbar */
         .hide-scroll::-webkit-scrollbar { display: none; }
@@ -139,22 +145,17 @@
         .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
 </head>
-<body class="bg-[#0f0f0f] min-h-screen">
+<body class="bg-[#0f0f0f] min-h-screen flex flex-col">
 
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-black">
-        <!-- Background Image -->
         <div class="absolute inset-0 bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08648f/ID-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg')] bg-cover opacity-40 grayscale"></div>
-        
         <div class="relative z-10 glass-panel p-10 rounded-2xl max-w-md w-full border-t border-red-900 shadow-2xl animate-up">
-            <!-- LOGO SEKOLAH -->
             <div class="flex justify-center mb-6">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Logo_Tut_Wuri_Handayani.png/1200px-Logo_Tut_Wuri_Handayani.png" alt="Logo Sekolah" class="w-24 h-24 object-contain logo-glow">
+                <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo Sekolah" class="w-24 h-24 object-contain logo-glow">
             </div>
-
             <h1 class="text-4xl font-bold mb-2 text-white tracking-tighter text-center drop-shadow-md">SOBAT-BK16</h1>
             <p class="text-center text-gray-400 text-sm mb-8">Sistem Online BK & Administrasi Terpusat</p>
-
             <form onsubmit="handleLogin(event)" class="space-y-5">
                 <div class="relative group">
                     <i class="fas fa-user absolute left-4 top-4 text-gray-400 group-focus-within:text-red-500 transition"></i>
@@ -168,42 +169,76 @@
                     MASUK APLIKASI <i class="fas fa-arrow-right"></i>
                 </button>
             </form>
-            <p class="mt-6 text-center text-xs text-gray-500">&copy; 2024 Tim IT Sekolah - Versi 1.6</p>
+            <p class="mt-6 text-center text-xs text-gray-500">&copy; 2026 - UPT SPF SMP NEGERI 16 MAKASSAR</p>
         </div>
     </div>
 
     <!-- MAIN APP -->
-    <div id="main-app" class="hidden relative pb-20">
+    <div id="main-app" class="hidden relative flex-grow">
         
-        <!-- Navbar Minimalis -->
+        <!-- Navbar -->
         <nav class="flex justify-between items-center px-6 py-4 sticky top-0 z-40 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm transition-colors duration-300">
             <div class="flex items-center gap-3">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Logo_Tut_Wuri_Handayani.png/1200px-Logo_Tut_Wuri_Handayani.png" class="w-8 h-8 opacity-80">
+                <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" class="w-8 h-8 opacity-80">
                 <div>
                     <h1 class="text-xl font-bold text-[#E50914] tracking-tighter leading-none">SOBAT-BK16</h1>
-                    <p class="text-[10px] text-gray-400 tracking-widest uppercase">Admin Terpusat</p>
+                    <p class="text-[10px] text-gray-400 tracking-widest uppercase">UPT SPF SMP NEGERI 16 MAKASSAR</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <!-- Tombol Mode Gelap/Terang -->
                 <button onclick="toggleTheme()" id="theme-btn" class="text-gray-400 hover:text-yellow-400 transition transform hover:rotate-12 p-2" title="Ganti Tema">
                     <i class="fas fa-sun text-lg"></i>
                 </button>
                 <div class="h-4 w-px bg-gray-600"></div>
-                <!-- Tombol Keluar -->
                 <button onclick="confirmLogout()" class="text-gray-400 hover:text-[#E50914] text-sm flex items-center gap-2 px-3 py-1 rounded hover:bg-white/10 transition">
                     <i class="fas fa-sign-out-alt"></i> Keluar
                 </button>
             </div>
         </nav>
 
-        <!-- DASHBOARD MENU UTAMA -->
-        <div class="container mx-auto px-4 pt-4 perspective-container">
+        <!-- DASHBOARD CONTENT -->
+        <div class="container mx-auto px-4 pt-4 perspective-container mb-20">
             
             <!-- Welcome Text -->
-            <div class="text-center mb-10 md:mb-12 animate-up">
+            <div class="text-center mb-8 animate-up">
                 <h2 class="text-3xl md:text-5xl font-bold mb-2">Halo, <span id="dash-nama" class="text-[#E50914]">Guru Hebat</span></h2>
                 <p class="text-gray-300 text-sm md:text-lg">Sistem Online BK & Administrasi Terpusat</p>
+            </div>
+
+            <!-- WIDGET BAR (CLOCK & STATS) - NEW -->
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-stretch mb-10 animate-up" style="animation-delay: 0.1s;">
+                <!-- Clock Widget -->
+                <div class="glass-panel p-4 rounded-xl flex items-center gap-4 w-full md:w-auto flex-1 border border-gray-700">
+                    <div class="bg-red-600/20 p-3 rounded-lg text-[#E50914]">
+                        <i class="far fa-clock text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 id="widget-time" class="text-3xl font-bold font-mono leading-none text-white tracking-widest">--:--</h3>
+                        <p id="widget-date" class="text-xs text-gray-400 uppercase tracking-wide">Memuat Waktu...</p>
+                    </div>
+                </div>
+
+                <!-- Stats Widget -->
+                <div class="flex gap-4 w-full md:w-auto overflow-x-auto">
+                    <div class="glass-panel p-4 rounded-xl flex items-center gap-3 flex-1 min-w-[160px] border border-gray-700">
+                        <div class="bg-green-600/20 p-2 rounded-lg text-green-500">
+                            <i class="fas fa-users text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-gray-400 uppercase font-bold">Total Siswa</p>
+                            <h4 id="stat-total-siswa" class="text-2xl font-bold text-white">0</h4>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl flex items-center gap-3 flex-1 min-w-[160px] border border-gray-700">
+                        <div class="bg-purple-600/20 p-2 rounded-lg text-purple-500">
+                            <i class="fas fa-folder text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-gray-400 uppercase font-bold">Total Media</p>
+                            <h4 id="stat-total-media" class="text-2xl font-bold text-white">0</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Grid 4 Menu Utama -->
@@ -278,15 +313,53 @@
                 </div>
 
             </div>
-        </div>
 
-        <!-- VIDEO SECTION -->
-        <div class="mt-20 px-4 md:px-12 animate-up" style="animation-delay: 0.3s;">
-            <h3 class="text-xl font-semibold mb-4 border-l-4 border-[#E50914] pl-3 text-white">Video Pembelajaran Terbaru</h3>
-            <div class="flex overflow-x-auto gap-4 pb-8 hide-scroll" id="video-container">
-                <!-- Video Items rendered here -->
+            <!-- VIDEO SECTION -->
+            <div class="mt-20 px-4 md:px-12 animate-up" style="animation-delay: 0.3s;">
+                <h3 class="text-xl font-semibold mb-4 border-l-4 border-[#E50914] pl-3 text-white">Video Pembelajaran Terbaru</h3>
+                <div class="flex overflow-x-auto gap-4 pb-8 hide-scroll" id="video-container">
+                    <!-- Video Items rendered here -->
+                </div>
             </div>
         </div>
+
+        <!-- FOOTER (NEW) -->
+        <footer class="mt-auto border-t border-gray-800 bg-[#0a0a0a] pt-12 pb-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm">
+                    <div class="col-span-1 md:col-span-2">
+                        <h3 class="text-2xl font-bold text-[#E50914] mb-4 tracking-tighter">SOBAT-BK16</h3>
+                        <p class="text-gray-400 max-w-md leading-relaxed">
+                            Sistem Administrasi Terpadu Bimbingan Konseling yang didesain untuk memudahkan pengelolaan data siswa, media pembelajaran, dan layanan BK dalam satu pintu digital yang modern.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Akses Cepat</h4>
+                        <ul class="space-y-3 text-gray-400">
+                            <li><a href="#" onclick="openProfileModal()" class="hover:text-[#E50914] transition">Profil Guru</a></li>
+                            <li><a href="#" onclick="openAppModal()" class="hover:text-[#E50914] transition">Aplikasi & Instrumen</a></li>
+                            <li><a href="#" onclick="openSiswaModal()" class="hover:text-[#E50914] transition">Database Siswa</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Bantuan</h4>
+                        <ul class="space-y-3 text-gray-400">
+                            <li><a href="#" class="hover:text-[#E50914] transition">Panduan Penggunaan</a></li>
+                            <li><a href="#" class="hover:text-[#E50914] transition">Laporkan Kendala</a></li>
+                            <li><a href="#" onclick="confirmLogout()" class="hover:text-[#E50914] transition">Keluar Aplikasi</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                    <p>&copy; 2026 - Mappaguru Online</p>
+                    <div class="flex gap-6 mt-4 md:mt-0 text-lg">
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
     </div>
 
@@ -372,13 +445,30 @@
         </div>
     </div>
 
-    <!-- 3. MODAL DATA SISWA -->
+    <!-- 3. MODAL DATA SISWA (UPDATED: Added Stats) -->
     <div id="siswa-modal" class="fixed inset-0 z-[60] bg-black/90 hidden flex items-center justify-center p-4 backdrop-blur-md">
         <div class="glass-panel w-full max-w-6xl h-[90vh] rounded-2xl flex flex-col relative">
             <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-[#111]">
                 <div class="flex items-center gap-3"><div class="bg-green-900/30 p-2 rounded-lg text-green-500 border border-green-900"><i class="fas fa-user-graduate text-xl"></i></div><div><h2 class="text-xl font-bold">Database Siswa</h2><p class="text-xs text-gray-400">Kelola Data Peserta Didik</p></div></div>
                 <button onclick="closeModal('siswa-modal')" class="btn-back px-4 py-2 rounded-full text-sm font-bold text-white flex items-center gap-2"><i class="fas fa-home"></i> Kembali Dashboard</button>
             </div>
+            
+            <!-- STATS BAR SISWA (NEW) -->
+            <div class="grid grid-cols-3 gap-2 md:gap-4 px-4 pt-4 bg-[#1a1a1a]">
+                <div class="bg-blue-900/20 p-3 rounded-lg border border-blue-900/50 text-center">
+                    <h4 class="text-[10px] md:text-xs text-blue-400 uppercase font-bold tracking-widest">Total</h4>
+                    <p id="count-total" class="text-xl md:text-2xl font-bold text-white">0</p>
+                </div>
+                <div class="bg-green-900/20 p-3 rounded-lg border border-green-900/50 text-center">
+                    <h4 class="text-[10px] md:text-xs text-green-400 uppercase font-bold tracking-widest">Laki-Laki</h4>
+                    <p id="count-l" class="text-xl md:text-2xl font-bold text-white">0</p>
+                </div>
+                <div class="bg-pink-900/20 p-3 rounded-lg border border-pink-900/50 text-center">
+                    <h4 class="text-[10px] md:text-xs text-pink-400 uppercase font-bold tracking-widest">Perempuan</h4>
+                    <p id="count-p" class="text-xl md:text-2xl font-bold text-white">0</p>
+                </div>
+            </div>
+
             <div class="p-4 bg-[#1a1a1a] border-b border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="relative w-full md:w-1/3"><i class="fas fa-search absolute left-3 top-3 text-gray-500"></i><input type="text" id="search-siswa" onkeyup="filterSiswa()" placeholder="Cari Nama atau NISN..." class="w-full bg-[#222] text-white pl-10 pr-4 py-2 rounded border border-gray-700 focus:border-green-500 focus:outline-none"></div>
                 <div class="flex gap-2 w-full md:w-auto"><select id="filter-kelas" onchange="filterSiswa()" class="bg-[#222] text-white text-sm border border-gray-700 rounded p-2 px-4 focus:border-green-500 outline-none"><option value="all">Semua Kelas</option></select><select id="items-per-page" onchange="filterSiswa()" class="bg-[#222] text-white text-sm border border-gray-700 rounded p-2 px-4 focus:border-green-500 outline-none"><option value="5">5 Baris</option><option value="15">15 Baris</option><option value="30" selected>30 Baris</option><option value="50">50 Baris</option><option value="all">Semua Data</option></select></div>
@@ -592,16 +682,40 @@
             if(currentUser.link_foto) document.getElementById('menu-foto').src = currentUser.link_foto;
             else document.getElementById('menu-foto').src = "https://ui-avatars.com/api/?name=" + currentUser.nama_guru;
 
+            // Start Clock Immediately
+            startClock();
+
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=get_all_data`);
                 const json = await res.json();
                 if (json.status === 'success') {
                     appData = json.data;
                     renderVideoSlider();
+                    
+                    // Update Stats
+                    document.getElementById('stat-total-siswa').innerText = appData.siswa.length;
+                    document.getElementById('stat-total-media').innerText = appData.media.length;
                 }
             } catch (err) {
                 console.error(err);
             }
+        }
+
+        // ================= WIDGET LOGIC (CLOCK) =================
+        function startClock() {
+            function update() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                
+                const timeEl = document.getElementById('widget-time');
+                const dateEl = document.getElementById('widget-date');
+                
+                if(timeEl) timeEl.innerText = timeString;
+                if(dateEl) dateEl.innerText = dateString;
+            }
+            update();
+            setInterval(update, 1000);
         }
 
         // ================= FEATURE: PROFIL =================
@@ -715,13 +829,24 @@
             const searchVal = document.getElementById('search-siswa').value.toLowerCase();
             const perPageVal = document.getElementById('items-per-page').value;
 
+            // 1. FILTERING
             filteredSiswa = appData.siswa.filter(s => {
                 const matchClass = cls === 'all' || s.kelas === cls;
                 const matchSearch = s.nama_siswa.toLowerCase().includes(searchVal) || 
                                     (s.nisn && s.nisn.toString().includes(searchVal));
                 return matchClass && matchSearch;
             });
+
+            // 2. CALCULATE STATS (REAL-TIME)
+            const total = filteredSiswa.length;
+            const l = filteredSiswa.filter(s => s.jk === 'L').length;
+            const p = filteredSiswa.filter(s => s.jk === 'P').length;
+
+            document.getElementById('count-total').innerText = total;
+            document.getElementById('count-l').innerText = l;
+            document.getElementById('count-p').innerText = p;
             
+            // 3. PAGINATION SETUP
             if (perPageVal === 'all') {
                 siswaPerPage = filteredSiswa.length || 1;
             } else {
