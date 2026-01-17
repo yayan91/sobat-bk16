@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOBAT-BK16</title>
+    <title>SOBAT-BK16 | Ultimate</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -143,6 +143,83 @@
             100% { transform: scale(1); opacity: 1; }
         }
         .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        /* --- MAGIC FAB STYLES --- */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+        .fab-btn {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #E50914, #b2070f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 10px 25px rgba(229, 9, 20, 0.5);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .fab-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+        .fab-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+            pointer-events: none;
+        }
+        .fab-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .fab-menu.active {
+            pointer-events: auto;
+        }
+        .fab-menu.active .fab-item {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .fab-icon-small {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #222;
+            border: 1px solid #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .fab-icon-small:hover {
+            background: #E50914;
+            border-color: #E50914;
+        }
+        .fab-label {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body class="bg-[#0f0f0f] min-h-screen flex flex-col">
@@ -152,7 +229,7 @@
         <div class="absolute inset-0 bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08648f/ID-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg')] bg-cover opacity-40 grayscale"></div>
         <div class="relative z-10 glass-panel p-10 rounded-2xl max-w-md w-full border-t border-red-900 shadow-2xl animate-up">
             <div class="flex justify-center mb-6">
-                <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo Sekolah" class="w-24 h-24 object-contain logo-glow">
+                <img src="https://lh3.googleusercontent.com/d/19RBb-asjqwYsSUzDd0ve7Y8dgimQ2W2m" alt="Logo Sekolah" class="w-24 h-24 object-contain logo-glow">
             </div>
             <h1 class="text-4xl font-bold mb-2 text-white tracking-tighter text-center drop-shadow-md">SOBAT-BK16</h1>
             <p class="text-center text-gray-400 text-sm mb-8">Sistem Online BK & Administrasi Terpusat</p>
@@ -179,7 +256,7 @@
         <!-- Navbar -->
         <nav class="flex justify-between items-center px-6 py-4 sticky top-0 z-40 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm transition-colors duration-300">
             <div class="flex items-center gap-3">
-                <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" class="w-8 h-8 opacity-80">
+                <img src="https://lh3.googleusercontent.com/d/19RBb-asjqwYsSUzDd0ve7Y8dgimQ2W2m" class="w-8 h-8 opacity-80">
                 <div>
                     <h1 class="text-xl font-bold text-[#E50914] tracking-tighter leading-none">SOBAT-BK16</h1>
                     <p class="text-[10px] text-gray-400 tracking-widest uppercase">UPT SPF SMP NEGERI 16 MAKASSAR</p>
@@ -205,7 +282,7 @@
                 <p class="text-gray-300 text-sm md:text-lg">Sistem Online BK & Administrasi Terpusat</p>
             </div>
 
-            <!-- WIDGET BAR (CLOCK & STATS) - NEW -->
+            <!-- WIDGET BAR (CLOCK & STATS) -->
             <div class="flex flex-col md:flex-row gap-4 justify-between items-stretch mb-10 animate-up" style="animation-delay: 0.1s;">
                 <!-- Clock Widget -->
                 <div class="glass-panel p-4 rounded-xl flex items-center gap-4 w-full md:w-auto flex-1 border border-gray-700">
@@ -238,6 +315,13 @@
                             <h4 id="stat-total-media" class="text-2xl font-bold text-white">0</h4>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- NEW: QUOTE WIDGET -->
+            <div class="mb-10 animate-up text-center px-4" style="animation-delay: 0.15s;">
+                <div class="glass-panel p-4 rounded-full border border-gray-800 inline-block max-w-3xl">
+                    <p class="text-gray-400 italic text-sm"><i class="fas fa-quote-left text-[#E50914] mr-2"></i> <span id="daily-quote">Pendidikan adalah senjata paling mematikan di dunia.</span> <i class="fas fa-quote-right text-[#E50914] ml-2"></i></p>
                 </div>
             </div>
 
@@ -345,13 +429,13 @@
                         <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Bantuan</h4>
                         <ul class="space-y-3 text-gray-400">
                             <li><a href="#" class="hover:text-[#E50914] transition">Panduan Penggunaan</a></li>
-                            <li><a href="#" class="hover:text-[#E50914] transition">Laporkan Kendala</a></li>
+                            <li><a href="https://wa.me/6285111032102" class="hover:text-[#E50914] transition" target="_blank">Laporkan Kendala
                             <li><a href="#" onclick="confirmLogout()" class="hover:text-[#E50914] transition">Keluar Aplikasi</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-                    <p>&copy; 2026 - Mappaguru Online</p>
+                    <p>&copy; 2026 - Mappaguru Online.</p>
                     <div class="flex gap-6 mt-4 md:mt-0 text-lg">
                         <a href="#" class="hover:text-white transition"><i class="fab fa-facebook"></i></a>
                         <a href="#" class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
@@ -361,6 +445,36 @@
             </div>
         </footer>
 
+    </div>
+
+    <!-- ===== MAGIC FAB (FLOATING BUTTON) ===== -->
+    <div class="fab-container">
+        <div class="fab-menu" id="fab-menu">
+            <!-- Item 1: Stopwatch -->
+            <div class="fab-item">
+                <div class="fab-label">Stopwatch</div>
+                <div onclick="openStopwatchModal()" class="fab-icon-small hover:bg-yellow-600 hover:border-yellow-600">
+                    <i class="fas fa-stopwatch"></i>
+                </div>
+            </div>
+            <!-- Item 2: Export Data -->
+            <div class="fab-item" style="transition-delay: 0.05s;">
+                <div class="fab-label">Export Siswa (Excel)</div>
+                <div onclick="exportSiswaToCSV()" class="fab-icon-small hover:bg-green-600 hover:border-green-600">
+                    <i class="fas fa-file-excel"></i>
+                </div>
+            </div>
+            <!-- Item 3: Notes -->
+            <div class="fab-item" style="transition-delay: 0.1s;">
+                <div class="fab-label">Catatan Pribadi</div>
+                <div onclick="openNoteModal()" class="fab-icon-small hover:bg-blue-600 hover:border-blue-600">
+                    <i class="fas fa-sticky-note"></i>
+                </div>
+            </div>
+        </div>
+        <div onclick="toggleFab()" class="fab-btn">
+            <i class="fas fa-plus transition-transform duration-300" id="fab-icon-main"></i>
+        </div>
     </div>
 
     <!-- ================= MODALS & ALERTS ================= -->
@@ -374,6 +488,35 @@
             <h3 id="alert-title" class="text-xl font-bold text-white mb-2 tracking-tight">Judul Notifikasi</h3>
             <p id="alert-message" class="text-gray-300 text-sm mb-6 leading-relaxed">Pesan notifikasi.</p>
             <div id="alert-buttons" class="flex gap-3 justify-center"></div>
+        </div>
+    </div>
+
+    <!-- STOPWATCH MODAL (LOCAL TOOL) -->
+    <div id="stopwatch-modal" class="fixed inset-0 z-[110] bg-black/90 hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-sm rounded-2xl p-8 border border-gray-700 shadow-2xl text-center">
+            <h3 class="text-xl font-bold text-yellow-500 mb-6 uppercase tracking-widest">Timer Konseling</h3>
+            <div class="text-6xl font-mono text-white mb-8" id="sw-display">00:00:00</div>
+            <div class="flex justify-center gap-4">
+                <button onclick="startStopwatch()" id="sw-start" class="bg-green-600 hover:bg-green-700 text-white w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-play"></i></button>
+                <button onclick="pauseStopwatch()" class="bg-yellow-600 hover:bg-yellow-700 text-white w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-pause"></i></button>
+                <button onclick="resetStopwatch()" class="bg-red-600 hover:bg-red-700 text-white w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-undo"></i></button>
+            </div>
+            <button onclick="closeModal('stopwatch-modal')" class="mt-8 text-gray-400 text-sm hover:text-white">Tutup Timer</button>
+        </div>
+    </div>
+
+    <!-- STICKY NOTES MODAL (LOCAL STORAGE) -->
+    <div id="note-modal" class="fixed inset-0 z-[110] bg-black/90 hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-lg rounded-2xl p-6 border border-gray-700 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-blue-400"><i class="fas fa-sticky-note mr-2"></i> Catatan Harian</h3>
+                <button onclick="closeModal('note-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <textarea id="my-notes" class="w-full h-64 bg-[#222] text-white p-4 rounded-lg border border-gray-600 focus:border-blue-500 outline-none resize-none mb-4 font-mono text-sm" placeholder="Tulis catatan penting disini... (Tersimpan otomatis)"></textarea>
+            <div class="flex justify-between items-center text-xs text-gray-500">
+                <span>*Disimpan di browser perangkat ini</span>
+                <button onclick="saveNotes()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-bold">Simpan</button>
+            </div>
         </div>
     </div>
 
@@ -445,27 +588,42 @@
         </div>
     </div>
 
-    <!-- 3. MODAL DATA SISWA (UPDATED: Added Stats) -->
+    <!-- 3. MODAL DATA SISWA (UPDATED: Print & Visual Bar) -->
     <div id="siswa-modal" class="fixed inset-0 z-[60] bg-black/90 hidden flex items-center justify-center p-4 backdrop-blur-md">
         <div class="glass-panel w-full max-w-6xl h-[90vh] rounded-2xl flex flex-col relative">
             <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-[#111]">
                 <div class="flex items-center gap-3"><div class="bg-green-900/30 p-2 rounded-lg text-green-500 border border-green-900"><i class="fas fa-user-graduate text-xl"></i></div><div><h2 class="text-xl font-bold">Database Siswa</h2><p class="text-xs text-gray-400">Kelola Data Peserta Didik</p></div></div>
-                <button onclick="closeModal('siswa-modal')" class="btn-back px-4 py-2 rounded-full text-sm font-bold text-white flex items-center gap-2"><i class="fas fa-home"></i> Kembali Dashboard</button>
+                <div class="flex gap-2">
+                    <!-- TOMBOL CETAK BARU -->
+                    <button onclick="printSiswa()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-full text-sm font-bold text-white flex items-center gap-2 shadow-lg"><i class="fas fa-print"></i> Cetak</button>
+                    <button onclick="closeModal('siswa-modal')" class="btn-back px-4 py-2 rounded-full text-sm font-bold text-white flex items-center gap-2"><i class="fas fa-home"></i> Kembali Dashboard</button>
+                </div>
             </div>
             
-            <!-- STATS BAR SISWA (NEW) -->
-            <div class="grid grid-cols-3 gap-2 md:gap-4 px-4 pt-4 bg-[#1a1a1a]">
-                <div class="bg-blue-900/20 p-3 rounded-lg border border-blue-900/50 text-center">
-                    <h4 class="text-[10px] md:text-xs text-blue-400 uppercase font-bold tracking-widest">Total</h4>
-                    <p id="count-total" class="text-xl md:text-2xl font-bold text-white">0</p>
+            <!-- STATS BAR SISWA (ENHANCED WITH VISUAL BAR) -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4 px-4 pt-4 bg-[#1a1a1a]">
+                <div class="bg-blue-900/20 p-3 rounded-lg border border-blue-900/50 text-center flex flex-col justify-center">
+                    <h4 class="text-[10px] md:text-xs text-blue-400 uppercase font-bold tracking-widest">Total Siswa</h4>
+                    <p id="count-total" class="text-2xl font-bold text-white">0</p>
                 </div>
-                <div class="bg-green-900/20 p-3 rounded-lg border border-green-900/50 text-center">
+                <div class="bg-green-900/20 p-3 rounded-lg border border-green-900/50 text-center flex flex-col justify-center">
                     <h4 class="text-[10px] md:text-xs text-green-400 uppercase font-bold tracking-widest">Laki-Laki</h4>
-                    <p id="count-l" class="text-xl md:text-2xl font-bold text-white">0</p>
+                    <p id="count-l" class="text-2xl font-bold text-white">0</p>
                 </div>
-                <div class="bg-pink-900/20 p-3 rounded-lg border border-pink-900/50 text-center">
+                <div class="bg-pink-900/20 p-3 rounded-lg border border-pink-900/50 text-center flex flex-col justify-center">
                     <h4 class="text-[10px] md:text-xs text-pink-400 uppercase font-bold tracking-widest">Perempuan</h4>
-                    <p id="count-p" class="text-xl md:text-2xl font-bold text-white">0</p>
+                    <p id="count-p" class="text-2xl font-bold text-white">0</p>
+                </div>
+                <!-- Visual Ratio Bar -->
+                <div class="bg-gray-800 p-3 rounded-lg border border-gray-700 flex flex-col justify-center items-center">
+                    <h4 class="text-[10px] text-gray-400 uppercase font-bold mb-2">Rasio L/P</h4>
+                    <div class="w-full h-3 bg-pink-600 rounded-full overflow-hidden flex">
+                        <div id="ratio-bar-l" class="h-full bg-green-500" style="width: 50%"></div>
+                    </div>
+                    <div class="flex justify-between w-full text-[10px] mt-1 text-gray-400">
+                        <span id="ratio-text-l">L: 50%</span>
+                        <span id="ratio-text-p">P: 50%</span>
+                    </div>
                 </div>
             </div>
 
@@ -474,7 +632,7 @@
                 <div class="flex gap-2 w-full md:w-auto"><select id="filter-kelas" onchange="filterSiswa()" class="bg-[#222] text-white text-sm border border-gray-700 rounded p-2 px-4 focus:border-green-500 outline-none"><option value="all">Semua Kelas</option></select><select id="items-per-page" onchange="filterSiswa()" class="bg-[#222] text-white text-sm border border-gray-700 rounded p-2 px-4 focus:border-green-500 outline-none"><option value="5">5 Baris</option><option value="15">15 Baris</option><option value="30" selected>30 Baris</option><option value="50">50 Baris</option><option value="all">Semua Data</option></select></div>
             </div>
             <div class="flex-grow overflow-auto p-0 bg-black/20">
-                <table class="w-full text-left text-sm text-gray-300">
+                <table class="w-full text-left text-sm text-gray-300" id="print-table-area">
                     <thead class="bg-[#111] text-xs uppercase text-gray-400 sticky top-0 z-10 shadow-lg">
                         <tr><th class="px-6 py-4 font-bold text-white">NISN</th><th class="px-6 py-4 font-bold text-white">Nama Siswa</th><th class="px-6 py-4 font-bold text-white">Kelas</th><th class="px-6 py-4 font-bold text-white">L/P</th><th class="px-6 py-4 font-bold text-white">No. WA</th><th class="px-6 py-4 font-bold text-white">Alamat</th></tr>
                     </thead>
@@ -539,6 +697,15 @@
         let siswaPerPage = 30;
         let filteredSiswa = [];
 
+        // QUOTES DATA
+        const quotes = [
+            "Pendidikan adalah senjata paling mematikan di dunia.",
+            "Guru yang baik itu ibarat lilin, membakar dirinya sendiri untuk menerangi orang lain.",
+            "Siswa tidak butuh guru yang sempurna, mereka butuh guru yang bahagia.",
+            "Tugas guru bukan menjejalkan pelajaran, melainkan menghidupkan pengetahuan.",
+            "Setiap anak adalah juara, tugas kitalah menemukan pialanya."
+        ];
+
         // INIT
         document.addEventListener('DOMContentLoaded', () => {
             // Cek Tema
@@ -546,6 +713,9 @@
                 document.body.classList.add('light-mode');
                 document.getElementById('theme-btn').innerHTML = '<i class="fas fa-moon text-lg"></i>';
             }
+
+            // Set Random Quote
+            document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
             if (currentUser) {
                 initDashboard();
@@ -656,6 +826,7 @@
                     currentUser = json.data;
                     localStorage.setItem('sobat_user', JSON.stringify(currentUser));
                     initDashboard();
+                    speakWelcome(currentUser.nama_guru); // VOICE GREETING
                 } else {
                     showAlert('Gagal Masuk', json.message, 'error');
                 }
@@ -664,6 +835,14 @@
             } finally {
                 btn.innerHTML = 'MASUK APLIKASI <i class="fas fa-arrow-right"></i>';
                 btn.disabled = false;
+            }
+        }
+
+        function speakWelcome(name) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(`Selamat bekerja, ${name}. Semangat!`);
+                utterance.lang = 'id-ID';
+                window.speechSynthesis.speak(utterance);
             }
         }
 
@@ -716,6 +895,103 @@
             }
             update();
             setInterval(update, 1000);
+        }
+
+        // ================= MAGIC FAB LOGIC =================
+        function toggleFab() {
+            document.getElementById('fab-menu').classList.toggle('active');
+            const icon = document.getElementById('fab-icon-main');
+            if(document.getElementById('fab-menu').classList.contains('active')){
+                icon.style.transform = 'rotate(45deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // --- STOPWATCH ---
+        let swInterval;
+        let swSeconds = 0;
+        let swIsRunning = false;
+
+        function openStopwatchModal() {
+            document.getElementById('stopwatch-modal').classList.remove('hidden');
+            toggleFab();
+        }
+
+        function updateStopwatch() {
+            swSeconds++;
+            const hrs = Math.floor(swSeconds / 3600);
+            const mins = Math.floor((swSeconds % 3600) / 60);
+            const secs = swSeconds % 60;
+            document.getElementById('sw-display').innerText = 
+                `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startStopwatch() {
+            if (!swIsRunning) {
+                swInterval = setInterval(updateStopwatch, 1000);
+                swIsRunning = true;
+                document.getElementById('sw-start').disabled = true;
+                document.getElementById('sw-start').classList.add('opacity-50');
+            }
+        }
+
+        function pauseStopwatch() {
+            clearInterval(swInterval);
+            swIsRunning = false;
+            document.getElementById('sw-start').disabled = false;
+            document.getElementById('sw-start').classList.remove('opacity-50');
+        }
+
+        function resetStopwatch() {
+            pauseStopwatch();
+            swSeconds = 0;
+            document.getElementById('sw-display').innerText = "00:00:00";
+        }
+
+        // --- NOTES (LOCAL STORAGE) ---
+        function openNoteModal() {
+            const savedNote = localStorage.getItem('sobat_notes') || '';
+            document.getElementById('my-notes').value = savedNote;
+            document.getElementById('note-modal').classList.remove('hidden');
+            toggleFab();
+        }
+
+        function saveNotes() {
+            const text = document.getElementById('my-notes').value;
+            localStorage.setItem('sobat_notes', text);
+            showAlert('Tersimpan', 'Catatan berhasil disimpan di perangkat ini.', 'success');
+            setTimeout(() => document.getElementById('note-modal').classList.add('hidden'), 1000);
+        }
+
+        // --- EXPORT TO CSV ---
+        function exportSiswaToCSV() {
+            if (!appData.siswa || appData.siswa.length === 0) {
+                showAlert('Info', 'Tidak ada data siswa untuk diexport.', 'info');
+                return;
+            }
+            
+            // Header
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "NISN,Nama Siswa,Kelas,L/P,No WA,Alamat\n";
+            
+            // Rows
+            appData.siswa.forEach(function(row) {
+                let rowStr = `${row.nisn},"${row.nama_siswa}",${row.kelas},${row.jk},${row.no_wa || '-'},"${row.alamat}"`;
+                csvContent += rowStr + "\n";
+            });
+            
+            // Download Trigger
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Data_Siswa_SOBAT_BK.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            toggleFab();
+            showAlert('Download Mulai', 'File Excel (CSV) sedang didownload.', 'success');
         }
 
         // ================= FEATURE: PROFIL =================
@@ -813,7 +1089,7 @@
             document.getElementById('app-modal').classList.remove('hidden');
         }
 
-        // ================= FEATURE: SISWA (PAGINATION & SEARCH) =================
+        // ================= FEATURE: SISWA (PAGINATION & SEARCH & PRINT) =================
         function openSiswaModal() {
             const classes = [...new Set(appData.siswa.map(s => s.kelas))].sort();
             const select = document.getElementById('filter-kelas');
@@ -837,7 +1113,7 @@
                 return matchClass && matchSearch;
             });
 
-            // 2. CALCULATE STATS (REAL-TIME)
+            // 2. CALCULATE STATS (REAL-TIME) & VISUAL BAR
             const total = filteredSiswa.length;
             const l = filteredSiswa.filter(s => s.jk === 'L').length;
             const p = filteredSiswa.filter(s => s.jk === 'P').length;
@@ -845,6 +1121,13 @@
             document.getElementById('count-total').innerText = total;
             document.getElementById('count-l').innerText = l;
             document.getElementById('count-p').innerText = p;
+            
+            // Visual Bar Logic
+            let percentL = total > 0 ? (l / total) * 100 : 0;
+            let percentP = total > 0 ? (p / total) * 100 : 0;
+            document.getElementById('ratio-bar-l').style.width = `${percentL}%`;
+            document.getElementById('ratio-text-l').innerText = `L: ${Math.round(percentL)}%`;
+            document.getElementById('ratio-text-p').innerText = `P: ${Math.round(percentP)}%`;
             
             // 3. PAGINATION SETUP
             if (perPageVal === 'all') {
@@ -902,6 +1185,79 @@
             
             document.getElementById('btn-prev').disabled = siswaPage === 1;
             document.getElementById('btn-next').disabled = siswaPage === maxPage;
+        }
+
+        // PRINT FUNCTION (NEW)
+        function printSiswa() {
+            if (filteredSiswa.length === 0) {
+                showAlert('Info', 'Tidak ada data siswa untuk dicetak.', 'info');
+                return;
+            }
+
+            const printWindow = window.open('', '', 'width=800,height=600');
+            const dataToPrint = filteredSiswa; // Cetak semua data hasil filter, bukan cuma halaman ini
+            
+            let html = `
+                <html>
+                <head>
+                    <title>Laporan Data Siswa SOBAT-BK16</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        h1 { text-align: center; color: #333; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; color: #333; font-weight: bold; }
+                        tr:nth-child(even) { background-color: #f9f9f9; }
+                        .footer { margin-top: 20px; text-align: right; font-size: 10px; color: #555; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Laporan Data Siswa</h1>
+                    <p>Total Data: ${dataToPrint.length} | Filter Kelas: ${document.getElementById('filter-kelas').value.toUpperCase()}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NISN</th>
+                                <th>Nama Siswa</th>
+                                <th>Kelas</th>
+                                <th>L/P</th>
+                                <th>No. WA</th>
+                                <th>Alamat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            dataToPrint.forEach((s, index) => {
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${s.nisn}</td>
+                        <td>${s.nama_siswa}</td>
+                        <td>${s.kelas}</td>
+                        <td>${s.jk}</td>
+                        <td>${s.no_wa || '-'}</td>
+                        <td>${s.alamat}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                    <div class="footer">Dicetak dari SOBAT-BK16 pada ${new Date().toLocaleString('id-ID')}</div>
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
         }
 
         // ================= FEATURE: MEDIA (GRID & EDIT) =================
