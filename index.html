@@ -544,7 +544,7 @@
                     <div><label class="text-xs text-gray-500 uppercase font-bold">Jenis Kelamin</label><p id="prof-jk-display" class="text-lg text-white font-medium">-</p></div>
                     <div><label class="text-xs text-gray-500 uppercase font-bold">Mata Pelajaran</label><p id="prof-mapel-display" class="text-lg text-white font-medium">-</p></div>
                     <div><label class="text-xs text-gray-500 uppercase font-bold">WhatsApp</label><p id="prof-wa-display" class="text-lg text-white font-medium">-</p></div>
-                    <div><label class="text-xs text-gray-500 uppercase font-bold">Alamat</label><p id="prof-alamat-display" class="text-white text-sm">-</p></div>
+                    <div><label class="text-xs text-gray-500 uppercase font-bold">Status</label><p id="prof-alamat-display" class="text-white text-sm">-</p></div>
                 </div>
                 <form id="profile-edit-mode" onsubmit="handleUpdateProfile(event)" class="hidden space-y-3 h-full overflow-y-auto">
                     <input type="text" id="edit-username" class="hidden">
@@ -634,7 +634,7 @@
             <div class="flex-grow overflow-auto p-0 bg-black/20">
                 <table class="w-full text-left text-sm text-gray-300" id="print-table-area">
                     <thead class="bg-[#111] text-xs uppercase text-gray-400 sticky top-0 z-10 shadow-lg">
-                        <tr><th class="px-6 py-4 font-bold text-white">NISN</th><th class="px-6 py-4 font-bold text-white">Nama Siswa</th><th class="px-6 py-4 font-bold text-white">Kelas</th><th class="px-6 py-4 font-bold text-white">L/P</th><th class="px-6 py-4 font-bold text-white">No. WA</th><th class="px-6 py-4 font-bold text-white">Alamat</th></tr>
+                        <tr><th class="px-6 py-4 font-bold text-white">NISN</th><th class="px-6 py-4 font-bold text-white">Nama Siswa</th><th class="px-6 py-4 font-bold text-white">Kelas</th><th class="px-6 py-4 font-bold text-white">L/P</th><th class="px-6 py-4 font-bold text-white">No. WA</th><th class="px-6 py-4 font-bold text-white">Status</th></tr>
                     </thead>
                     <tbody id="siswa-table-body" class="divide-y divide-gray-800"></tbody>
                 </table>
@@ -973,7 +973,7 @@
             
             // Header
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "NISN,Nama Siswa,Kelas,L/P,No WA,Alamat\n";
+            csvContent += "NISN,Nama Siswa,Kelas,L/P,No WA,Status\n";
             
             // Rows
             appData.siswa.forEach(function(row) {
@@ -1223,7 +1223,7 @@
                                 <th>Kelas</th>
                                 <th>L/P</th>
                                 <th>No. WA</th>
-                                <th>Alamat</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1425,3 +1425,4 @@
     </script>
 </body>
 </html>
+
