@@ -358,6 +358,23 @@
                     </div>
                 </div>
             </div>
+			
+			<div class="mb-10 animate-up px-2" style="animation-delay: 0.15s;">
+                <div class="relative bg-secondary/40 backdrop-blur-md p-6 rounded-2xl border border-white/5 shadow-lg group hover:border-accent/30 transition-all duration-500 overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-accent/10 rounded-full blur-2xl group-hover:bg-accent/20 transition duration-700"></div>
+                    
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center md:text-left relative z-10">
+                        <div class="bg-gradient-to-br from-accent to-blue-600 w-10 h-10 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/30 shrink-0">
+                            <i class="fas fa-quote-left text-white text-lg"></i>
+                        </div>
+                        <div class="flex-grow">
+                             <p class="text-gray-200 italic text-sm md:text-lg font-light leading-relaxed tracking-wide min-h-[1.5em] flex items-center justify-center md:justify-start">
+                                <span id="daily-quote">Memuat kata mutiara...</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Grid 4 Menu Utama -->
             <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
@@ -799,22 +816,62 @@
         let siswaPage = 1;
         let siswaPerPage = 30;
         let filteredSiswa = [];
+		
+		// QUOTES DATA
+        const quotes = [
+            "Pendidikan adalah senjata paling mematikan di dunia.",
+            "Guru yang baik itu ibarat lilin, membakar dirinya sendiri untuk menerangi orang lain.",
+            "Siswa tidak butuh guru yang sempurna, mereka butuh guru yang bahagia.",
+            "Tugas guru bukan menjejalkan pelajaran, melainkan menghidupkan pengetahuan.",
+            "Setiap anak adalah juara, tugas kitalah menemukan pialanya."
+        ];
 
         // INIT
-        document.addEventListener('DOMContentLoaded', () => {
-            if(localStorage.getItem('sobat_theme') === 'light') {
-                document.body.classList.add('light-mode');
-                document.getElementById('theme-btn').innerHTML = '<i class="fas fa-moon text-lg"></i>';
-            }
+		document.addEventListener('DOMContentLoaded', () => {
+			
+			// --- 1. Kode Cek Tema (JANGAN DIUBAH) ---
+			if(localStorage.getItem('sobat_theme') === 'light') {
+				document.body.classList.add('light-mode');
+				document.getElementById('theme-btn').innerHTML = '<i class="fas fa-moon text-lg"></i>';
+			}
 
-            if (currentUser) {
-                initDashboard();
-            } else {
-                document.getElementById('login-screen').classList.remove('hidden');
-            }
+			// >>>>>> MULAI: SISIPKAN KODE QUOTES DISINI <<<<<<
+			const quoteEl = document.getElementById('daily-quote');
+			
+			// Pastikan elemen ada dan array 'quotes' tidak kosong
+			if(quoteEl && typeof quotes !== 'undefined' && quotes.length > 0) {
+				let quoteIdx = 0;
+				
+				// Set transisi halus
+				quoteEl.style.transition = 'opacity 0.8s ease-in-out';
+				
+				const rotateQuotes = () => {
+					quoteEl.style.opacity = '0'; // 1. Hilang pelan
+					
+					setTimeout(() => {
+						quoteEl.innerText = quotes[quoteIdx]; // 2. Ganti Teks
+						quoteIdx = (quoteIdx + 1) % quotes.length; // 3. Geser antrian
+						quoteEl.style.opacity = '1'; // 4. Muncul pelan
+					}, 800); // Tunggu 0.8 detik (sesuai durasi fade out)
+				};
 
-            initDraggableFab();
-        });
+				// Mulai animasi
+				rotateQuotes(); // Jalankan pertama kali
+				setInterval(rotateQuotes, 5000); // Ulangi tiap 5 detik
+			}
+			// >>>>>> AKHIR: KODE QUOTES <<<<<<
+
+
+			// --- 2. Kode Login/Dashboard (JANGAN DIUBAH) ---
+			if (currentUser) {
+				initDashboard();
+			} else {
+				document.getElementById('login-screen').classList.remove('hidden');
+			}
+
+			// Jika sahabat punya fungsi initDraggableFab, biarkan di sini
+			if(typeof initDraggableFab === 'function') initDraggableFab();
+		});
 
         // ================= ALERT SYSTEM (PENGGANTI ALERT BAWAAN) =================
         function showAlert(title, message, type = 'success') {
