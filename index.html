@@ -176,7 +176,7 @@
                             <i class="fa-solid fa-layer-group"></i> Layanan Aplikasi
                         </button>
                         <button onclick="switchTab('media')" id="tab-media" class="px-5 py-2.5 rounded-xl text-sm transition-all tab-inactive flex items-center gap-2">
-                            <i class="fa-solid fa-book-open-reader"></i> Bank Media
+                            <i class="fa-solid fa-book-open-reader"></i> Media dan RPLBK
                         </button>
                         <button onclick="switchTab('video')" id="tab-video" class="px-5 py-2.5 rounded-xl text-sm transition-all tab-inactive flex items-center gap-2">
                             <i class="fa-brands fa-youtube"></i> Video Pembelajaran
@@ -187,7 +187,7 @@
                 <!-- TAB 1: APLIKASI -->
                 <div id="content-aplikasi" class="fade-in block pb-10">
                     <div class="flex justify-between items-center mb-4 px-1">
-                        <h2 class="text-xl font-bold text-slate-800">Daftar Layanan</h2>
+                        <h2 class="text-xl font-bold text-slate-800">Aplikasi Mappaguru Online</h2>
                         <button onclick="loadDataAplikasi()" class="text-xs font-semibold text-brand hover:text-brand-dark bg-brand-light/10 px-3 py-1.5 rounded-lg transition-colors"><i class="fa-solid fa-rotate-right mr-1"></i> Refresh</button>
                     </div>
                     <!-- Area Scroll Internal -->
@@ -201,7 +201,7 @@
                 <!-- TAB 2: MEDIA AJAR -->
                 <div id="content-media" class="fade-in hidden pb-10">
                     <div class="flex justify-between items-center mb-4 px-1">
-                        <h2 class="text-xl font-bold text-slate-800">Bank Media & RPLBK</h2>
+                        <h2 class="text-xl font-bold text-slate-800">Media BK dan RPLBK</h2>
                         <button onclick="showModal('modal-upload-media')" class="bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-md transition-all hover:-translate-y-0.5"><i class="fa-solid fa-cloud-arrow-up mr-2"></i>Upload Baru</button>
                     </div>
                     <!-- Area Scroll Internal -->
@@ -380,12 +380,12 @@
         <div class="min-h-screen flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl shadow-2xl w-full max-w-xl fade-in overflow-hidden">
                 <div class="bg-gradient-to-r from-brand to-brand-dark p-5 text-white flex justify-between items-center">
-                    <h2 class="text-xl font-bold"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload Media RPLBK</h2>
+                    <h2 class="text-xl font-bold"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload Media/RPLBK</h2>
                     <button onclick="closeModal('modal-upload-media')" class="text-white/80 hover:text-white hover:rotate-90 transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <form id="form-media" onsubmit="submitMedia(event)" class="p-6 space-y-5">
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Judul RPLBK</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Judul Media/RPLBK</label>
                         <input type="text" id="media-judul" required class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm" placeholder="Contoh: Bahaya Bullying di Sekolah">
                     </div>
                     <div>
