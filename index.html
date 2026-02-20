@@ -45,16 +45,28 @@
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Professional Tab Styling */
-        .tab-active { background-color: #ffffff; color: #8b5cf6; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); font-weight: 700; }
-        .tab-inactive { color: #64748b; font-weight: 500; }
-        .tab-inactive:hover { color: #475569; background-color: rgba(255, 255, 255, 0.4); }
+        /* Tab Styling Desain Mewah */
+        .tab-active { background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #ffffff; box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5); font-weight: 700; transform: translateY(-2px); border: 1px solid rgba(255,255,255,0.3); }
+        .tab-active img { filter: brightness(0) invert(1); drop-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        
+        .tab-inactive { color: #64748b; font-weight: 600; background: transparent; transition: all 0.3s ease; }
+        .tab-inactive:hover { color: #8b5cf6; background: rgba(139, 92, 246, 0.08); transform: translateY(-1px); }
+        .tab-inactive img { opacity: 0.5; filter: grayscale(100%); transition: all 0.3s ease; }
+        .tab-inactive:hover img { opacity: 1; filter: grayscale(0%); }
 
         /* Internal Scroll untuk Grid yang tidak memanjang */
         .grid-scroll-area { max-height: 55vh; overflow-y: auto; padding-right: 0.5rem; padding-bottom: 2rem; }
         
         /* Glassmorphism */
         .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
+		
+		/* Animasi Running Text Mulus untuk Handphone */
+        .running-text-container { display: flex; overflow: hidden; white-space: nowrap; width: 100%; align-items: center; }
+        .running-text { display: inline-block; animation: scrollText 20s linear infinite; padding-left: 100%; }
+        @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans overflow-hidden flex flex-col h-screen">
@@ -62,44 +74,55 @@
     <!-- ========================================== -->
     <!-- 1. HALAMAN LOGIN -->
     <!-- ========================================== -->
-    <div id="login-view" class="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 p-4 absolute inset-0 z-50">
-        <button onclick="showModal('about-modal')" class="absolute top-6 right-6 text-white text-3xl hover:scale-110 transition-transform drop-shadow-md">
-            <i class="fa-solid fa-circle-info"></i>
+    <div id="login-view" class="h-screen w-screen flex items-center justify-center bg-slate-50 relative overflow-hidden z-50">
+        
+        <div class="absolute top-[-10%] left-[-10%] w-[30rem] h-[30rem] bg-brand/30 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[30rem] h-[30rem] bg-pink-500/20 rounded-full blur-[100px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+        <div class="absolute top-[40%] left-[60%] w-[20rem] h-[20rem] bg-blue-400/20 rounded-full blur-[80px] animate-pulse"></div>
+
+        <button onclick="showModal('about-modal')" class="absolute top-6 right-6 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 hover:shadow-lg transition-all duration-300 z-20 border border-white/60">
+            <img src="https://cdn-icons-png.flaticon.com/128/3208/3208505.png" alt="Info" class="w-5 h-5 opacity-80">
         </button>
 
-        <div class="bg-white/95 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md fade-in text-center relative overflow-hidden">
-            <div class="absolute -top-10 -left-10 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply blur-xl opacity-70"></div>
-            <div class="relative z-10">
-                
-                <!-- LOGO APLIKASI (Silakan Ganti URL src-nya nanti) -->
-                <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" id="login-logo-img" alt="Logo Aplikasi" class="w-24 h-24 mx-auto mb-4 object-contain drop-shadow-lg rounded-2xl bg-white p-2">
-                
-                <h1 class="text-3xl font-bold text-slate-800 mb-1">SOBAT BK</h1>
-                <p class="text-sm text-slate-500 mb-8 font-medium">Sistem Online BK & Administrasi Terpadu</p>
-
-                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5 text-left">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1 ml-1">Username</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400"><i class="fa-solid fa-user"></i></div>
-                            <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-brand text-slate-700" placeholder="Masukkan Username Guru">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1 ml-1">Password</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400"><i class="fa-solid fa-lock"></i></div>
-                            <input type="password" id="login-password" required class="w-full pl-11 pr-12 py-3 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-brand text-slate-700" placeholder="Masukkan Password">
-                            <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-brand transition-colors">
-                                <i id="eye-icon" class="fa-solid fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark text-white rounded-xl font-bold text-lg shadow-lg hover:-translate-y-1 transition-all">
-                        Masuk Aplikasi <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
-                    </button>
-                </form>
+        <div class="bg-white/70 backdrop-blur-2xl p-8 md:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white max-w-md w-full mx-4 fade-in text-center relative z-10">
+            
+            <div class="relative w-28 h-28 mx-auto mb-6 group">
+                <div class="absolute inset-0 bg-gradient-to-tr from-brand to-pink-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+                <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" id="login-logo-img" alt="Logo Aplikasi" class="relative w-full h-full object-cover shadow-xl rounded-3xl bg-white p-1.5 border-2 border-white/80 group-hover:scale-105 transition-transform duration-500">
             </div>
+            
+            <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-600 mb-1 tracking-tight">SOBAT BK</h1>
+            <p class="text-xs text-slate-400 mb-8 font-bold tracking-widest uppercase">UPT SPF SMP NEGERI 16 MAKASSAR</p>
+
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5 text-left">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Username Guru</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <img src="https://cdn-icons-png.flaticon.com/128/1077/1077063.png" alt="User" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
+                        </div>
+                        <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-inner transition-all" placeholder="Ketik username Anda...">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Password</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <img src="https://cdn-icons-png.flaticon.com/128/3064/3064155.png" alt="Lock" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
+                        </div>
+                        <input type="password" id="login-password" required class="w-full pl-11 pr-12 py-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-inner transition-all" placeholder="••••••••">
+                        <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center opacity-40 hover:opacity-100 hover:scale-110 transition-all">
+                            <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/128/2767/2767146.png" alt="Eye" class="w-4 h-4">
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full mt-2 py-4 bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white rounded-2xl font-bold text-sm shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:shadow-[0_15px_25px_-5px_rgba(139,92,246,0.5)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                    Masuk Ruang Kerja
+                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828395.png" alt="Login" class="w-4 h-4 brightness-0 invert">
+                </button>
+            </form>
         </div>
     </div>
 
@@ -141,35 +164,55 @@
         <main class="flex-1 overflow-y-auto w-full bg-slate-50/50 relative">
             
             <!-- BANNER & DASHBOARD STATS -->
-            <div class="px-4 md:px-8 pt-6 pb-2 max-w-7xl mx-auto">
-                <div class="bg-gradient-to-r from-brand-dark via-brand to-pink-500 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden mb-6">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
-                    <div class="relative z-10">
-                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Halo, <span id="banner-name">Sahabat</span>! 👋</h2>
-                        <p class="text-white/80 text-sm md:text-base mb-6 max-w-xl">Selamat datang di Apliaksi Sobat BK Ruang Kerja Digital Anda. Pantau layanan, materi bimbingan, dan video ajar hari ini dengan mudah.</p>
-                        
-                        <!-- Statistik Cards -->
-                        <div class="grid grid-cols-3 gap-3 md:gap-6">
-                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 md:p-4 border border-white/20 text-center">
-                                <i class="fa-solid fa-layer-group text-2xl md:text-3xl text-white/90 mb-2"></i>
-                                <h3 class="text-2xl md:text-3xl font-bold" id="stat-aplikasi">0</h3>
-                                <p class="text-[10px] md:text-xs font-semibold text-white/70 uppercase tracking-wider">Aplikasi</p>
+            <div class="px-4 md:px-8 pt-6 pb-4 max-w-7xl mx-auto fade-in">
+                <div class="relative rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(139,92,246,0.15)] border border-white/60">
+                    
+                    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/80 via-white/90 to-white/80 backdrop-blur-2xl z-0"></div>
+                    <div class="absolute -top-24 -left-24 w-96 h-96 bg-brand/20 rounded-full blur-3xl mix-blend-multiply animate-pulse-slow"></div>
+                    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl mix-blend-multiply animate-pulse-slow" style="animation-delay: 2s;"></div>
+                    
+                    <div class="relative z-10 p-6 md:p-10">
+                        <div class="mb-8 text-center md:text-left">
+                             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-light/10 border border-brand/20 mb-3 shadow-sm">
+                                <span class="relative flex h-2 w-2">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand"></span>
+                                </span>
+                                <span class="text-[10px] md:text-xs font-bold text-brand uppercase tracking-wider">Sobat BK - Mappaguru Online</span>
                             </div>
-                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 md:p-4 border border-white/20 text-center">
-                                <i class="fa-solid fa-book-open-reader text-2xl md:text-3xl text-white/90 mb-2"></i>
-                                <h3 class="text-2xl md:text-3xl font-bold" id="stat-media">0</h3>
-                                <p class="text-[10px] md:text-xs font-semibold text-white/70 uppercase tracking-wider">Media RPLBK</p>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-3 leading-tight"><span id="ucapan-waktu">Selamat Datang</span>, <span id="banner-name" class="text-transparent bg-clip-text bg-gradient-to-r from-brand-dark via-brand to-pink-600 drop-shadow-sm">Sahabat</span>! 👋</h2>
+                            <p class="text-slate-500 text-sm md:text-base max-w-2xl leading-relaxed font-medium mx-auto md:mx-0">Selamat datang di Sistem Online BK & Administrasi Terpadu (SOBAT BK). Pusat kendali digital Anda untuk mengelola layanan bimbingan, dokumentasi RPLBK, dan video pembelajaran secara efisien dan komprehensif.</p>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-4 md:gap-6">
+                            <div class="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-sm border border-slate-100 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_-5px_rgba(139,92,246,0.3)] transition-all duration-300 group text-center">
+                                <div class="w-12 h-12 md:w-14 md:h-14 bg-purple-50 rounded-xl md:rounded-2xl mx-auto flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
+                                    <img src="https://cdn-icons-png.flaticon.com/128/2920/2920274.png" class="w-7 h-7 md:w-8 md:h-8 object-contain drop-shadow-sm" alt="App">
+                                </div>
+                                <h3 class="text-2xl md:text-4xl font-black text-slate-800 mb-1" id="stat-aplikasi">0</h3>
+                                <p class="text-[9px] md:text-[11px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-brand transition-colors">Aplikasi</p>
                             </div>
-                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 md:p-4 border border-white/20 text-center">
-                                <i class="fa-brands fa-youtube text-2xl md:text-3xl text-white/90 mb-2"></i>
-                                <h3 class="text-2xl md:text-3xl font-bold" id="stat-video">0</h3>
-                                <p class="text-[10px] md:text-xs font-semibold text-white/70 uppercase tracking-wider">Video Ajar</p>
+
+                            <div class="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-sm border border-slate-100 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_-5px_rgba(236,72,153,0.3)] transition-all duration-300 group text-center">
+                                <div class="w-12 h-12 md:w-14 md:h-14 bg-pink-50 rounded-xl md:rounded-2xl mx-auto flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
+                                    <img src="https://cdn-icons-png.flaticon.com/128/3362/3362004.png" class="w-7 h-7 md:w-8 md:h-8 object-contain drop-shadow-sm" alt="Media">
+                                </div>
+                                <h3 class="text-2xl md:text-4xl font-black text-slate-800 mb-1" id="stat-media">0</h3>
+                                <p class="text-[9px] md:text-[11px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-pink-500 transition-colors">Media BK</p>
+                            </div>
+
+                            <div class="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-sm border border-slate-100 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_-5px_rgba(239,68,68,0.3)] transition-all duration-300 group text-center">
+                                <div class="w-12 h-12 md:w-14 md:h-14 bg-red-50 rounded-xl md:rounded-2xl mx-auto flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
+                                    <img src="https://cdn-icons-png.flaticon.com/128/1384/1384060.png" class="w-7 h-7 md:w-8 md:h-8 object-contain drop-shadow-sm" alt="Video">
+                                </div>
+                                <h3 class="text-2xl md:text-4xl font-black text-slate-800 mb-1" id="stat-video">0</h3>
+                                <p class="text-[9px] md:text-[11px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-red-500 transition-colors">Video Ajar</p>
                             </div>
                         </div>
                     </div>
                 </div>
 				
-				<div class="mb-6 w-full max-w-3xl mx-auto px-1 fade-in">
+				<div class="mt-8 mb-8 w-full max-w-3xl mx-auto px-1 fade-in">
 					<div class="relative group">
 						<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand transition-colors">
 							<i class="fa-solid fa-magnifying-glass"></i>
@@ -179,17 +222,24 @@
 				</div>
 
                 <!-- NAVIGASI TAB PROFESIONAL (DITENGAH) -->
-                <div class="mb-6 overflow-x-auto scrollbar-hide flex justify-center w-full">
-                    <div class="flex gap-2 p-1.5 bg-slate-200/60 rounded-2xl w-max backdrop-blur-sm">
-                        <button onclick="switchTab('aplikasi')" id="tab-aplikasi" class="px-5 py-2.5 rounded-xl text-sm transition-all tab-active flex items-center gap-2">
-                            <i class="fa-solid fa-layer-group"></i> Layanan Aplikasi
+                <div class="mb-8 overflow-x-auto scrollbar-hide flex justify-center w-full fade-in z-20 relative px-2">
+                    <div class="flex gap-2 p-2 bg-white/70 backdrop-blur-xl rounded-full border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.06)] w-max">
+                        
+                        <button onclick="switchTab('aplikasi')" id="tab-aplikasi" class="px-6 py-3 rounded-full text-sm transition-all duration-300 tab-active flex items-center gap-2.5">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2920/2920274.png" alt="Aplikasi" class="w-5 h-5 object-contain">
+                            Layanan Aplikasi
                         </button>
-                        <button onclick="switchTab('media')" id="tab-media" class="px-5 py-2.5 rounded-xl text-sm transition-all tab-inactive flex items-center gap-2">
-                            <i class="fa-solid fa-book-open-reader"></i> Media dan RPLBK
+                        
+                        <button onclick="switchTab('media')" id="tab-media" class="px-6 py-3 rounded-full text-sm transition-all duration-300 tab-inactive flex items-center gap-2.5">
+                            <img src="https://cdn-icons-png.flaticon.com/128/3362/3362004.png" alt="Media" class="w-5 h-5 object-contain">
+                            Media dan RPLBK
                         </button>
-                        <button onclick="switchTab('video')" id="tab-video" class="px-5 py-2.5 rounded-xl text-sm transition-all tab-inactive flex items-center gap-2">
-                            <i class="fa-brands fa-youtube"></i> Video Pembelajaran
+                        
+                        <button onclick="switchTab('video')" id="tab-video" class="px-6 py-3 rounded-full text-sm transition-all duration-300 tab-inactive flex items-center gap-2.5">
+                            <img src="https://cdn-icons-png.flaticon.com/128/1384/1384060.png" alt="Video" class="w-5 h-5 object-contain">
+                            Video Pembelajaran
                         </button>
+                        
                     </div>
                 </div>
 
@@ -239,142 +289,199 @@
         </main>
 
         <!-- FOOTER KEREN -->
-        <footer class="bg-gradient-to-r from-slate-800 to-slate-900 text-slate-300 py-3 md:py-4 px-6 text-center text-[10px] md:text-xs z-20 border-t border-slate-700">
-            <p><strong>SOBAT BK</strong> &copy; 2026 | Sistem Online BK & Administrasi Terpadu</p>
-            <p class="mt-1">Dibuat dengan <i class="fa-solid fa-heart text-pink-500 animate-pulse mx-1"></i> oleh <span class="text-brand-light font-bold">Muhammad Hasratul</span></p>
+        <footer class="relative z-20 mt-auto fade-in">
+            <div class="h-1 w-full bg-gradient-to-r from-brand-light via-pink-500 to-brand-dark opacity-90 shadow-[0_0_10px_rgba(236,72,153,0.5)]"></div>
+            
+            <div class="bg-white/85 backdrop-blur-xl text-slate-600 py-4 md:py-5 px-6 text-center text-[10px] md:text-xs shadow-[0_-10px_30px_rgba(0,0,0,0.03)] border-t border-white">
+                <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+                    
+                    <div class="font-medium tracking-wide">
+                        <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand to-pink-600 text-xs md:text-sm drop-shadow-sm">SOBAT BK</span> 
+                        <span class="opacity-70 ml-1">© 2026 | Sistem Online BK & Administrasi Terpadu</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-center font-medium bg-slate-50/80 px-4 py-2 rounded-full border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+                        <span class="text-slate-500">Dibuat dengan</span> 
+                        <img src="https://cdn-icons-png.flaticon.com/128/833/833472.png" alt="Love" class="w-3.5 h-3.5 md:w-4 md:h-4 mx-2 animate-pulse drop-shadow-sm"> 
+                        <span class="text-slate-500">oleh</span>
+                        <span class="text-brand font-extrabold ml-1.5 drop-shadow-sm">Muhammad Hasratul</span>
+                    </div>
+                    
+                </div>
+            </div>
         </footer>
     </div>
 
     <!-- ========================================== -->
     <!-- 3. TAMPILAN IFRAME (SATU PINTU) -->
     <!-- ========================================== -->
-    <div id="iframe-view" class="hidden h-screen flex flex-col bg-slate-100 absolute inset-0 z-[60]">
-        <header class="bg-gradient-to-r from-brand-dark via-brand to-pink-500 shadow-lg px-4 py-3 flex items-center gap-4 text-white z-20">
-            <button onclick="tutupIframe()" class="bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-xl transition-all font-semibold flex items-center gap-2 shadow-sm">
-                <i class="fa-solid fa-arrow-left"></i> <span class="hidden sm:inline">Kembali ke Dashboard</span>
+    <div id="iframe-view" class="hidden h-screen w-screen flex flex-col bg-slate-50 absolute inset-0 z-[100] overflow-hidden">
+        
+        <header class="bg-white/90 backdrop-blur-2xl border-b border-white shadow-[0_10px_30px_rgba(0,0,0,0.03)] px-4 py-3 flex items-center justify-between gap-4 z-20">
+            <button onclick="tutupIframe()" class="bg-slate-100 hover:bg-red-50 hover:text-red-500 text-slate-600 px-5 py-2.5 rounded-full transition-all duration-300 font-bold flex items-center gap-2.5 shadow-inner hover:shadow-md border border-slate-200 group">
+                <img src="https://cdn-icons-png.flaticon.com/128/271/271220.png" class="w-4 h-4 opacity-60 group-hover:opacity-100 transition-all" alt="Back"> 
+                <span class="hidden sm:inline">Tutup & Kembali</span>
             </button>
-            <h2 id="iframe-title" class="text-lg md:text-xl font-bold flex-1 text-center line-clamp-1 pr-12 md:pr-0">Memuat...</h2>
-        </header>
-        <div class="flex-1 w-full relative bg-white">
-            <div id="iframe-loader" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 z-10">
-                <div class="w-16 h-16 border-4 border-slate-200 border-t-brand border-l-pink-500 rounded-full animate-spin mb-4"></div>
-                <p class="text-slate-500 font-medium animate-pulse">Memuat Aplikasi...</p>
+            
+            <div class="flex-1 overflow-hidden flex flex-col items-center justify-center text-center">
+                <h2 id="iframe-title" class="text-lg md:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-dark to-pink-600 line-clamp-1 drop-shadow-sm">Memuat...</h2>
             </div>
-            <iframe id="main-iframe" class="w-full h-full border-none opacity-0 transition-opacity duration-500" onload="document.getElementById('iframe-loader').classList.add('hidden'); this.style.opacity='1';"></iframe>
+
+            <div class="w-[140px] hidden sm:block"></div>
+        </header>
+
+        <div class="bg-gradient-to-r from-slate-800 via-brand-dark to-slate-900 text-white text-[10px] md:text-xs font-bold shadow-inner flex items-center relative z-10 border-b border-brand-light/30 h-8 md:h-10 overflow-hidden">
+            
+            <div class="absolute left-0 top-0 bottom-0 px-3 md:px-4 bg-white/10 backdrop-blur-md flex items-center gap-2 border-r border-white/20 shadow-[5px_0_15px_rgba(0,0,0,0.3)] z-20 rounded-r-full">
+                <img src="https://cdn-icons-png.flaticon.com/128/10437/10437088.png" class="w-3.5 h-3.5 drop-shadow-sm" alt="Info"> 
+                <span class="text-brand-light drop-shadow-md tracking-wider">INFO</span>
+            </div>
+            
+            <div class="running-text-container">
+                <div class="running-text tracking-widest uppercase text-slate-200 drop-shadow-sm font-medium">
+                    ✨ SELAMAT BEKERJA SAHABAT! PASTIKAN KONEKSI INTERNET ANDA STABIL. DATA YANG DISIMPAN PADA APLIKASI AKAN OTOMATIS TERSINKRONISASI DENGAN SERVER GOOGLE. TETAP SEMANGAT DAN JAGA KESEHATAN... ✨
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="flex-1 w-full relative bg-slate-100/50">
+            <div id="iframe-loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-lg z-10">
+                <div class="relative w-24 h-24 flex items-center justify-center mb-6">
+                    <div class="absolute inset-0 border-4 border-slate-100 rounded-full shadow-inner"></div>
+                    <div class="absolute inset-0 border-4 border-brand rounded-full border-t-transparent animate-spin shadow-[0_0_15px_rgba(139,92,246,0.5)]"></div>
+                    <img src="https://cdn-icons-png.flaticon.com/128/2920/2920274.png" class="w-10 h-10 animate-pulse drop-shadow-md" alt="Loading">
+                </div>
+                <p class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-pink-500 font-black tracking-[0.2em] uppercase animate-pulse text-sm drop-shadow-sm">Menyiapkan Ruang Kerja...</p>
+            </div>
+            
+            <iframe id="main-iframe" class="w-full h-full border-none opacity-0 transition-opacity duration-700 bg-white" onload="document.getElementById('iframe-loader').classList.add('hidden'); this.style.opacity='1';"></iframe>
         </div>
     </div>
 
     <!-- ========================================== -->
     <!-- MODAL: POPUP DETAIL APLIKASI / MEDIA -->
     <!-- ========================================== -->
-    <div id="modal-detail" class="fixed inset-0 z-[80] hidden bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+    <div id="modal-detail" class="fixed inset-0 z-[80] hidden bg-slate-900/60 backdrop-blur-md overflow-y-auto" onclick="if(event.target===this) closeModal('modal-detail')">
         <div class="min-h-screen flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm md:max-w-md relative overflow-hidden fade-in flex flex-col text-center">
-                <!-- Header Gambar/Ikon -->
-                <div class="bg-slate-50 p-6 flex flex-col justify-center items-center relative border-b border-slate-100">
-                    <button onclick="closeModal('modal-detail')" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 hover:rotate-90 transition-all text-2xl w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
-                    <div id="detail-img-container" class="mt-4 mb-2">
-                        <!-- Ikon/Gambar disisipkan oleh JavaScript -->
-                    </div>
-                </div>
-                <!-- Konten Deskripsi -->
-                <div class="p-6 md:p-8 flex flex-col">
-                    <h2 id="detail-title" class="text-xl md:text-2xl font-bold text-slate-800 mb-3 leading-tight">Nama Layanan</h2>
-                    <p id="detail-desc" class="text-sm text-slate-500 leading-relaxed mb-8">Deskripsi layanan akan muncul di sini secara rinci...</p>
+            <div class="bg-white/95 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border border-white/60 w-full max-w-sm md:max-w-md relative overflow-hidden fade-in flex flex-col text-center">
+                
+                <div class="relative bg-gradient-to-br from-slate-100 via-white to-brand-light/10 p-8 flex flex-col justify-center items-center overflow-hidden border-b border-slate-100/50">
+                    <div class="absolute inset-0 bg-brand/5 rounded-full blur-3xl scale-150"></div>
                     
-                    <button id="btn-open-detail" class="w-full py-3.5 rounded-xl font-bold bg-gradient-to-r from-brand to-brand-dark text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Sekarang
+                    <button onclick="closeModal('modal-detail')" class="absolute top-5 right-5 w-8 h-8 flex items-center justify-center bg-white/80 hover:bg-red-50 rounded-full shadow-sm hover:shadow-md hover:scale-110 hover:rotate-90 transition-all duration-300 z-10 border border-slate-100 group">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1828/1828778.png" alt="Close" class="w-3 h-3 opacity-60 group-hover:opacity-100 transition-all">
                     </button>
+                    
+                    <div id="detail-img-container" class="relative z-10 mt-4 mb-2 drop-shadow-[0_10px_15px_rgba(139,92,246,0.2)]">
+                        </div>
+                </div>
+                
+                <div class="p-8 md:p-10 flex flex-col bg-white">
+                    <h2 id="detail-title" class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-600 mb-3 leading-tight tracking-tight">Nama Layanan</h2>
+                    <p id="detail-desc" class="text-sm text-slate-500 leading-relaxed mb-8 font-medium">Deskripsi layanan akan muncul di sini secara rinci...</p>
+                    
+                    <button id="btn-open-detail" class="w-full py-4 rounded-2xl font-bold bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:shadow-[0_15px_25px_-5px_rgba(139,92,246,0.5)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2.5">
+                        </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL: PROFIL GURU (EDITABLE KECUALI USERNAME) -->
-    <!-- ========================================== -->
-    <div id="modal-profil" class="fixed inset-0 z-[70] hidden bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+    <div id="modal-profil" class="fixed inset-0 z-[70] hidden bg-slate-900/60 backdrop-blur-md overflow-y-auto" onclick="if(event.target===this) closeModal('modal-profil')">
         <div class="min-h-screen flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative overflow-hidden fade-in">
-                <div class="bg-gradient-to-r from-brand to-brand-dark p-6 text-white flex justify-between items-center">
-                    <h2 class="text-xl md:text-2xl font-bold"><i class="fa-solid fa-user-pen mr-2"></i> Profil Lengkap Guru</h2>
-                    <button onclick="closeModal('modal-profil')" class="text-white/80 hover:text-white hover:rotate-90 transition-all text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            <div class="bg-white/95 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border border-white/60 w-full max-w-4xl relative overflow-hidden fade-in">
+                
+                <div class="bg-gradient-to-r from-brand-dark via-brand to-pink-500 p-6 md:p-8 text-white flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+                    <div class="relative z-10 flex items-center gap-4">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" alt="Profile" class="w-8 h-8 md:w-10 md:h-10 brightness-0 invert drop-shadow-md">
+                        <h2 class="text-xl md:text-3xl font-black drop-shadow-sm tracking-tight">Profil Lengkap Guru</h2>
+                    </div>
+                    <button type="button" onclick="closeModal('modal-profil')" class="relative z-10 w-10 h-10 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full transition-all hover:rotate-90 hover:scale-110 shadow-sm border border-white/30">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1828/1828778.png" alt="Close" class="w-4 h-4 brightness-0 invert">
+                    </button>
                 </div>
-                <div class="p-6 md:p-8">
+
+                <div class="p-6 md:p-10">
                     <form id="form-profil" onsubmit="simpanProfil(event)">
                         <div class="flex flex-col md:flex-row gap-8">
-                            <!-- Kolom Kiri: Foto Profil -->
                             <div class="w-full md:w-1/3 flex flex-col items-center">
-                                <div class="relative group">
-                                    <img id="preview-foto-profil" src="https://ui-avatars.com/api/?name=User" class="w-40 h-40 rounded-full border-4 border-brand-light shadow-xl object-cover mb-4">
-                                    <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity mb-4 cursor-pointer" onclick="document.getElementById('input-foto-profil').click()">
-                                        <i class="fa-solid fa-camera text-3xl text-white"></i>
+                                <div class="relative group mb-6">
+                                    <div class="absolute inset-0 bg-gradient-to-tr from-brand to-pink-500 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                    <img id="preview-foto-profil" src="https://ui-avatars.com/api/?name=User" class="relative w-40 h-40 rounded-full border-4 border-white shadow-xl object-cover">
+                                    <div class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer border-4 border-transparent" onclick="document.getElementById('input-foto-profil').click()">
+                                        <img src="https://cdn-icons-png.flaticon.com/128/3004/3004613.png" alt="Camera" class="w-10 h-10 brightness-0 invert drop-shadow-md hover:scale-110 transition-transform">
                                     </div>
                                 </div>
-                                <label class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-colors w-full text-center border border-slate-200">
-                                    <i class="fa-solid fa-image mr-2"></i> Pilih Foto Baru
+                                <label class="cursor-pointer bg-slate-50 hover:bg-slate-100 text-slate-700 px-6 py-3 rounded-2xl text-sm font-bold transition-all w-full text-center border border-slate-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2">
+                                    <img src="https://cdn-icons-png.flaticon.com/128/3342/3342137.png" alt="Gallery" class="w-5 h-5"> 
+                                    Pilih Foto Baru
                                     <input type="file" id="input-foto-profil" class="hidden" accept="image/*" onchange="previewImage(this, 'preview-foto-profil')">
                                 </label>
-                                <p class="text-[10px] text-slate-400 mt-2 text-center">Format: JPG/PNG. Ukuran maks: 2MB.</p>
+                                <p class="text-[10px] text-slate-400 mt-3 text-center font-medium tracking-wide uppercase">Format: JPG/PNG. Maks: 2MB.</p>
                             </div>
-                            <!-- Kolom Kanan: Data Form -->
-                            <div class="w-full md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            <div class="w-full md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Username (Kunci)</label>
-                                    <input type="text" id="prof-username" readonly class="w-full p-2.5 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 cursor-not-allowed font-mono text-sm">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Username (Kunci)</label>
+                                    <input type="text" id="prof-username" readonly class="w-full p-3.5 bg-slate-100/80 border border-slate-200 rounded-2xl text-slate-500 cursor-not-allowed font-mono text-sm shadow-inner">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Password</label>
-                                    <input type="password" id="prof-password" required class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Password</label>
+                                    <input type="password" id="prof-password" required class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Nama Lengkap & Gelar</label>
-                                    <input type="text" id="prof-nama" required class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Nama Lengkap & Gelar</label>
+                                    <input type="text" id="prof-nama" required class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">NIP / NUPTK</label>
-                                    <input type="text" id="prof-nip" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">NIP / NUPTK</label>
+                                    <input type="text" id="prof-nip" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Pendidikan Terakhir</label>
-                                    <input type="text" id="prof-pendidikan" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Pendidikan Terakhir</label>
+                                    <input type="text" id="prof-pendidikan" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Tempat Lahir</label>
-                                    <input type="text" id="prof-tempat-lahir" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Tempat Lahir</label>
+                                    <input type="text" id="prof-tempat-lahir" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Tanggal Lahir</label>
-                                    <input type="date" id="prof-tgl-lahir" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Tanggal Lahir</label>
+                                    <input type="date" id="prof-tgl-lahir" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Jenis Kelamin</label>
-                                    <select id="prof-jk" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Jenis Kelamin</label>
+                                    <select id="prof-jk" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Agama</label>
-                                    <input type="text" id="prof-agama" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Agama</label>
+                                    <input type="text" id="prof-agama" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">No. WhatsApp</label>
-                                    <input type="text" id="prof-wa" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">No. WhatsApp</label>
+                                    <input type="text" id="prof-wa" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Email</label>
-                                    <input type="email" id="prof-email" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow">
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Email</label>
+                                    <input type="email" id="prof-email" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm">
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Alamat Lengkap</label>
-                                    <textarea id="prof-alamat" rows="2" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm transition-shadow"></textarea>
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Alamat Lengkap</label>
+                                    <textarea id="prof-alamat" rows="2" class="w-full p-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all shadow-sm"></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-8 border-t border-slate-100 pt-6 flex justify-end gap-3">
-                            <button type="button" onclick="closeModal('modal-profil')" class="px-6 py-2.5 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors">Batal</button>
-                            <button type="submit" class="px-8 py-2.5 rounded-xl font-bold bg-gradient-to-r from-brand to-brand-dark text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center transition-all"><i class="fa-solid fa-floppy-disk mr-2"></i> Simpan Perubahan</button>
+                        <div class="mt-10 border-t border-slate-100 pt-6 flex justify-end gap-3">
+                            <button type="button" onclick="closeModal('modal-profil')" class="px-6 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-100 transition-colors">Batalkan</button>
+                            <button type="submit" class="px-8 py-3.5 rounded-2xl font-bold bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:-translate-y-1 transition-all flex items-center gap-2">
+                                <img src="https://cdn-icons-png.flaticon.com/128/2874/2874051.png" alt="Save" class="w-4 h-4 brightness-0 invert">
+                                Simpan Profil
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -382,69 +489,91 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL: UPLOAD MEDIA AJAR -->
-    <!-- ========================================== -->
-    <div id="modal-upload-media" class="fixed inset-0 z-[70] hidden bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+    <div id="modal-upload-media" class="fixed inset-0 z-[70] hidden bg-slate-900/60 backdrop-blur-md overflow-y-auto" onclick="if(event.target===this) closeModal('modal-upload-media')">
         <div class="min-h-screen flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-xl fade-in overflow-hidden">
-                <div class="bg-gradient-to-r from-brand to-brand-dark p-5 text-white flex justify-between items-center">
-                    <h2 class="text-xl font-bold"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload Media/RPLBK</h2>
-                    <button onclick="closeModal('modal-upload-media')" class="text-white/80 hover:text-white hover:rotate-90 transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <div class="bg-white/95 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border border-white/60 w-full max-w-xl relative overflow-hidden fade-in">
+                
+                <div class="bg-gradient-to-r from-brand-dark via-brand to-pink-500 p-6 md:p-8 text-white flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                    <div class="relative z-10 flex items-center gap-3">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3134/3134070.png" alt="Upload" class="w-8 h-8 md:w-10 md:h-10 brightness-0 invert drop-shadow-sm">
+                        <h2 class="text-xl md:text-2xl font-black drop-shadow-sm tracking-tight">Upload Media RPLBK</h2>
+                    </div>
+                    <button type="button" onclick="closeModal('modal-upload-media')" class="relative z-10 w-10 h-10 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full transition-all hover:rotate-90 hover:scale-110 shadow-sm border border-white/30">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1828/1828778.png" alt="Close" class="w-4 h-4 brightness-0 invert">
+                    </button>
                 </div>
-                <form id="form-media" onsubmit="submitMedia(event)" class="p-6 space-y-5">
+
+                <form id="form-media" onsubmit="submitMedia(event)" class="p-8 space-y-6">
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Judul Media/RPLBK</label>
-                        <input type="text" id="media-judul" required class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm" placeholder="Contoh: Bahaya Bullying di Sekolah">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Judul Media/RPLBK</label>
+                        <input type="text" id="media-judul" required class="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm shadow-sm transition-all" placeholder="Contoh: Bahaya Bullying di Sekolah">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Deskripsi Singkat</label>
-                        <textarea id="media-deskripsi" required rows="2" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand outline-none text-sm" placeholder="Isi ringkasan materi..."></textarea>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Deskripsi Singkat</label>
+                        <textarea id="media-deskripsi" required rows="2" class="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm shadow-sm transition-all" placeholder="Isi ringkasan materi..."></textarea>
                     </div>
+                    
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center hover:bg-brand-light/10 hover:border-brand-light transition-colors group relative cursor-pointer" onclick="document.getElementById('media-file-kover').click()">
-                            <i class="fa-regular fa-image text-3xl text-brand mb-2 group-hover:scale-110 transition-transform"></i>
-                            <p class="text-[11px] font-bold text-slate-700 mb-1">Upload Kover / Ikon</p>
-                            <p class="text-[9px] text-slate-400" id="label-kover">Pilih File (JPG/PNG)</p>
+                        <div class="border-2 border-dashed border-slate-200 rounded-3xl p-5 text-center hover:bg-brand/5 hover:border-brand transition-all duration-300 group relative cursor-pointer" onclick="document.getElementById('media-file-kover').click()">
+                            <img src="https://cdn-icons-png.flaticon.com/128/3342/3342137.png" alt="Image" class="w-10 h-10 mx-auto mb-3 opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all">
+                            <p class="text-[11px] font-black text-slate-700 mb-1">Upload Kover</p>
+                            <p class="text-[9px] text-slate-400 font-medium" id="label-kover">Pilih File (JPG/PNG)</p>
                             <input type="file" id="media-file-kover" required accept="image/*" class="hidden" onchange="document.getElementById('label-kover').innerText = this.files[0].name">
                         </div>
-                        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center hover:bg-red-50 hover:border-red-400 transition-colors group relative cursor-pointer" onclick="document.getElementById('media-file-dokumen').click()">
-                            <i class="fa-solid fa-file-pdf text-3xl text-red-500 mb-2 group-hover:scale-110 transition-transform"></i>
-                            <p class="text-[11px] font-bold text-slate-700 mb-1">Upload File Materi</p>
-                            <p class="text-[9px] text-slate-400" id="label-dokumen">Pilih File (PDF/PPT)</p>
+                        <div class="border-2 border-dashed border-slate-200 rounded-3xl p-5 text-center hover:bg-red-50 hover:border-red-400 transition-all duration-300 group relative cursor-pointer" onclick="document.getElementById('media-file-dokumen').click()">
+                            <img src="https://cdn-icons-png.flaticon.com/128/3143/3143460.png" alt="PDF" class="w-10 h-10 mx-auto mb-3 opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all">
+                            <p class="text-[11px] font-black text-slate-700 mb-1">Upload Materi</p>
+                            <p class="text-[9px] text-slate-400 font-medium" id="label-dokumen">Pilih File (PDF/PPT)</p>
                             <input type="file" id="media-file-dokumen" required accept=".pdf,.doc,.docx,.ppt,.pptx" class="hidden" onchange="document.getElementById('label-dokumen').innerText = this.files[0].name">
                         </div>
                     </div>
-                    <button type="submit" class="w-full py-3.5 mt-2 rounded-xl font-bold bg-gradient-to-r from-brand to-brand-dark text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Mulai Upload ke Drive</button>
+                    <button type="submit" class="w-full py-4 mt-2 rounded-2xl font-bold bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3134/3134070.png" alt="Upload" class="w-5 h-5 brightness-0 invert">
+                        Mulai Upload ke Drive
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL: TAMBAH VIDEO YOUTUBE -->
-    <!-- ========================================== -->
-    <div id="modal-tambah-video" class="fixed inset-0 z-[70] hidden bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+    <div id="modal-tambah-video" class="fixed inset-0 z-[70] hidden bg-slate-900/60 backdrop-blur-md overflow-y-auto" onclick="if(event.target===this) closeModal('modal-tambah-video')">
         <div class="min-h-screen flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md fade-in overflow-hidden">
-                <div class="bg-gradient-to-r from-red-500 to-red-700 p-5 text-white flex justify-between items-center">
-                    <h2 class="text-xl font-bold"><i class="fa-brands fa-youtube mr-2"></i> Tambah Video Ajar</h2>
-                    <button onclick="closeModal('modal-tambah-video')" class="text-white/80 hover:text-white hover:rotate-90 transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <div class="bg-white/95 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border border-white/60 w-full max-w-md relative overflow-hidden fade-in">
+                
+                <div class="bg-gradient-to-br from-red-500 to-red-700 p-6 md:p-8 text-white flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                    <div class="relative z-10 flex items-center gap-3">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1384/1384060.png" alt="YouTube" class="w-8 h-8 md:w-10 md:h-10 brightness-0 invert drop-shadow-sm">
+                        <h2 class="text-xl md:text-2xl font-black drop-shadow-sm tracking-tight">Tambah Video Ajar</h2>
+                    </div>
+                    <button type="button" onclick="closeModal('modal-tambah-video')" class="relative z-10 w-10 h-10 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full transition-all hover:rotate-90 hover:scale-110 shadow-sm border border-white/30">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1828/1828778.png" alt="Close" class="w-4 h-4 brightness-0 invert">
+                    </button>
                 </div>
-                <form id="form-video" onsubmit="submitVideo(event)" class="p-6 space-y-5">
+
+                <form id="form-video" onsubmit="submitVideo(event)" class="p-8 space-y-6">
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Judul Video</label>
-                        <input type="text" id="vid-judul" required class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-sm">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Judul Video</label>
+                        <input type="text" id="vid-judul" required class="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-sm shadow-sm transition-all">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Deskripsi Singkat</label>
-                        <textarea id="vid-deskripsi" required rows="2" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-sm"></textarea>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Deskripsi Singkat</label>
+                        <textarea id="vid-deskripsi" required rows="2" class="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-sm shadow-sm transition-all"></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Link YouTube</label>
-                        <input type="url" id="vid-url" required placeholder="https://youtube.com/watch?v=..." class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-sm">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Link YouTube</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <img src="https://cdn-icons-png.flaticon.com/128/2806/2806354.png" alt="Link" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 transition-opacity">
+                            </div>
+                            <input type="url" id="vid-url" required placeholder="https://youtube.com/watch?v=..." class="w-full pl-11 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-sm shadow-sm transition-all">
+                        </div>
                     </div>
-                    <button type="submit" class="w-full py-3.5 mt-2 rounded-xl font-bold bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"><i class="fa-solid fa-save mr-2"></i> Simpan Video</button>
+                    <button type="submit" class="w-full py-4 mt-2 rounded-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-[0_10px_20px_-5px_rgba(239,68,68,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                        <img src="https://cdn-icons-png.flaticon.com/128/2874/2874051.png" alt="Save" class="w-5 h-5 brightness-0 invert">
+                        Simpan Link Video
+                    </button>
                 </form>
             </div>
         </div>
@@ -453,20 +582,30 @@
     <!-- ========================================== -->
     <!-- MODAL TENTANG APLIKASI -->
     <!-- ========================================== -->
-    <div id="about-modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="if(event.target===this) closeModal('about-modal')">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden fade-in text-center">
-            <div class="bg-gradient-to-r from-brand-dark via-brand to-pink-500 p-8 text-white relative">
-                <i class="fa-solid fa-rocket text-5xl mb-3 drop-shadow-md"></i>
-                <h2 class="text-3xl font-bold">SOBAT BK</h2>
-                <p class="text-sm text-white/80 mt-1 font-medium tracking-wide">Sistem Online BK & Administrasi Terpadu</p>
+    <div id="about-modal" class="fixed inset-0 z-[90] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md" onclick="if(event.target===this) closeModal('about-modal')">
+        <div class="bg-white/90 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border border-white/60 w-full max-w-lg relative z-10 overflow-hidden fade-in text-center">
+            
+            <div class="relative bg-gradient-to-br from-brand-dark via-brand to-pink-500 p-10 text-white overflow-hidden">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                
+                <img src="https://lh3.googleusercontent.com/u/0/d/1Wr_uC9C32tjzN19PZXLsk3tyBNrzO1wy" alt="Rocket" class="w-30 h-20 mx-auto mb-4 drop-shadow-[0_10px_10px_rgba(0,0,0,0.3)] hover:scale-110 transition-transform duration-500">
+                
+                <h2 class="text-3xl font-black drop-shadow-sm">SOBAT BK</h2>
+                <p class="text-[10px] text-white/90 mt-1 font-bold tracking-[0.2em] uppercase">UPT SPF SMP NEGERI 16 MAKASSAR</p>
             </div>
-            <div class="p-8 space-y-5">
-                <p class="text-slate-600 text-sm leading-relaxed">Platform Aplikasi dirancang khusus untuk mempermudah tugas Guru BK dalam satu pintu. Semua aplikasi, media, dan riwayat dalam genggaman.</p>
-                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 shadow-inner">
-                    <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Pengembang Utama</p>
-                    <p class="text-xl font-bold text-brand mt-1"><i class="fa-solid fa-code mr-2 text-pink-500"></i>Muhammad Hasratul</p>
+            
+            <div class="p-8 space-y-6">
+                <p class="text-slate-500 text-sm leading-relaxed font-medium">Platform Ruang Kerja Digital yang dirancang khusus dengan antarmuka elegan untuk mempermudah tugas Guru BK dalam satu pintu. Cerdas, Cepat, dan Responsif.</p>
+                
+                <div class="bg-slate-50/80 p-5 rounded-3xl border border-slate-100 shadow-inner flex flex-col items-center justify-center group hover:bg-white transition-colors">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-extrabold mb-2">Dirancang Oleh</p>
+                    <div class="flex items-center justify-center gap-2">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity">
+                        <p class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand to-pink-500 drop-shadow-sm">Muhammad Hasratul</p>
+                    </div>
                 </div>
-                <button onclick="closeModal('about-modal')" class="px-8 py-3 bg-slate-800 text-white rounded-full font-bold shadow-md hover:bg-slate-700 hover:shadow-lg transition-all w-full">Tutup</button>
+                
+                <button onclick="closeModal('about-modal')" class="px-10 py-3.5 bg-slate-800 text-white rounded-2xl font-bold text-sm shadow-[0_10px_20px_-5px_rgba(30,41,59,0.4)] hover:bg-slate-900 hover:shadow-[0_15px_25px_-5px_rgba(30,41,59,0.5)] hover:-translate-y-1 transition-all w-full">Tutup Jendela</button>
             </div>
         </div>
     </div>
@@ -499,6 +638,18 @@
         function updateStats(tipe, jumlah) {
             const el = document.getElementById('stat-' + tipe);
             if(el) el.innerText = jumlah;
+        }
+		
+		// Fungsi Super Cerdas: Sapaan Otomatis Sesuai Waktu
+        function setUcapanWaktu() {
+            const jam = new Date().getHours();
+            let ucapan = 'Selamat Pagi';
+            if (jam >= 10 && jam < 15) ucapan = 'Selamat Siang';
+            else if (jam >= 15 && jam < 18) ucapan = 'Selamat Sore';
+            else if (jam >= 18 || jam < 4) ucapan = 'Selamat Malam';
+            
+            const elUcapan = document.getElementById('ucapan-waktu');
+            if(elUcapan) elUcapan.innerText = ucapan;
         }
 
         // =====================================
@@ -543,6 +694,8 @@
             Swal.fire({ title: 'Login Berhasil!', icon: 'success', timer: 1500, showConfirmButton: false, customClass: { popup: 'rounded-3xl' } });
             
             currentUser = realData || { username: username, nama_lengkap: username };
+			
+			setUcapanWaktu();
             
             // Update UI dengan foto berformat LH3
             let finalAvatarUrl = extractLh3Url(currentUser.url_foto_profil);
@@ -617,7 +770,7 @@
             if(imgIcon) { imgIcon.className = "w-24 h-24 object-contain mx-auto drop-shadow-md"; }
 
             let btnOpen = document.getElementById('btn-open-detail');
-            btnOpen.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Buka Aplikasi';
+            btnOpen.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/3388/3388836.png" class="w-4 h-4 brightness-0 invert"> Buka Aplikasi';
             btnOpen.onclick = () => { closeModal('modal-detail'); bukaIframe(url, title); };
             
             showModal('modal-detail');
@@ -670,7 +823,7 @@
             imgContainer.innerHTML = `<img src="${cover}" class="w-40 h-32 object-cover rounded-2xl shadow-md border-4 border-white mx-auto">`;
 
             let btnOpen = document.getElementById('btn-open-detail');
-            btnOpen.innerHTML = '<i class="fa-solid fa-book-open-reader mr-2"></i> Buka Materi';
+            btnOpen.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/3362/3362004.png" class="w-4 h-4 brightness-0 invert"> Buka Materi';
             btnOpen.onclick = () => { closeModal('modal-detail'); bukaIframe(url, title); };
             
             showModal('modal-detail');
