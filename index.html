@@ -64,6 +64,9 @@
         #fab-container { touch-action: none; user-select: none; }
         .dragging { transition: none !important; }
 		
+		/* Pengunci Ikon Mata agar tidak membesar saat diklik */
+        #eye-icon { width: 16px !important; height: 16px !important; transition: none !important; object-fit: contain; }
+		
 		/* Animasi Running Text Mulus untuk Handphone */
         .running-text-container { display: flex; overflow: hidden; white-space: nowrap; width: 100%; align-items: center; }
         .running-text { display: inline-block; animation: scrollText 20s linear infinite; padding-left: 100%; }
@@ -116,9 +119,9 @@
                             <img src="https://cdn-icons-png.flaticon.com/128/3064/3064155.png" alt="Lock" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
                         </div>
                         <input type="password" id="login-password" required class="w-full pl-11 pr-12 py-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-inner transition-all" placeholder="••••••••">
-                        <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center opacity-40 hover:opacity-100 hover:scale-110 transition-all">
-                            <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/128/2767/2767146.png" alt="Eye" class="w-4 h-4">
-                        </button>
+                        <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center opacity-40 hover:opacity-100 transition-opacity">
+							<img id="eye-icon" src="https://cdn-icons-png.flaticon.com/128/2767/2767146.png" alt="Eye">
+						</button>
                     </div>
                 </div>
 
@@ -974,8 +977,18 @@
         function togglePassword(inputId, iconId) {
             const inp = document.getElementById(inputId);
             const ico = document.getElementById(iconId);
-            if(inp.type === "password") { inp.type = "text"; ico.className = "fa-solid fa-eye-slash"; } 
-            else { inp.type = "password"; ico.className = "fa-solid fa-eye"; }
+            
+            // Link ikon mata terbuka dan tertutup (URL murni)
+            const eyeOpen = "https://cdn-icons-png.flaticon.com/128/2767/2767146.png";
+            const eyeClosed = "https://cdn-icons-png.flaticon.com/128/709/709612.png";
+
+            if (inp.type === "password") {
+                inp.type = "text";
+                ico.src = eyeClosed; // Ganti ke ikon mata tertutup/coret
+            } else {
+                inp.type = "password";
+                ico.src = eyeOpen; // Kembali ke mata terbuka
+            }
         }
 
         function previewImage(input, imgId) {
@@ -1111,17 +1124,16 @@
         let fabContainer = document.getElementById("fab-container");
         let fabMain = document.getElementById("fab-main");
         let isDragging = false;
-        let dragThreshold = 5; // Batas toleransi geser dalam pixel
+        let dragActive = false;
         let startX, startY, initialX, initialY;
 
-        // FUNGSI UTAMA: Hanya jalan jika diklik sengaja
+        // FUNGSI BUKA MENU (Sangat Akurat)
         function toggleFab(e) {
-            // Jika sedang menggeser, hentikan fungsi buka menu
-            if (isDragging) return;
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             
-            // Hentikan penyebaran klik agar tidak memicu elemen lain
-            if(e) e.stopPropagation();
-
             const menu = document.getElementById('fab-menu');
             const icon = document.getElementById('fab-icon');
             
@@ -1136,60 +1148,72 @@
             }
         }
 
-        // LOGIKA DRAGGABLE YANG DIPERKETAT
-        fabMain.addEventListener("mousedown", dragStart);
-        fabMain.addEventListener("touchstart", dragStart, { passive: false });
-
-        function dragStart(e) {
-            isDragging = false; // Reset status setiap awal sentuhan
-            let event = e.type === "touchstart" ? e.touches[0] : e;
-            
-            startX = event.clientX;
-            startY = event.clientY;
+        // LOGIKA PINDAH TEMPAT (DRAG)
+        fabMain.addEventListener("touchstart", (e) => {
+            dragActive = true;
+            isDragging = false; // Reset di awal sentuhan
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
             initialX = fabContainer.offsetLeft;
             initialY = fabContainer.offsetTop;
-
-            document.addEventListener("mousemove", dragging);
-            document.addEventListener("touchmove", dragging, { passive: false });
-            document.addEventListener("mouseup", dragEnd);
-            document.addEventListener("touchend", dragEnd);
             fabContainer.classList.add("dragging");
-        }
+        }, { passive: false });
 
-        function dragging(e) {
-            let event = e.type === "touchmove" ? e.touches[0] : e;
-            let dx = event.clientX - startX;
-            let dy = event.clientY - startY;
+        document.addEventListener("touchmove", (e) => {
+            if (!dragActive) return;
+            
+            let dx = e.touches[0].clientX - startX;
+            let dy = e.touches[0].clientY - startY;
 
-            // Jika pergerakan lebih dari threshold, anggap ini sedang menggeser
-            if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) {
+            // Jika geser lebih dari 10px, tandai sebagai 'isDragging'
+            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
                 isDragging = true;
-            }
-
-            if (isDragging) {
+                e.preventDefault(); // Mencegah layar ikut tergulung saat geser tombol
+                
                 fabContainer.style.left = (initialX + dx) + "px";
                 fabContainer.style.top = (initialY + dy) + "px";
                 fabContainer.style.right = "auto";
                 fabContainer.style.bottom = "auto";
             }
-        }
+        }, { passive: false });
 
-        function dragEnd(e) {
-            document.removeEventListener("mousemove", dragging);
-            document.removeEventListener("touchmove", dragging);
-            document.removeEventListener("mouseup", dragEnd);
-            document.removeEventListener("touchend", dragEnd);
-            
+        document.addEventListener("touchend", (e) => {
+            if (!dragActive) return;
+            dragActive = false;
             fabContainer.classList.remove("dragging");
 
-            // Jika tidak dianggap menggeser, berarti ini adalah KLIK MURNI
+            // JIKA TIDAK DIGESER (HANYA DITAP), MAKA BUKA MENU
             if (!isDragging) {
                 toggleFab(e);
             }
-            
-            // Beri jeda sebentar sebelum reset total
-            setTimeout(() => { isDragging = false; }, 50);
-        }
+        });
+
+        // TETAP BERFUNGSI UNTUK MOUSE (LAPTOP)
+        fabMain.addEventListener("mousedown", (e) => {
+            dragActive = true;
+            isDragging = false;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialX = fabContainer.offsetLeft;
+            initialY = fabContainer.offsetTop;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!dragActive) return;
+            isDragging = true;
+            let dx = e.clientX - startX;
+            let dy = e.clientY - startY;
+            fabContainer.style.left = (initialX + dx) + "px";
+            fabContainer.style.top = (initialY + dy) + "px";
+            fabContainer.style.right = "auto";
+            fabContainer.style.bottom = "auto";
+        });
+
+        document.addEventListener("mouseup", (e) => {
+            if (!dragActive) return;
+            dragActive = false;
+            if (!isDragging) toggleFab(e);
+        });
 		
 		// Fungsi Live Search Pintar
 		function filterPencarian() {
