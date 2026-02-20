@@ -168,6 +168,15 @@
                         </div>
                     </div>
                 </div>
+				
+				<div class="mb-6 w-full max-w-3xl mx-auto px-1 fade-in">
+					<div class="relative group">
+						<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand transition-colors">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</div>
+						<input type="text" id="input-pencarian" onkeyup="filterPencarian()" class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand outline-none text-sm text-slate-700 shadow-sm transition-shadow" placeholder="Cari layanan aplikasi, materi rplbk, atau video di sini sahabat...">
+					</div>
+				</div>
 
                 <!-- NAVIGASI TAB PROFESIONAL (DITENGAH) -->
                 <div class="mb-6 overflow-x-auto scrollbar-hide flex justify-center w-full">
@@ -496,22 +505,22 @@
         // FUNGSI FETCH REAL KE BACKEND (GAS)
         // =====================================
         async function fetchAPI(action, payload = {}) {
-            if (GAS_URL === "URL_APPS_SCRIPT_SAHABAT_DISINI") {
-                Swal.fire('Oops!', 'URL Google Apps Script belum disetel.', 'warning');
-                return { status: "error" };
-            }
-            try {
-                Swal.showLoading();
-                const response = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: action, ...payload }) });
-                const result = await response.json();
-                Swal.close();
-                return result;
-            } catch (error) {
-                Swal.close();
-                Swal.fire('Koneksi Gagal', 'Pastikan jaringan stabil.', 'error');
-                return { status: "error" };
-            }
-        }
+			if (GAS_URL === "URL_APPS_SCRIPT_SAHABAT_DISINI") {
+				Swal.fire('Oops!', 'URL Google Apps Script belum disetel.', 'warning');
+				return { status: "error" };
+			}
+			try {
+				// Swal.showLoading(); <-- BARIS INI KITA MATIKAN
+				const response = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: action, ...payload }) });
+				const result = await response.json();
+				// Swal.close(); <-- BARIS INI JUGA KITA MATIKAN
+				return result;
+			} catch (error) {
+				// Swal.close(); <-- DAN BARIS INI
+				Swal.fire('Koneksi Gagal', 'Pastikan jaringan stabil.', 'error');
+				return { status: "error" };
+			}
+		}
 
         // =====================================
         // LOGIKA LOGIN
@@ -616,7 +625,14 @@
 
         async function loadDataAplikasi() {
             const grid = document.getElementById("grid-aplikasi");
-            grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-400"><i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i><p>Menarik data Aplikasi...</p></div>';
+            grid.innerHTML = Array(5).fill(`
+				<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 animate-pulse flex flex-col items-center">
+					<div class="w-14 h-14 bg-slate-200 rounded-2xl mb-3"></div>
+					<div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+					<div class="h-3 bg-slate-200 rounded w-full mb-1"></div>
+					<div class="h-3 bg-slate-200 rounded w-5/6"></div>
+				</div>
+			`).join('');
             
             const res = await fetchAPI('getAplikasi');
             if(res.status === "success") {
@@ -662,7 +678,16 @@
 
         async function loadDataMedia() {
             const grid = document.getElementById("grid-media");
-            grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-400"><i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i><p>Menarik Media RPLBK...</p></div>';
+            grid.innerHTML = Array(4).fill(`
+				<div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden animate-pulse flex flex-col h-full">
+					<div class="w-full h-44 bg-slate-200"></div>
+					<div class="p-5 flex flex-col flex-1">
+						<div class="h-4 bg-slate-200 rounded w-full mb-2"></div>
+						<div class="h-3 bg-slate-200 rounded w-4/5 mb-4"></div>
+						<div class="mt-auto pt-4"><div class="h-4 bg-slate-200 rounded w-1/3"></div></div>
+					</div>
+				</div>
+			`).join('');
             
             const res = await fetchAPI('getMedia');
             if(res.status === "success") {
@@ -672,67 +697,79 @@
                     let titleSafe = m.nama_rplbk.replace(/'/g, "\\'");
                     let finalCoverUrl = extractLh3Url(m.url_cover);
                     
-                    // Konfigurasi Klik dengan pop-up (Modal Detail)
-                    let btnClick = `onclick="openDetailMedia(this)" data-url="${m.url_media}" data-title="${titleSafe}" data-desc="${encodeURIComponent(m.deskripsi)}" data-cover="${finalCoverUrl}"`;
+                    // Tambahkan event.preventDefault() agar klik kiri tetap fokus buka modal
+					let btnClick = `onclick="event.preventDefault(); openDetailMedia(this)" data-url="${m.url_media}" data-title="${titleSafe}" data-desc="${encodeURIComponent(m.deskripsi)}" data-cover="${finalCoverUrl}"`;
 
-                    grid.innerHTML += `
-                        <div ${btnClick} class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all group flex flex-col h-full cursor-pointer">
-                            <div class="relative overflow-hidden">
-                                <img src="${finalCoverUrl}" class="w-full h-44 object-cover bg-slate-100 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300x200?text=No+Cover'">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 transition-opacity group-hover:opacity-80"></div>
-                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <div class="bg-white/90 text-brand px-4 py-2 rounded-full font-bold text-xs shadow-lg"><i class="fa-solid fa-eye mr-1"></i> Detail</div>
-                                </div>
-                            </div>
-                            <div class="p-5 flex flex-col flex-1">
-                                <h3 class="font-bold text-slate-800 line-clamp-1 text-sm md:text-base group-hover:text-brand transition-colors" title="${m.nama_rplbk}">${m.nama_rplbk}</h3>
-                                <p class="text-[11px] text-slate-500 mt-2 line-clamp-2 leading-relaxed flex-1">${m.deskripsi}</p>
-                                <div class="mt-4 flex justify-between items-center border-t border-slate-100 pt-4">
-                                    <span class="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded-md"><i class="fa-solid fa-user-pen mr-1"></i>${m.diupload_oleh.split(' ')[0]}</span>
-                                </div>
-                            </div>
-                        </div>`;
+					// Ubah tag pembungkus dari <div ...> menjadi <a href="...">
+					grid.innerHTML += `
+						<a href="${m.url_media}" target="_blank" ${btnClick} class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all group flex flex-col h-full cursor-pointer block text-left">
+							<div class="relative overflow-hidden">
+								<img src="${finalCoverUrl}" class="w-full h-44 object-cover bg-slate-100 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300x200?text=No+Cover'">
+								<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 transition-opacity group-hover:opacity-80"></div>
+								<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+									<div class="bg-white/90 text-brand px-4 py-2 rounded-full font-bold text-xs shadow-lg"><i class="fa-solid fa-eye mr-1"></i> Detail</div>
+								</div>
+							</div>
+							<div class="p-5 flex flex-col flex-1">
+								<h3 class="font-bold text-slate-800 line-clamp-1 text-sm md:text-base group-hover:text-brand transition-colors" title="${m.nama_rplbk}">${m.nama_rplbk}</h3>
+								<p class="text-[11px] text-slate-500 mt-2 line-clamp-2 leading-relaxed flex-1">${m.deskripsi}</p>
+								<div class="mt-4 flex justify-between items-center border-t border-slate-100 pt-4">
+									<span class="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded-md"><i class="fa-solid fa-user-pen mr-1"></i>${m.diupload_oleh.split(' ')[0]}</span>
+								</div>
+							</div>
+						</a>`;
                 });
             } else { grid.innerHTML = '<div class="col-span-full text-center text-slate-400 font-semibold">Belum ada media. Klik Upload Baru untuk menambah data.</div>'; }
         }
 
         // --- RENDER VIDEO (Tetap langsung diputar tanpa detail pop-up) ---
         async function loadDataVideo() {
-            const grid = document.getElementById("grid-video");
-            grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-400"><i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i><p>Menarik Video YouTube...</p></div>';
-            const res = await fetchAPI('getVideo');
-            if(res.status === "success") {
-                grid.innerHTML = "";
-                updateStats('video', res.data.length);
-                res.data.forEach(v => {
-                    let vidId = v.url_youtube.split('v=')[1] || v.url_youtube.split('/')[3];
-                    let ampersandPosition = vidId ? vidId.indexOf('&') : -1;
-                    if(ampersandPosition != -1) vidId = vidId.substring(0, ampersandPosition);
-                    
-                    let thumbUrl = v.url_thumbnail || `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
-                    let embedUrl = `https://www.youtube.com/embed/${vidId}?autoplay=1`;
-                    let titleSafe = v.judul_video.replace(/'/g, "\\'");
+			const grid = document.getElementById("grid-video");
+			
+			// Skeleton loading (tetap dipertahankan agar elegan)
+			grid.innerHTML = Array(4).fill(`
+				<div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden animate-pulse flex flex-col h-full">
+					<div class="w-full h-44 bg-slate-200"></div>
+					<div class="p-5 flex flex-col flex-1">
+						<div class="h-4 bg-slate-200 rounded w-full mb-2"></div>
+						<div class="h-3 bg-slate-200 rounded w-3/4 mb-4"></div>
+						<div class="mt-auto pt-3"><div class="h-4 bg-slate-200 rounded w-1/4"></div></div>
+					</div>
+				</div>
+			`).join('');
 
-                    grid.innerHTML += `
-                        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all group flex flex-col h-full">
-                            <div class="relative cursor-pointer overflow-hidden" onclick="bukaIframe('${embedUrl}', '${titleSafe}')">
-                                <img src="${thumbUrl}" onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-black/30 flex items-center justify-center transition-colors group-hover:bg-black/50">
-                                    <div class="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                        <i class="fa-solid fa-play text-white text-xl ml-1"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-5 flex flex-col flex-1">
-                                <h3 class="font-bold text-slate-800 line-clamp-2 text-sm leading-snug flex-1">${v.judul_video}</h3>
-                                <div class="mt-3 border-t border-slate-100 pt-3">
-                                    <p class="text-[10px] font-semibold text-slate-400 bg-slate-50 inline-block px-2 py-1 rounded-md"><i class="fa-solid fa-clapperboard mr-1"></i>${v.ditambahkan_oleh}</p>
-                                </div>
-                            </div>
-                        </div>`;
-                });
-            } else { grid.innerHTML = '<div class="col-span-full text-center text-slate-400 font-semibold">Belum ada video ditambahkan.</div>'; }
-        }
+			const res = await fetchAPI('getVideo');
+			if(res.status === "success") {
+				grid.innerHTML = "";
+				updateStats('video', res.data.length);
+				res.data.forEach(v => {
+					// Mengambil ID Video YouTube
+					let vidId = v.url_youtube.split('v=')[1] || v.url_youtube.split('/')[3];
+					let ampersandPosition = vidId ? vidId.indexOf('&') : -1;
+					if(ampersandPosition != -1) vidId = vidId.substring(0, ampersandPosition);
+					
+					// Format URL khusus untuk Iframe (tanpa autoplay agar tidak ribut terputar semua)
+					let embedUrl = `https://www.youtube.com/embed/${vidId}`;
+					let titleSafe = v.judul_video.replace(/'/g, "\\'");
+
+					grid.innerHTML += `
+						<div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all group flex flex-col h-full">
+							<div class="relative w-full h-44 bg-slate-100">
+								<iframe class="w-full h-full" src="${embedUrl}" title="${titleSafe}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+							</div>
+							
+							<div class="p-5 flex flex-col flex-1">
+								<h3 class="font-bold text-slate-800 line-clamp-2 text-sm leading-snug flex-1" title="${v.judul_video}">${v.judul_video}</h3>
+								<div class="mt-3 border-t border-slate-100 pt-3">
+									<p class="text-[10px] font-semibold text-slate-400 bg-slate-50 inline-block px-2 py-1 rounded-md"><i class="fa-solid fa-clapperboard mr-1"></i>${v.ditambahkan_oleh}</p>
+								</div>
+							</div>
+						</div>`;
+				});
+			} else { 
+				grid.innerHTML = '<div class="col-span-full text-center text-slate-400 font-semibold">Belum ada video ditambahkan.</div>'; 
+			}
+		}
 
         // =====================================
         // MANAJEMEN MODAL UMUM & IFRAME
@@ -888,6 +925,30 @@
                 loadDataVideo(); 
             } else { Swal.fire('Gagal', res.pesan, 'error'); }
         }
+		
+		// Fungsi Live Search Pintar
+		function filterPencarian() {
+			let input = document.getElementById('input-pencarian').value.toLowerCase();
+			
+			// Array dari semua ID grid yang kita punya
+			let grids = ['grid-aplikasi', 'grid-media', 'grid-video'];
+			
+			grids.forEach(gridId => {
+				let grid = document.getElementById(gridId);
+				if (grid) {
+					let items = grid.children;
+					Array.from(items).forEach(item => {
+						// Abaikan jika itu pesan error/loading (punya class col-span-full)
+						if (item.classList.contains('col-span-full')) return; 
+						
+						// Ambil semua teks yang ada di dalam card tersebut
+						let text = item.innerText.toLowerCase();
+						// Jika cocok tampilkan, jika tidak sembunyikan
+						item.style.display = text.includes(input) ? '' : 'none';
+					});
+				}
+			});
+		}
 
     </script>
 </body>
