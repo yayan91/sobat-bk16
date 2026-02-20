@@ -60,6 +60,10 @@
         /* Glassmorphism */
         .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
 		
+		/* Memastikan tombol terasa halus saat digeser */
+        #fab-container { touch-action: none; user-select: none; }
+        .dragging { transition: none !important; }
+		
 		/* Animasi Running Text Mulus untuk Handphone */
         .running-text-container { display: flex; overflow: hidden; white-space: nowrap; width: 100%; align-items: center; }
         .running-text { display: inline-block; animation: scrollText 20s linear infinite; padding-left: 100%; }
@@ -310,6 +314,30 @@
                 </div>
             </div>
         </footer>
+		
+		<div id="fab-container" class="fixed bottom-6 right-6 z-[45] flex flex-col items-end gap-3 fade-in">
+        
+        <div id="fab-menu" class="flex flex-col items-end gap-3 transition-all duration-300 transform scale-0 origin-bottom opacity-0 pointer-events-none">
+            <button onclick="showModal('modal-tambah-video'); toggleFab()" class="flex items-center gap-3 group">
+                <span class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-600 shadow-md border border-white/50 opacity-0 group-hover:opacity-100 transition-opacity">Tambah Video</span>
+                <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg border border-red-400">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1384/1384060.png" class="w-5 h-5 brightness-0 invert">
+                </div>
+            </button>
+            <button onclick="showModal('modal-upload-media'); toggleFab()" class="flex items-center gap-3 group">
+                <span class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-600 shadow-md border border-white/50 opacity-0 group-hover:opacity-100 transition-opacity">Upload Media</span>
+                <div class="w-12 h-12 bg-gradient-to-r from-brand to-pink-500 rounded-full flex items-center justify-center shadow-lg border border-pink-400">
+                    <img src="https://cdn-icons-png.flaticon.com/128/3134/3134070.png" class="w-5 h-5 brightness-0 invert">
+                </div>
+            </button>
+        </div>
+
+        <button id="fab-main" class="w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center shadow-2xl border-2 border-slate-700 relative group cursor-move">
+            <div class="absolute inset-0 bg-gradient-to-tr from-brand to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity rounded-full"></div>
+            <img src="https://cdn-icons-png.flaticon.com/128/1828/1828819.png" id="fab-icon" class="w-6 h-6 brightness-0 invert transition-transform duration-300 relative z-10">
+        </button>
+    </div>
+		
     </div>
 
     <!-- ========================================== -->
@@ -479,7 +507,7 @@
                         <div class="mt-10 border-t border-slate-100 pt-6 flex justify-end gap-3">
                             <button type="button" onclick="closeModal('modal-profil')" class="px-6 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-100 transition-colors">Batalkan</button>
                             <button type="submit" class="px-8 py-3.5 rounded-2xl font-bold bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:-translate-y-1 transition-all flex items-center gap-2">
-                                <img src="https://cdn-icons-png.flaticon.com/128/2874/2874051.png" alt="Save" class="w-4 h-4 brightness-0 invert">
+                                <img src="https://cdn-icons-png.flaticon.com/128/2681/2681062.png" alt="Save" class="w-4 h-4 brightness-0 invert">
                                 Simpan Profil
                             </button>
                         </div>
@@ -565,13 +593,13 @@
                         <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Link YouTube</label>
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <img src="https://cdn-icons-png.flaticon.com/128/2806/2806354.png" alt="Link" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 transition-opacity">
+                                <img src="https://cdn-icons-png.flaticon.com/128/3670/3670147.png" alt="Link" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 transition-opacity">
                             </div>
                             <input type="url" id="vid-url" required placeholder="https://youtube.com/watch?v=..." class="w-full pl-11 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-sm shadow-sm transition-all">
                         </div>
                     </div>
                     <button type="submit" class="w-full py-4 mt-2 rounded-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-[0_10px_20px_-5px_rgba(239,68,68,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
-                        <img src="https://cdn-icons-png.flaticon.com/128/2874/2874051.png" alt="Save" class="w-5 h-5 brightness-0 invert">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3670/3670147.png" alt="Save" class="w-5 h-5 brightness-0 invert">
                         Simpan Link Video
                     </button>
                 </form>
@@ -1077,6 +1105,90 @@
                 closeModal('modal-tambah-video');
                 loadDataVideo(); 
             } else { Swal.fire('Gagal', res.pesan, 'error'); }
+        }
+		
+		// Fungsi untuk Buka Tutup Tombol Melayang
+        let fabContainer = document.getElementById("fab-container");
+        let fabMain = document.getElementById("fab-main");
+        let isDragging = false;
+        let dragThreshold = 5; // Batas toleransi geser dalam pixel
+        let startX, startY, initialX, initialY;
+
+        // FUNGSI UTAMA: Hanya jalan jika diklik sengaja
+        function toggleFab(e) {
+            // Jika sedang menggeser, hentikan fungsi buka menu
+            if (isDragging) return;
+            
+            // Hentikan penyebaran klik agar tidak memicu elemen lain
+            if(e) e.stopPropagation();
+
+            const menu = document.getElementById('fab-menu');
+            const icon = document.getElementById('fab-icon');
+            
+            if (menu.classList.contains('scale-0')) {
+                menu.classList.remove('scale-0', 'opacity-0', 'pointer-events-none');
+                menu.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+                icon.style.transform = 'rotate(45deg)';
+            } else {
+                menu.classList.add('scale-0', 'opacity-0', 'pointer-events-none');
+                menu.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // LOGIKA DRAGGABLE YANG DIPERKETAT
+        fabMain.addEventListener("mousedown", dragStart);
+        fabMain.addEventListener("touchstart", dragStart, { passive: false });
+
+        function dragStart(e) {
+            isDragging = false; // Reset status setiap awal sentuhan
+            let event = e.type === "touchstart" ? e.touches[0] : e;
+            
+            startX = event.clientX;
+            startY = event.clientY;
+            initialX = fabContainer.offsetLeft;
+            initialY = fabContainer.offsetTop;
+
+            document.addEventListener("mousemove", dragging);
+            document.addEventListener("touchmove", dragging, { passive: false });
+            document.addEventListener("mouseup", dragEnd);
+            document.addEventListener("touchend", dragEnd);
+            fabContainer.classList.add("dragging");
+        }
+
+        function dragging(e) {
+            let event = e.type === "touchmove" ? e.touches[0] : e;
+            let dx = event.clientX - startX;
+            let dy = event.clientY - startY;
+
+            // Jika pergerakan lebih dari threshold, anggap ini sedang menggeser
+            if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) {
+                isDragging = true;
+            }
+
+            if (isDragging) {
+                fabContainer.style.left = (initialX + dx) + "px";
+                fabContainer.style.top = (initialY + dy) + "px";
+                fabContainer.style.right = "auto";
+                fabContainer.style.bottom = "auto";
+            }
+        }
+
+        function dragEnd(e) {
+            document.removeEventListener("mousemove", dragging);
+            document.removeEventListener("touchmove", dragging);
+            document.removeEventListener("mouseup", dragEnd);
+            document.removeEventListener("touchend", dragEnd);
+            
+            fabContainer.classList.remove("dragging");
+
+            // Jika tidak dianggap menggeser, berarti ini adalah KLIK MURNI
+            if (!isDragging) {
+                toggleFab(e);
+            }
+            
+            // Beri jeda sebentar sebelum reset total
+            setTimeout(() => { isDragging = false; }, 50);
         }
 		
 		// Fungsi Live Search Pintar
