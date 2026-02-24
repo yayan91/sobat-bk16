@@ -81,55 +81,76 @@
     <!-- ========================================== -->
     <!-- 1. HALAMAN LOGIN -->
     <!-- ========================================== -->
-    <div id="login-view" class="h-screen w-screen flex items-center justify-center bg-slate-50 relative overflow-hidden z-50">
+    <div id="login-view" class="h-screen w-screen flex items-center justify-center bg-slate-50 relative overflow-hidden z-50 p-4 md:p-8">
         
         <div class="absolute top-[-10%] left-[-10%] w-[30rem] h-[30rem] bg-brand/30 rounded-full blur-[100px] animate-pulse-slow"></div>
         <div class="absolute bottom-[-10%] right-[-10%] w-[30rem] h-[30rem] bg-pink-500/20 rounded-full blur-[100px] animate-pulse-slow" style="animation-delay: 2s;"></div>
-        <div class="absolute top-[40%] left-[60%] w-[20rem] h-[20rem] bg-blue-400/20 rounded-full blur-[80px] animate-pulse"></div>
 
-        <button onclick="showModal('about-modal')" class="absolute top-6 right-6 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 hover:shadow-lg transition-all duration-300 z-20 border border-white/60">
-            <img src="https://cdn-icons-png.flaticon.com/128/3208/3208505.png" alt="Info" class="w-5 h-5 opacity-80">
-        </button>
-
-        <div class="bg-white/70 backdrop-blur-2xl p-8 md:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white max-w-md w-full mx-4 fade-in text-center relative z-10">
+        <div class="bg-white/70 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white max-w-4xl w-full flex flex-col md:flex-row overflow-hidden fade-in relative z-10 min-h-[500px]">
             
-            <div class="relative w-28 h-28 mx-auto mb-6 group">
-                <div class="absolute inset-0 bg-gradient-to-tr from-brand to-pink-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
-                <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" id="login-logo-img" alt="Logo Aplikasi" class="relative w-full h-full object-cover shadow-xl rounded-3xl bg-white p-1.5 border-2 border-white/80 group-hover:scale-105 transition-transform duration-500">
-            </div>
-            
-            <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-600 mb-1 tracking-tight">SOBAT BK</h1>
-            <p class="text-xs text-slate-400 mb-8 font-bold tracking-widest uppercase">UPT SPF SMP NEGERI 16 MAKASSAR</p>
+            <button onclick="showModal('about-modal')" class="md:hidden absolute top-5 right-5 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 shadow-sm z-20 border border-slate-100 transition-all">
+                <img src="https://cdn-icons-png.flaticon.com/128/3208/3208505.png" alt="Info" class="w-5 h-5 opacity-80">
+            </button>
 
-            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5 text-left">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Username Guru</label>
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <img src="https://cdn-icons-png.flaticon.com/128/1077/1077063.png" alt="User" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
-                        </div>
-                        <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-inner transition-all" placeholder="Ketik username Anda...">
-                    </div>
+            <div class="hidden md:flex w-1/2 bg-gradient-to-br from-brand-dark via-brand to-pink-500 p-10 flex-col justify-center items-center text-white relative overflow-hidden text-center">
+                <div class="absolute top-0 left-0 w-full h-full bg-black/10 z-0"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-white/20 rounded-full blur-2xl"></div>
+                <div class="absolute top-10 right-10 w-20 h-20 bg-white/20 rounded-full blur-xl"></div>
+                
+                <div class="relative z-10 w-full flex flex-col items-center">
+                    <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo SOBAT BK" class="w-32 h-32 object-cover shadow-2xl rounded-3xl bg-white p-1.5 mb-6 hover:scale-105 transition-transform duration-500">
+                    <h1 class="text-4xl font-black mb-2 drop-shadow-md tracking-tight">SOBAT BK</h1>
+                    <p class="text-[10px] text-white/90 mb-6 font-bold tracking-widest uppercase bg-white/20 py-1.5 px-4 rounded-full backdrop-blur-sm shadow-sm border border-white/30">UPT SPF SMP NEGERI 16 MAKASSAR</p>
+                    <p class="text-sm text-white/90 leading-relaxed font-medium px-4">Sistem Online BK & Administrasi Terpadu. Ruang kerja digital cerdas untuk efisiensi layanan Bimbingan dan Konseling Anda.</p>
                 </div>
                 
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Password</label>
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <img src="https://cdn-icons-png.flaticon.com/128/3064/3064155.png" alt="Lock" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
-                        </div>
-                        <input type="password" id="login-password" required class="w-full pl-11 pr-12 py-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-inner transition-all" placeholder="••••••••">
-                        <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center opacity-40 hover:opacity-100 transition-opacity">
-							<img id="eye-icon" src="https://cdn-icons-png.flaticon.com/128/2767/2767146.png" alt="Eye">
-						</button>
-                    </div>
+                <button onclick="showModal('about-modal')" class="relative z-10 mt-8 px-6 py-2.5 bg-white/20 hover:bg-white/30 border border-white/50 rounded-full text-xs font-bold backdrop-blur-sm transition-all hover:scale-105 flex items-center gap-2 shadow-lg">
+                    <img src="https://cdn-icons-png.flaticon.com/128/3208/3208505.png" alt="Info" class="w-4 h-4 brightness-0 invert"> Tentang Aplikasi
+                </button>
+            </div>
+
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white/50">
+                
+                <div class="md:hidden flex flex-col items-center mb-6 mt-2">
+                    <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo Aplikasi" class="w-20 h-20 object-cover shadow-lg rounded-2xl bg-white p-1 mb-3">
+                    <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-600 tracking-tight">SOBAT BK</h2>
                 </div>
 
-                <button type="submit" class="w-full mt-2 py-4 bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white rounded-2xl font-bold text-sm shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:shadow-[0_15px_25px_-5px_rgba(139,92,246,0.5)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
-                    Masuk Ruang Kerja
-                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828395.png" alt="Login" class="w-4 h-4 brightness-0 invert">
-                </button>
-            </form>
+                <div class="text-left mb-8 hidden md:block">
+                    <h2 class="text-3xl font-black text-slate-800 mb-2">Masuk Akun</h2>
+                    <p class="text-sm text-slate-500 font-medium">Silakan masukkan kredensial Anda sahabat.</p>
+                </div>
+
+                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Username Guru</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <img src="https://cdn-icons-png.flaticon.com/128/1077/1077063.png" alt="User" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
+                            </div>
+                            <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-sm transition-all" placeholder="Ketik username Anda...">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Password</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <img src="https://cdn-icons-png.flaticon.com/128/3064/3064155.png" alt="Lock" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
+                            </div>
+                            <input type="password" id="login-password" required class="w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-sm transition-all" placeholder="••••••••">
+                            <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center opacity-40 hover:opacity-100 transition-opacity">
+                                <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/128/2767/2767146.png" alt="Eye" class="w-4 h-4">
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full mt-2 py-4 bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white rounded-2xl font-bold text-sm shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:shadow-[0_15px_25px_-5px_rgba(139,92,246,0.5)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                        Masuk Ruang Kerja
+                        <img src="https://cdn-icons-png.flaticon.com/128/1828/1828395.png" alt="Login" class="w-4 h-4 brightness-0 invert">
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -725,8 +746,11 @@
             Swal.fire({ title: 'Login Berhasil!', icon: 'success', timer: 1500, showConfirmButton: false, customClass: { popup: 'rounded-3xl' } });
             
             currentUser = realData || { username: username, nama_lengkap: username };
-			
-			setUcapanWaktu();
+            
+            // --- KODE BARU: Simpan data ke localStorage ---
+            localStorage.setItem('sobat_bk_user', JSON.stringify(currentUser));
+            
+            setUcapanWaktu();
             
             // Update UI dengan foto berformat LH3
             let finalAvatarUrl = extractLh3Url(currentUser.url_foto_profil);
@@ -750,12 +774,41 @@
             .then((res) => {
                 if (res.isConfirmed) {
                     currentUser = {};
+                    
+                    // --- KODE BARU: Hapus data dari localStorage ---
+                    localStorage.removeItem('sobat_bk_user');
+                    
                     document.getElementById("login-form").reset();
                     document.getElementById("main-dashboard").classList.add("hidden");
                     document.getElementById("login-view").classList.remove("hidden");
                 }
             });
         }
+
+        // --- KODE BARU: Pengecekan Login Otomatis saat aplikasi dimuat ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedUser = localStorage.getItem('sobat_bk_user');
+            if (savedUser) {
+                // Jika ada data tersimpan, langsung masuk tanpa animasi SweetAlert
+                currentUser = JSON.parse(savedUser);
+                
+                setUcapanWaktu();
+                
+                let finalAvatarUrl = extractLh3Url(currentUser.url_foto_profil);
+                if(!currentUser.url_foto_profil) finalAvatarUrl = `https://ui-avatars.com/api/?name=${currentUser.nama_lengkap}&background=8b5cf6&color=fff`;
+                
+                document.getElementById("user-display-name").innerText = currentUser.nama_lengkap;
+                document.getElementById("banner-name").innerText = currentUser.nama_lengkap.split(' ')[0];
+                document.getElementById("user-avatar").src = finalAvatarUrl;
+                
+                document.getElementById("login-view").classList.add("hidden");
+                document.getElementById("main-dashboard").classList.remove("hidden");
+                
+                loadDataAplikasi();
+                loadDataMedia();
+                loadDataVideo();
+            }
+        });
 
         // =====================================
         // MANAJEMEN TAB & KONTEN (MODERN PILLS)
@@ -1242,4 +1295,3 @@
     </script>
 </body>
 </html>
-
