@@ -668,7 +668,43 @@
             </div>
         </div>
     </div>
+	
+	<div id="ai-fab-container" class="fixed bottom-6 left-6 z-[200] flex flex-col items-start gap-3 fade-in" style="touch-action: none; user-select: none;">
+        <button id="ai-fab-main" class="w-14 h-14 bg-gradient-to-tr from-[#14F0D2] via-[#0D74CE] to-[#9925CB] rounded-full flex items-center justify-center shadow-[0_10px_30px_-5px_rgba(30,195,214,0.4)] border-2 border-white relative group cursor-move hover:scale-105 transition-transform duration-300">
+            <img src="https://cdn-icons-png.flaticon.com/128/14026/14026362.png" class="w-7 h-7 brightness-0 invert pointer-events-none drop-shadow-md" alt="Gemini">
+            <span class="absolute -top-1 -right-1 flex h-4 w-4 pointer-events-none">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 bg-pink-500 border-2 border-white"></span>
+            </span>
+        </button>
+    </div>
 
+    <div id="ai-window" class="hidden fixed bottom-24 left-6 w-[350px] h-[450px] min-w-[280px] min-h-[350px] max-w-[90vw] max-h-[80vh] bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 z-[210] flex-col overflow-hidden fade-in" style="resize: both;">
+        <div id="ai-header" class="bg-gradient-to-r from-[#14F0D2] via-[#0D74CE] to-[#9925CB] p-3.5 flex justify-between items-center cursor-move touch-none relative">
+            <div class="absolute inset-0 bg-black/10"></div>
+            <div class="flex items-center gap-2 pointer-events-none relative z-10">
+                <img src="https://cdn-icons-png.flaticon.com/128/14026/14026362.png" class="w-5 h-5 brightness-0 invert drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
+                <span class="text-white font-black text-sm tracking-widest uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Sobat AI - Pro</span>
+            </div>
+            <div class="flex items-center gap-1 relative z-10">
+                <button onclick="hapusRiwayatAI()" class="text-white/80 hover:text-white hover:bg-white/20 p-1.5 rounded-lg transition-colors" title="Hapus Riwayat">
+                    <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+                <button onclick="toggleAiChat()" class="text-white/80 hover:text-white hover:bg-white/20 p-1.5 rounded-lg transition-colors" title="Tutup Jendela">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div id="ai-chat-box" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 text-sm leading-relaxed"></div>
+        
+        <div class="p-3 bg-white border-t border-slate-100 flex gap-2 relative z-10">
+            <input type="text" id="ai-input" onkeypress="if(event.key === 'Enter') kirimPesanAI()" class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#0D74CE] transition-all shadow-inner font-medium text-slate-700" placeholder="Tanya ke Sobat AI...">
+            <button onclick="kirimPesanAI()" class="bg-gradient-to-br from-[#0D74CE] to-[#9925CB] text-white w-11 h-11 rounded-xl flex items-center justify-center hover:shadow-[0_10px_20px_-5px_rgba(153,37,203,0.5)] hover:-translate-y-0.5 transition-all flex-shrink-0">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- ========================================== -->
     <!-- JAVASCRIPT REAL LOGIC -->
@@ -1274,6 +1310,203 @@
             dragActive = false;
             if (!isDragging) toggleFab(e);
         });
+		
+		// =====================================
+        // LOGIKA SOBAT AI - PRO (COPY PASTE MESIN DARI TOMBOL KANAN)
+        // =====================================
+        let aiFabContainer = document.getElementById("ai-fab-container");
+        let aiFabMain = document.getElementById("ai-fab-main");
+        let isAiDragging = false;
+        let aiDragActive = false;
+        let aiStartX, aiStartY, aiInitialX, aiInitialY;
+
+        function toggleAiChat() {
+            let win = document.getElementById('ai-window');
+            if (win.classList.contains('hidden')) {
+                win.classList.remove('hidden'); win.classList.add('flex');
+                renderAIChat();
+            } else {
+                win.classList.add('hidden'); win.classList.remove('flex');
+            }
+        }
+
+        // --- DRAG SENTUHAN HP ---
+        aiFabMain.addEventListener("touchstart", (e) => {
+            aiDragActive = true;
+            isAiDragging = false;
+            aiStartX = e.touches[0].clientX;
+            aiStartY = e.touches[0].clientY;
+            aiInitialX = aiFabContainer.offsetLeft;
+            aiInitialY = aiFabContainer.offsetTop;
+            aiFabContainer.classList.add("dragging");
+        }, { passive: false });
+
+        document.addEventListener("touchmove", (e) => {
+            if (!aiDragActive) return;
+            let dx = e.touches[0].clientX - aiStartX;
+            let dy = e.touches[0].clientY - aiStartY;
+            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+                isAiDragging = true;
+                e.preventDefault();
+                aiFabContainer.style.left = (aiInitialX + dx) + "px";
+                aiFabContainer.style.top = (aiInitialY + dy) + "px";
+                aiFabContainer.style.right = "auto";
+                aiFabContainer.style.bottom = "auto";
+            }
+        }, { passive: false });
+
+        document.addEventListener("touchend", (e) => {
+            if (!aiDragActive) return;
+            aiDragActive = false;
+            aiFabContainer.classList.remove("dragging");
+            if (!isAiDragging) toggleAiChat(); // Buka chat jika hanya di-tap
+        });
+
+        // --- DRAG MOUSE LAPTOP ---
+        aiFabMain.addEventListener("mousedown", (e) => {
+            aiDragActive = true;
+            isAiDragging = false;
+            aiStartX = e.clientX;
+            aiStartY = e.clientY;
+            aiInitialX = aiFabContainer.offsetLeft;
+            aiInitialY = aiFabContainer.offsetTop;
+            aiFabContainer.classList.add("dragging");
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!aiDragActive) return;
+            isAiDragging = true;
+            let dx = e.clientX - aiStartX;
+            let dy = e.clientY - aiStartY;
+            aiFabContainer.style.left = (aiInitialX + dx) + "px";
+            aiFabContainer.style.top = (aiInitialY + dy) + "px";
+            aiFabContainer.style.right = "auto";
+            aiFabContainer.style.bottom = "auto";
+        });
+
+        document.addEventListener("mouseup", (e) => {
+            if (!aiDragActive) return;
+            aiDragActive = false;
+            aiFabContainer.classList.remove("dragging");
+            if (!isAiDragging) toggleAiChat(); // Buka chat jika hanya di-klik
+        });
+
+        // =====================================
+        // LOGIKA DRAG JENDELA CHAT AI
+        // =====================================
+        let aiWin = document.getElementById('ai-window');
+        let aiHeader = document.getElementById('ai-header');
+        let isAiWinDragging = false;
+        let startXAiWin, startYAiWin, initialXAiWin, initialYAiWin;
+
+        function startDragAiWin(e) {
+            if (e.target.closest('button')) return; // Abaikan jika mengklik tombol X / hapus
+            isAiWinDragging = true;
+            startXAiWin = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            startYAiWin = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            initialXAiWin = aiWin.offsetLeft;
+            initialYAiWin = aiWin.offsetTop;
+        }
+
+        function dragAiWinMove(e) {
+            if (!isAiWinDragging) return;
+            e.preventDefault();
+            let currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            let currentY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            aiWin.style.left = (initialXAiWin + (currentX - startXAiWin)) + 'px';
+            aiWin.style.top = (initialYAiWin + (currentY - startYAiWin)) + 'px';
+            aiWin.style.bottom = 'auto';
+            aiWin.style.right = 'auto';
+        }
+
+        function stopDragAiWin() { isAiWinDragging = false; }
+
+        aiHeader.addEventListener('mousedown', startDragAiWin);
+        document.addEventListener('mousemove', dragAiWinMove);
+        document.addEventListener('mouseup', stopDragAiWin);
+        aiHeader.addEventListener('touchstart', startDragAiWin, { passive: false });
+        document.addEventListener('touchmove', dragAiWinMove, { passive: false });
+        document.addEventListener('touchend', stopDragAiWin);
+
+        // =====================================
+        // LOGIKA CHAT & KONEKSI API
+        // =====================================
+        let riwayatAI = JSON.parse(localStorage.getItem('sobat_bk_ai_history')) || [];
+        const aiChatBox = document.getElementById('ai-chat-box');
+        const aiInput = document.getElementById('ai-input');
+
+        function formatTeksAI(teks) {
+            return teks.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        }
+
+        function renderAIChat() {
+            aiChatBox.innerHTML = '';
+            if (riwayatAI.length === 0) {
+                aiChatBox.innerHTML = `
+                    <div class="flex flex-col mb-4 items-start">
+                        <div class="bg-white border border-slate-200 p-3.5 rounded-2xl rounded-tl-none self-start max-w-[85%] shadow-sm text-slate-700 font-medium">
+                            Halo Sahabat! Saya <b>Sobat AI - Pro</b>. Ada yang bisa saya bantu hari ini?
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            riwayatAI.forEach(chat => {
+                let isUser = chat.role === "user";
+                let bubbleClass = isUser ? "bg-gradient-to-r from-[#0D74CE] to-[#9925CB] text-white rounded-tr-none self-end shadow-md" : "bg-white border border-slate-200 text-slate-700 rounded-tl-none self-start shadow-sm";
+                
+                aiChatBox.innerHTML += `
+                    <div class="flex flex-col mb-4 ${isUser ? 'items-end' : 'items-start'}">
+                        <div class="${bubbleClass} p-3.5 rounded-2xl max-w-[85%] leading-relaxed">
+                            ${formatTeksAI(chat.parts[0].text)}
+                        </div>
+                    </div>`;
+            });
+            aiChatBox.scrollTop = aiChatBox.scrollHeight;
+        }
+
+        async function kirimPesanAI() {
+            let teks = aiInput.value.trim();
+            if (!teks) return;
+
+            riwayatAI.push({ role: "user", parts: [{ text: teks }] });
+            aiInput.value = '';
+            renderAIChat();
+
+            let loadingId = "load-ai-" + Date.now();
+            aiChatBox.innerHTML += `
+                <div id="${loadingId}" class="flex flex-col mb-4 items-start">
+                    <div class="bg-white border border-slate-200 p-3.5 rounded-2xl rounded-tl-none self-start shadow-sm text-slate-400 text-xs font-semibold italic flex items-center gap-2">
+                        <i class="fa-solid fa-circle-notch fa-spin text-[#0D74CE]"></i> Sobat AI sedang berpikir...
+                    </div>
+                </div>`;
+            aiChatBox.scrollTop = aiChatBox.scrollHeight;
+
+            const res = await fetchAPI('chatGemini', { riwayat_chat: riwayatAI });
+            let elLoad = document.getElementById(loadingId);
+            if(elLoad) elLoad.remove();
+
+            if (res.status === "success") {
+                riwayatAI.push({ role: "model", parts: [{ text: res.balasan }] });
+            } else {
+                // PESAN ERROR SESUAI PERMINTAAN
+                riwayatAI.push({ role: "model", parts: [{ text: "Maaf Sahabat, sepertinya koneksi terganggu.<br><br><span class='text-red-500 font-bold'>Jika Sobat AI error silahkan menggunakan Gemini di browser.</span>" }] });
+            }
+
+            localStorage.setItem('sobat_bk_ai_history', JSON.stringify(riwayatAI));
+            renderAIChat();
+        }
+
+        function hapusRiwayatAI() {
+            Swal.fire({ title: 'Hapus Riwayat?', text: "Semua obrolan dengan Sobat AI akan hilang.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#9925CB', confirmButtonText: 'Ya, Hapus!' })
+            .then((res) => {
+                if (res.isConfirmed) {
+                    riwayatAI = [];
+                    localStorage.removeItem('sobat_bk_ai_history');
+                    renderAIChat();
+                }
+            });
+        }
 		
 		// Fungsi Live Search Pintar
 		function filterPencarian() {
