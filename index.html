@@ -41,6 +41,53 @@
     <style>
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+		
+		/* ===================================== */
+        /* Efek 3D Flip Card (DIPERBARUI ANTI KLIK TEMBUS) */
+        /* ===================================== */
+        .flip-container {
+            perspective: 1500px;
+            width: 100%;
+            height: 100%;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden; /* WAJIB UNTUK HP/SAFARI */
+            border-radius: 2.5rem;
+        }
+        .flip-card-front {
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+            z-index: 1;
+            pointer-events: none; /* Matikan klik sisi belakang saat belum dibalik */
+        }
+        .is-flipped {
+            transform: rotateY(180deg);
+        }
+        
+        /* Logika Anti-Error Klik Tembus */
+        .is-flipped .flip-card-front {
+            pointer-events: none; /* Matikan sepenuhnya klik sisi depan saat kartu dibalik */
+        }
+        .is-flipped .flip-card-back {
+            pointer-events: auto; /* Aktifkan klik sisi belakang */
+            z-index: 3;
+        }
         
         /* Custom Scrollbar Global */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -93,70 +140,113 @@
         <div class="absolute top-[-10%] left-[-10%] w-[30rem] h-[30rem] bg-brand/30 rounded-full blur-[100px] animate-pulse-slow"></div>
         <div class="absolute bottom-[-10%] right-[-10%] w-[30rem] h-[30rem] bg-pink-500/20 rounded-full blur-[100px] animate-pulse-slow" style="animation-delay: 2s;"></div>
 
-        <div class="bg-white/70 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white max-w-4xl w-full flex flex-col md:flex-row overflow-hidden fade-in relative z-10 min-h-[500px]">
-            
-            <button onclick="showModal('about-modal')" class="md:hidden absolute top-5 right-5 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 shadow-sm z-20 border border-slate-100 transition-all">
-                <img src="https://cdn-icons-png.flaticon.com/128/3208/3208505.png" alt="Info" class="w-5 h-5 opacity-80">
-            </button>
+        <button onclick="showModal('about-modal')" class="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 shadow-lg z-[60] border border-slate-100 transition-all group">
+            <img src="https://cdn-icons-png.flaticon.com/128/3208/3208505.png" alt="Info" class="w-6 h-6 opacity-80 group-hover:opacity-100">
+        </button>
 
-            <div class="hidden md:flex w-1/2 bg-gradient-to-br from-brand-dark via-brand to-pink-500 p-10 flex-col justify-center items-center text-white relative overflow-hidden text-center">
-                <div class="absolute top-0 left-0 w-full h-full bg-black/10 z-0"></div>
-                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-white/20 rounded-full blur-2xl"></div>
-                <div class="absolute top-10 right-10 w-20 h-20 bg-white/20 rounded-full blur-xl"></div>
+        <div class="flip-container max-w-5xl w-full relative z-10 min-h-[550px] md:min-h-[600px] fade-in">
+            <div id="flip-card" class="flip-card-inner shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[2.5rem]">
                 
-                <div class="relative z-10 w-full flex flex-col items-center">
-                    <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo SOBAT BK" class="w-32 h-32 object-cover shadow-2xl rounded-3xl bg-white p-1.5 mb-6 hover:scale-105 transition-transform duration-500">
-                    <h1 class="text-4xl font-black mb-2 drop-shadow-md tracking-tight">SOBAT BK</h1>
-                    <p class="text-[10px] text-white/90 mb-6 font-bold tracking-widest uppercase bg-white/20 py-1.5 px-4 rounded-full backdrop-blur-sm shadow-sm border border-white/30">UPT SPF SMP NEGERI 16 MAKASSAR</p>
-                    <p class="text-sm text-white/90 leading-relaxed font-medium px-4">Sistem Online BK & Administrasi Terpadu. Ruang kerja digital cerdas untuk efisiensi layanan Bimbingan dan Konseling Anda.</p>
-                </div>
-                
-                <button onclick="showModal('about-modal')" class="relative z-10 mt-8 px-6 py-2.5 bg-white/20 hover:bg-white/30 border border-white/50 rounded-full text-xs font-bold backdrop-blur-sm transition-all hover:scale-105 flex items-center gap-2 shadow-lg">
-                    <img src="https://cdn-icons-png.flaticon.com/128/3208/3208505.png" alt="Info" class="w-4 h-4 brightness-0 invert"> Tentang Aplikasi
-                </button>
-            </div>
-
-            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white/50">
-                
-                <div class="md:hidden flex flex-col items-center mb-6 mt-2">
-                    <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo Aplikasi" class="w-20 h-20 object-cover shadow-lg rounded-2xl bg-white p-1 mb-3">
-                    <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-600 tracking-tight">SOBAT BK</h2>
-                </div>
-
-                <div class="text-left mb-8 hidden md:block">
-                    <h2 class="text-3xl font-black text-slate-800 mb-2">Masuk Akun</h2>
-                    <p class="text-sm text-slate-500 font-medium">Silakan masukkan kredensial Anda sahabat.</p>
-                </div>
-
-                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Username Guru</label>
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <img src="https://cdn-icons-png.flaticon.com/128/1077/1077063.png" alt="User" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
-                            </div>
-                            <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-sm transition-all" placeholder="Ketik username Anda...">
-                        </div>
-                    </div>
+                <div class="flip-card-front bg-white overflow-hidden flex flex-col md:flex-row border border-white/60">
                     
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Password</label>
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <img src="https://cdn-icons-png.flaticon.com/128/3064/3064155.png" alt="Lock" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 group-focus-within:drop-shadow-[0_0_5px_rgba(139,92,246,0.5)] transition-all">
-                            </div>
-                            <input type="password" id="login-password" required class="w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-sm transition-all" placeholder="••••••••">
-                            <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center opacity-40 hover:opacity-100 transition-opacity">
-                                <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/128/2767/2767146.png" alt="Eye" class="w-4 h-4">
-                            </button>
+                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-white p-3.5 rounded-full shadow-2xl hidden md:block">
+                        <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo" class="w-24 h-24 object-cover rounded-full bg-slate-50 p-1">
+                    </div>
+
+                    <div class="w-full h-1/2 md:w-1/2 md:h-full bg-gradient-to-br from-brand-dark via-brand to-purple-600 flex flex-col justify-center items-center p-8 relative group cursor-pointer" onclick="flipTo('guru')">
+                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10 flex flex-col items-center transform group-hover:scale-105 transition-transform duration-500 text-center">
+                            <i class="fa-solid fa-user-shield text-5xl md:text-7xl text-white/90 mb-4 drop-shadow-lg"></i>
+                            <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-md">Portal Guru</h2>
+                            <p class="text-white/80 text-sm mt-3 max-w-[250px] font-medium">Akses kontrol layanan bimbingan dan administrasi profesional.</p>
+                            <span class="mt-6 px-8 py-3 bg-white/20 text-white rounded-full text-sm font-bold backdrop-blur-md border border-white/40 shadow-lg group-hover:bg-white group-hover:text-brand transition-all">
+                                Masuk Ruangan
+                            </span>
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full mt-2 py-4 bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white rounded-2xl font-bold text-sm shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:shadow-[0_15px_25px_-5px_rgba(139,92,246,0.5)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
-                        Masuk Ruang Kerja
-                        <img src="https://cdn-icons-png.flaticon.com/128/1828/1828395.png" alt="Login" class="w-4 h-4 brightness-0 invert">
-                    </button>
-                </form>
+                    <div class="w-full h-1/2 md:w-1/2 md:h-full bg-gradient-to-bl from-pink-400 via-rose-500 to-orange-400 flex flex-col justify-center items-center p-8 relative group cursor-pointer" onclick="flipTo('siswa')">
+                        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10 flex flex-col items-center transform group-hover:scale-105 transition-transform duration-500 text-center">
+                            <i class="fa-solid fa-user-graduate text-5xl md:text-7xl text-white/90 mb-4 drop-shadow-lg"></i>
+                            <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-md">Portal Siswa</h2>
+                            <p class="text-white/80 text-sm mt-3 max-w-[250px] font-medium">Akses cepat layanan pengaduan, konseling, dan Layanan BK.</p>
+                            <span class="mt-6 px-8 py-3 bg-white/20 text-white rounded-full text-sm font-bold backdrop-blur-md border border-white/40 shadow-lg group-hover:bg-white group-hover:text-rose-500 transition-all">
+                                Jelajahi Layanan
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card-back bg-white/90 backdrop-blur-2xl border border-white/60 flex flex-col overflow-hidden">
+                    
+                    <div class="bg-slate-50/90 border-b border-slate-200 p-4 md:p-6 flex justify-between items-center z-20">
+                        <button type="button" onclick="flipBack()" class="px-5 py-2.5 bg-white rounded-full text-sm font-bold text-slate-600 hover:text-brand shadow-sm border border-slate-200 flex items-center gap-2 hover:-translate-x-1.5 transition-all group">
+                            <i class="fa-solid fa-arrow-left-long group-hover:scale-110 transition-transform"></i> Kembali
+                        </button>
+                        <div class="flex items-center gap-3">
+                            <img src="https://drive.google.com/thumbnail?id=1Z6g-sCdw-k7W8dnw12NeagPkroLlmk-L" alt="Logo Kecil" class="w-8 h-8 rounded-full shadow-sm">
+                            <span id="back-title" class="font-black text-slate-800 text-lg md:text-xl tracking-tight">SOBAT BK</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto p-6 md:p-12 relative w-full h-full flex flex-col items-center justify-center">
+                        
+                        <div id="area-login-guru" class="w-full max-w-md hidden fade-in">
+                            <div class="text-center md:text-left mb-8">
+                                <h2 class="text-3xl font-black text-brand mb-2">SOBAT BK PRO</h2>
+                                <p class="text-sm text-slate-500 font-medium">Silakan masukkan Username dan Password Anda.</p>
+                            </div>
+
+                            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Username Guru</label>
+                                    <div class="relative group">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/1077/1077063.png" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 transition-all">
+                                        </div>
+                                        <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-sm transition-all" placeholder="Ketik username Anda...">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">Password</label>
+                                    <div class="relative group">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/3064/3064155.png" class="w-4 h-4 opacity-40 group-focus-within:opacity-100 transition-all">
+                                        </div>
+                                        <input type="password" id="login-password" required class="w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm text-slate-700 shadow-sm transition-all" placeholder="••••••••">
+                                        <button type="button" onclick="togglePassword('login-password', 'eye-icon')" class="absolute inset-y-0 right-0 pr-4 flex items-center opacity-40 hover:opacity-100 transition-opacity">
+                                            <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/128/2767/2767146.png" alt="Eye" class="w-4 h-4">
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full mt-2 py-4 bg-gradient-to-r from-brand to-pink-500 hover:from-brand-dark hover:to-pink-600 text-white rounded-2xl font-bold text-sm shadow-[0_10px_20px_-5px_rgba(139,92,246,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                                    Buka Ruang Kerja
+                                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828395.png" class="w-4 h-4 brightness-0 invert">
+                                </button>
+                            </form>
+                        </div>
+
+                        <div id="area-login-siswa" class="w-full hidden fade-in h-full flex flex-col">
+                            <div class="text-center mb-6">
+                                <h2 class="text-2xl md:text-3xl font-black text-rose-500 mb-2">Layanan Cepat Siswa</h2>
+                                <p class="text-sm text-slate-500 font-medium">Silakan pilih layanan BK yang ingin kamu akses saat ini.</p>
+                            </div>
+                            
+                            <div class="flex-1 overflow-y-auto pr-2 grid-scroll-area w-full">
+                                <div id="grid-portal-siswa" class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
+                                    <div class="col-span-full text-center py-10 text-slate-400">
+                                        <i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i>
+                                        <p class="text-sm font-medium">Menyiapkan layanan siswa...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -722,7 +812,7 @@
     <!-- ========================================== -->
     <script>
         // MASUKKAN URL GOOGLE APPS SCRIPT DI SINI
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbweEj4gDwUtAbWMU9vn4yuOpZnetKyI6DwZsrfptx5NnGgVOmHiSSxJ7_-CM2DfNT9i/exec"; 
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzQuqWhXOaIOu98mmiQaNOomtUIMOQmF8ip33cPZkOafTLjlFNQhCUXWJ-GJQKStOFo/exec"; 
         
         let currentUser = {}; 
 
@@ -1542,6 +1632,97 @@
 				}
 			});
 		}
+		
+		// =====================================
+        // LOGIKA 3D FLIP CARD LOGIN (GURU & SISWA)
+        // =====================================
+        
+        function flipTo(target) {
+            const card = document.getElementById('flip-card');
+            const areaGuru = document.getElementById('area-login-guru');
+            const areaSiswa = document.getElementById('area-login-siswa');
+            const backTitle = document.getElementById('back-title');
+
+            // Setel tampilan sisi belakang sebelum diputar
+            if (target === 'guru') {
+                areaSiswa.classList.add('hidden');
+                areaGuru.classList.remove('hidden');
+                backTitle.innerText = "Portal Guru";
+                backTitle.className = "font-black text-brand text-lg md:text-xl tracking-tight";
+            } else {
+                areaGuru.classList.add('hidden');
+                areaSiswa.classList.remove('hidden');
+                backTitle.innerText = "Portal Siswa";
+                backTitle.className = "font-black text-rose-500 text-lg md:text-xl tracking-tight";
+                
+                // Panggil data layanan siswa dari API jika belum terisi
+                if(document.getElementById('grid-portal-siswa').innerHTML.includes('Menyiapkan')) {
+                    loadPortalSiswa();
+                }
+            }
+
+            // Putar kartunya!
+            card.classList.add('is-flipped');
+        }
+
+        function flipBack() {
+            const card = document.getElementById('flip-card');
+            // Putar balik ke depan
+            card.classList.remove('is-flipped');
+            
+            // Opsional: Bersihkan form login saat dibalik
+            setTimeout(() => {
+                document.getElementById('login-form').reset();
+            }, 500); // Diberi jeda agar tidak terlihat tiba-tiba hilang saat kartu berputar
+        }
+
+        // 2. Fungsi Mengambil Data Portal Siswa dari Spreadsheet (VERSI POP-UP & IFRAME ANTI-ERROR)
+        async function loadPortalSiswa() {
+            const grid = document.getElementById("grid-portal-siswa");
+            
+            const res = await fetchAPI('getPortalSiswa');
+            if(res.status === "success") {
+                grid.innerHTML = "";
+                
+                if(res.data.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-6 text-sm font-medium">Belum ada layanan siswa yang aktif.</div>';
+                    return;
+                }
+                
+                res.data.forEach(item => {
+                    // PERBAIKAN: Memastikan url_ikon terbaca sebagai teks dan memberikan ikon default jika kosong di Spreadsheet
+                    let urlIkon = item.url_ikon ? String(item.url_ikon).trim() : "fa-solid fa-link";
+                    let isImage = urlIkon.includes("http");
+                    let finalIconUrl = isImage ? extractLh3Url(urlIkon) : "";
+                    
+                    // Deteksi cerdas apakah ikon berbentuk link gambar atau font-awesome (dengan fallback onerror jika gambar rusak)
+                    let iconHtmlPopup = isImage 
+                        ? `<img src="${finalIconUrl}" class="w-12 h-12 object-contain mx-auto mb-3 drop-shadow-sm" onerror="this.src='https://cdn-icons-png.flaticon.com/128/2920/2920274.png'">` 
+                        : `<div class="w-14 h-14 bg-brand-light/20 text-brand rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner"><i class="${urlIkon}"></i></div>`;
+                    
+                    let iconHtmlGrid = isImage 
+                        ? `<img src="${finalIconUrl}" class="w-10 h-10 object-contain mb-3 drop-shadow-sm group-hover:scale-110 transition-transform" onerror="this.src='https://cdn-icons-png.flaticon.com/128/2920/2920274.png'">` 
+                        : `<div class="w-12 h-12 bg-gradient-to-tr from-brand-light to-brand-dark text-white rounded-xl flex items-center justify-center mb-3 text-2xl shadow-inner group-hover:scale-110 transition-transform"><i class="${urlIkon}"></i></div>`;
+                    
+                    // Mencegah error tanda kutip pada judul
+                    let titleSafe = item.nama_layanan ? String(item.nama_layanan).replace(/'/g, "\\'") : "Layanan";
+                    let descSafe = item.deskripsi ? encodeURIComponent(String(item.deskripsi)) : "";
+                    
+                    // Konfigurasi Klik: Membuka Modal Detail yang terhubung dengan Iframe
+                    let btnClick = `onclick="openDetailApp(this)" data-url="${item.url_layanan}" data-title="${titleSafe}" data-desc="${descSafe}" data-icon="${encodeURIComponent(iconHtmlPopup)}"`;
+                    
+                    grid.innerHTML += `
+                        <div ${btnClick} class="bg-white/80 hover:bg-white border border-slate-200 hover:border-brand-light p-5 rounded-2xl flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1.5 shadow-sm hover:shadow-[0_10px_20px_-5px_rgba(139,92,246,0.3)] group cursor-pointer">
+                            ${iconHtmlGrid}
+                            <h3 class="font-bold text-slate-700 text-xs md:text-sm group-hover:text-brand transition-colors line-clamp-2">${item.nama_layanan}</h3>
+                            <p class="text-[9px] text-slate-400 mt-1.5 line-clamp-2 leading-tight">${item.deskripsi}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                grid.innerHTML = '<div class="col-span-full text-center text-red-500 py-6 text-sm font-medium">Gagal menghubungkan ke server.</div>';
+            }
+        }
 
     </script>
 	<script>
