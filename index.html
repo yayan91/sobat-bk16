@@ -807,26 +807,210 @@
 
 						<!-- Riwayat Laporan -->
 						<div class="bg-white/10 backdrop-blur border border-white/15 rounded-[2rem] p-6">
-							<h4 class="font-extrabold text-white text-sm mb-5 flex items-center gap-2">
-								<i class="ph-fill ph-clock-countdown text-amber-400"></i> Riwayat Laporanku
-							</h4>
-							<div id="riwayat-laporan" class="space-y-3">
+							<div class="flex items-center justify-between mb-5">
+								<h4 class="font-extrabold text-white text-sm flex items-center gap-2">
+									<i class="ph-fill ph-clock-countdown text-amber-400"></i> Riwayat Laporanku
+								</h4>
+								<button onclick="muatRiwayatLaporan()" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white/70 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-bold transition">
+									<i class="ph-bold ph-arrows-clockwise"></i> Refresh
+								</button>
+							</div>
+
+							<div class="flex gap-2 mb-4 flex-wrap">
+								<button onclick="filterLaporanPengguna('Semua', this)" class="lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-amber-500 text-blue-900 border-amber-500">
+									Semua
+								</button>
+								<button onclick="filterLaporanPengguna('Masuk', this)" class="lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Masuk
+								</button>
+								<button onclick="filterLaporanPengguna('Diproses', this)" class="lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Diproses
+								</button>
+								<button onclick="filterLaporanPengguna('Selesai', this)" class="lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Selesai
+								</button>
+							</div>
+
+							<div id="lapor-pengguna-list" class="space-y-3">
 								<p class="text-blue-300/60 text-sm text-center py-6 italic">Memuat riwayat...</p>
 							</div>
+
+							<div id="lapor-pengguna-paginasi" class="mt-4"></div>
 						</div>
 
 					</div>
 				</div>
 				<div id="layanan-konsultasi" class="layanan-sub hidden">
-					<div class="min-h-screen flex items-center justify-center px-4">
-						<div class="text-center text-white">
-							<i class="ph-fill ph-chats text-6xl text-blue-400 mb-4 block"></i>
-							<h3 class="text-2xl font-extrabold mb-2">Konsultasi</h3>
-							<p class="text-blue-200/60 mb-6">Segera hadir di Tahap 5</p>
-							<button onclick="navigasiLayanan('layanan-dashboard')" class="bg-white/10 border border-white/20 text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-white/20 transition flex items-center gap-2 mx-auto">
-								<i class="ph-bold ph-arrow-left"></i> Kembali
+					<div class="min-h-screen px-4 py-10 max-w-2xl mx-auto">
+
+						<!-- Header -->
+						<div class="flex items-center gap-4 mb-8">
+							<button onclick="navigasiLayanan('layanan-dashboard')"
+								class="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition shrink-0">
+								<i class="ph-bold ph-arrow-left"></i>
 							</button>
+							<div>
+								<h3 class="text-xl font-extrabold text-white">Konsultasi</h3>
+								<p class="text-blue-200/60 text-xs mt-0.5">Konsultasikan masalahmu dengan Guru BK</p>
+							</div>
 						</div>
+
+						<!-- PANEL: Buat Sesi Baru -->
+						<div id="konsultasi-panel-baru" class="bg-white/10 backdrop-blur border border-white/15 rounded-[2rem] p-6 mb-6">
+							<h4 class="font-extrabold text-white text-sm mb-5 flex items-center gap-2">
+								<i class="ph-fill ph-plus-circle text-amber-400"></i> Buat Sesi Konsultasi Baru
+							</h4>
+
+							<!-- Info batas sesi -->
+							<div id="konsultasi-info-batas" class="hidden mb-4 bg-red-500/20 border border-red-500/30 rounded-xl px-4 py-3">
+								<p class="text-red-300 text-xs font-bold flex items-center gap-2">
+									<i class="ph-fill ph-warning-circle"></i>
+									Kamu sudah memiliki 3 sesi aktif. Selesaikan atau batalkan sesi lama sebelum membuka yang baru.
+								</p>
+							</div>
+
+							<div id="konsultasi-form-baru" class="space-y-4">
+								<!-- Pilih Guru BK -->
+								<div>
+									<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+										Pilih Guru BK <span class="text-red-400">*</span>
+									</label>
+									<div id="konsultasi-list-guru" class="grid grid-cols-1 gap-2">
+										<div class="flex items-center gap-2 text-blue-300/60 text-xs py-3">
+											<div class="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+											Memuat daftar Guru BK...
+										</div>
+									</div>
+								</div>
+
+								<!-- Topik -->
+								<div>
+									<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+										Topik Konsultasi <span class="text-red-400">*</span>
+									</label>
+									<input id="konsultasi-topik" type="text" maxlength="100"
+										placeholder="Contoh: Masalah belajar, pemilihan jurusan, dll."
+										class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-amber-400/50 focus:bg-white/10 transition">
+									<p class="text-white/30 text-[10px] mt-1 text-right" id="konsultasi-topik-counter">0/100</p>
+								</div>
+
+								<!-- Deskripsi Awal -->
+								<div>
+									<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+										Ceritakan Masalahmu <span class="text-red-400">*</span>
+									</label>
+									<textarea id="konsultasi-deskripsi" rows="4" maxlength="500"
+										placeholder="Jelaskan secara singkat apa yang ingin kamu konsultasikan..."
+										class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-amber-400/50 focus:bg-white/10 transition resize-none"></textarea>
+									<p class="text-white/30 text-[10px] mt-1 text-right" id="konsultasi-desk-counter">0/500</p>
+								</div>
+
+								<button onclick="kirimSesiKonsultasi()"
+									id="btn-kirim-konsultasi"
+									class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-extrabold py-4 rounded-xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition flex items-center justify-center gap-2">
+									<i class="ph-bold ph-paper-plane-tilt"></i> Mulai Sesi Konsultasi
+								</button>
+							</div>
+						</div>
+
+						<!-- PANEL: Daftar Sesi -->
+						<div class="bg-white/10 backdrop-blur border border-white/15 rounded-[2rem] p-6">
+							<div class="flex items-center justify-between mb-5">
+								<h4 class="font-extrabold text-white text-sm flex items-center gap-2">
+									<i class="ph-fill ph-chats-circle text-blue-400"></i> Sesi Konsultasiku
+								</h4>
+								<button onclick="muatSesiKonsultasi()"
+									class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white/70 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-bold transition">
+									<i class="ph-bold ph-arrows-clockwise" id="icon-refresh-konsultasi"></i> Refresh
+								</button>
+							</div>
+
+							<!-- Filter Tab -->
+							<div class="flex gap-2 mb-4 flex-wrap">
+								<button onclick="filterSesiKonsultasi('semua', this)"
+									class="sesi-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-amber-500 text-blue-900 border-amber-500">
+									Semua
+								</button>
+								<button onclick="filterSesiKonsultasi('Aktif', this)"
+									class="sesi-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Aktif
+								</button>
+								<button onclick="filterSesiKonsultasi('Selesai', this)"
+									class="sesi-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Selesai
+								</button>
+								<button onclick="filterSesiKonsultasi('Dibatalkan', this)"
+									class="sesi-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Dibatalkan
+								</button>
+							</div>
+
+							<div id="konsultasi-sesi-list" class="space-y-3">
+								<p class="text-blue-300/60 text-sm text-center py-6 italic">Memuat sesi...</p>
+							</div>
+						</div>
+
+						<!-- PANEL: Chat Sesi (tersembunyi, muncul saat buka sesi) -->
+						<div id="konsultasi-panel-chat" class="hidden fixed inset-0 z-[80] bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 flex flex-col">
+
+							<!-- Header Chat -->
+							<div class="shrink-0 px-4 py-4 border-b border-white/10 flex items-center gap-3 bg-blue-950/50 backdrop-blur">
+								<button onclick="tutupPanelChat()"
+									class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition shrink-0">
+									<i class="ph-bold ph-arrow-left"></i>
+								</button>
+								<div class="flex-1 min-w-0">
+									<p id="chat-judul" class="text-white font-extrabold text-sm truncate">-</p>
+									<p id="chat-guru" class="text-blue-300/60 text-[10px] mt-0.5 truncate">-</p>
+								</div>
+								<div class="flex items-center gap-2 shrink-0">
+									<span id="chat-status-badge" class="text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border">-</span>
+									<button onclick="konfirmasiBatalkanSesi()"
+										id="btn-batalkan-sesi"
+										class="hidden w-9 h-9 rounded-xl bg-red-500/20 text-red-300 hover:bg-red-500 hover:text-white transition flex items-center justify-center" title="Batalkan Sesi">
+										<i class="ph-bold ph-x-circle text-sm"></i>
+									</button>
+								</div>
+							</div>
+
+							<!-- Info Sesi -->
+							<div id="chat-info-sesi" class="shrink-0 mx-4 mt-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3">
+								<p class="text-[9px] font-bold text-blue-300/60 uppercase tracking-widest mb-1">Deskripsi Awal</p>
+								<p id="chat-deskripsi-awal" class="text-white/70 text-xs leading-relaxed">-</p>
+							</div>
+
+							<!-- Area Pesan -->
+							<div id="chat-messages" class="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+								<p class="text-blue-300/60 text-xs text-center py-4 italic">Memuat pesan...</p>
+							</div>
+
+							<!-- Info batas pesan -->
+							<div id="chat-batas-info" class="hidden shrink-0 mx-4 mb-2">
+								<div class="bg-amber-500/20 border border-amber-500/30 rounded-xl px-4 py-2.5 flex items-center gap-2">
+									<i class="ph-fill ph-warning text-amber-400 text-sm shrink-0"></i>
+									<p class="text-amber-300 text-[10px] font-bold">Batas 20 pesan tercapai. Buka sesi baru jika masih perlu berkonsultasi.</p>
+								</div>
+							</div>
+
+							<!-- Input Pesan -->
+							<div id="chat-input-area" class="shrink-0 px-4 pb-6 pt-3 border-t border-white/10 bg-blue-950/30">
+								<div class="flex gap-2 items-end">
+									<div class="flex-1 relative">
+										<textarea id="chat-input-pesan" rows="1" maxlength="500"
+											placeholder="Tulis pesanmu di sini..."
+											oninput="autoResizeChatInput(this); hitungKarakterChat(this)"
+											class="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-amber-400/50 focus:bg-white/10 transition resize-none max-h-32"></textarea>
+										<p id="chat-karakter-counter" class="absolute bottom-2 right-3 text-white/20 text-[9px] font-bold">0/500</p>
+									</div>
+									<button onclick="kirimPesanKonsultasi()"
+										id="btn-kirim-pesan"
+										class="w-11 h-11 rounded-2xl bg-amber-500 text-blue-900 flex items-center justify-center hover:bg-amber-400 hover:-translate-y-0.5 transition shadow-lg shrink-0">
+										<i class="ph-bold ph-paper-plane-tilt text-base"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
 				<div id="layanan-booking" class="layanan-sub hidden">
@@ -1075,19 +1259,46 @@
         </aside>
 
         <main class="flex-1 flex flex-col h-full overflow-hidden relative z-10">
-            <header class="h-20 glass flex items-center justify-between px-4 md:px-8 shadow-sm z-20 shrink-0">
-                <div class="flex items-center gap-4">
-                    <button onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-blue-900 bg-slate-100 p-2 rounded-lg"><i class="ph-bold ph-list text-xl"></i></button>
-                    <div>
-                        <h2 id="dashboard-title" class="text-lg md:text-2xl font-extrabold text-slate-900 leading-none">Dashboard</h2>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1" id="sheet-subtitle">Manajemen Data</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3 bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-100">
-                    <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-lg"><i class="ph-fill ph-user-circle"></i></div>
-                    <span id="user-display" class="font-bold text-slate-700 text-xs hidden md:block">Admin BK</span>
-                </div>
-            </header>
+           <!-- HEADER DASHBOARD MEWAH -->
+			<header class="h-auto min-h-[5rem] py-3 glass flex items-center justify-between px-4 md:px-8 border-b border-slate-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] z-20 shrink-0 relative overflow-hidden">
+				<!-- Efek Cahaya Latar Belakang (Ambient Glow) -->
+				<div class="absolute top-0 right-1/4 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2"></div>
+				<div class="absolute bottom-0 left-1/4 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl pointer-events-none translate-y-1/2"></div>
+
+				<div class="flex items-center gap-4 relative z-10">
+					<button onclick="toggleSidebar()" id="btn-mobile-sidebar" class="md:hidden text-slate-600 hover:text-blue-900 bg-white/50 border border-slate-200 p-2 rounded-xl hidden shadow-sm"><i class="ph-bold ph-list text-xl"></i></button>
+					<div class="flex flex-col">
+						<h2 id="dashboard-title" class="text-xl md:text-[1.75rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-950 via-blue-800 to-blue-600 leading-tight tracking-tight drop-shadow-sm">Dashboard</h2>
+						<p class="text-[10px] font-extrabold text-amber-500 uppercase tracking-[0.2em] mt-1 flex items-center gap-1.5" id="sheet-subtitle">
+							<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span> Manajemen Data
+						</p>
+					</div>
+				</div>
+				
+				<!-- PANEL KANAN: Profil & Tombol Keluar Premium -->
+				<div class="flex items-center gap-3 relative z-10">
+					
+					<!-- Chip Profil Mewah (Sudah Bisa Diklik) -->
+					<div onclick="loadTableData('Guru')" class="flex items-center gap-3 bg-gradient-to-r from-slate-50 to-white pl-1.5 pr-4 py-1.5 rounded-[2rem] shadow-sm border border-slate-200/80 hover:shadow-md hover:border-blue-300 transition duration-300 cursor-pointer group" title="Lihat Profil Anda">
+						<div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-400 to-orange-500 p-[2px] shadow-sm group-hover:rotate-6 transition duration-300 shrink-0">
+							<img id="header-avatar" src="" onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=1e3a8a&color=fff'" class="w-full h-full rounded-full object-cover border-[1.5px] border-white bg-slate-100">
+						</div>
+						<div class="hidden md:flex flex-col justify-center">
+							<span id="user-display" class="font-extrabold text-slate-800 text-xs leading-tight group-hover:text-blue-700 transition">Admin BK</span>
+							<span class="text-[8px] font-extrabold text-slate-400 tracking-widest">GURU BK</span>
+						</div>
+					</div>
+
+					<!-- Tombol Keluar Bercahaya -->
+					<button onclick="logout()" class="group relative px-4 py-2.5 bg-gradient-to-r from-rose-500 to-red-600 text-white rounded-[1.25rem] font-extrabold text-xs shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 overflow-hidden border border-red-400/50" title="Akhiri Sesi">
+						<div class="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12"></div>
+						<i class="ph-bold ph-power text-base group-hover:rotate-90 transition-transform duration-500 relative z-10"></i>
+						<span class="hidden md:inline relative z-10">Keluar</span>
+					</button>
+
+				</div>
+			</header>
+			<!-- HEADER DASHBOARD MEWAH END -->
 
             <div class="flex-1 overflow-auto p-4 md:p-8 relative">
                 <div class="glass-card bg-white rounded-3xl p-4 md:p-6 shadow-sm border border-slate-100 flex flex-col h-full">
@@ -1108,6 +1319,17 @@
                     </div>
                 </div>
             </div>
+			
+			<!-- FOOTER GURU START -->
+                <footer class="bg-white border-t border-slate-200 py-3 px-6 shrink-0 z-20 flex flex-col md:flex-row items-center justify-between gap-2 text-center md:text-left">
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-md bg-amber-500 flex items-center justify-center text-white"><i class="ph-fill ph-shield-check text-[10px]"></i></div>
+                        <p class="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest">SOBAT BK © 2026</p>
+                    </div>
+                    <p class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">UPT SPF SMP Negeri 16 Makassar | Mappaguru Online</p>
+                </footer>
+                <!-- FOOTER GURU END -->
+			
         </main>
     </div>
 
@@ -1143,7 +1365,14 @@
         // ==========================================
         // KONFIGURASI SISTEM
         // ==========================================
-        const GAS_API_URL = "https://script.google.com/macros/s/AKfycby1EdKhaV-LRNyDCqYnHw5fJZBVJz05hFOCSmKLbxa-O47DgxImMinTvvJFtILLsY-i/exec"; 
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycby1EdKhaV-LRNyDCqYnHw5fJZBVJz05hFOCSmKLbxa-O47DgxImMinTvvJFtILLsY-i/exec";
+
+		let stateGuruUniversal = {
+			data: [],
+			filtered: [],
+			halaman: 1,
+			perHalaman: 8
+		};
         
         const DATABASE_SCHEMA = {
 			"Guru":        { headers: ["username","password","nama_lengkap","nip_nuptk","tempat_lahir","tanggal_lahir","jenis_kelamin","agama","alamat_lengkap","no_wa","email","pendidikan_terakhir","url_foto_profil","status_akun"] },
@@ -1194,7 +1423,17 @@
 
         let publicDataDB = { berita: [], karya: [] };
         let kembaliKePage = 'page-beranda';
-        let loggedInUser = null; 
+        let loggedInUser = null;
+		let sesiKonsultasiList = []; // Menyimpan daftar sesi user
+		let aktifKonsultasiId = null; // Menyimpan ID sesi yang sedang dibuka
+		let dataGuruBKAktif = []; // Cache daftar guru BK
+		
+		let stateLaporPengguna = {
+			data: [], filtered: [], halaman: 1, perHalaman: 3
+		};
+		
+		// Menandakan posisi navigasi dashboard aktif
+		let isAtDashboardHub = true;
 
         // ==========================================
         // FUNGSI ALERT & FORMAT TANGGAL
@@ -2005,39 +2244,156 @@
 			document.getElementById("dashboard-view").classList.remove("hidden");
 			document.getElementById("dashboard-view").classList.add("flex");
 			document.getElementById("user-display").innerText = user.nama_lengkap;
+			document.getElementById("header-avatar").src = fixDriveUrl(user.url_foto_profil);
+			
+			// Sembunyikan sidebar bawaan agar menjadi full-screen hub 1 halaman yang luas
+			if(document.getElementById("sidebar")) document.getElementById("sidebar").classList.add("hidden");
+			if(document.getElementById("mobile-sidebar-overlay")) document.getElementById("mobile-sidebar-overlay").classList.add("hidden");
+			
+			// Tampilkan Launchpad Hub Utama
+			renderDashboardHub();
+		}
 
-			Swal.fire({
-				title: `Selamat Datang! 👋`,
-				html: `
-					<div style="text-align:center;">
-						<img src="${fixDriveUrl(user.url_foto_profil)}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(user.nama_lengkap)}&background=1e3a8a&color=fff&size=128'" style="width:80px;height:80px;border-radius:1rem;object-fit:cover;margin:0 auto 12px;display:block;border:3px solid #f59e0b;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
-						<p style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:4px;">${user.nama_lengkap}</p>
-						<p style="font-size:0.75rem;font-weight:700;color:#2563eb;text-transform:uppercase;letter-spacing:0.1em;">${user.pendidikan_terakhir}</p>
-						<div style="margin-top:12px;background:#f8fafc;border-radius:0.75rem;padding:10px 16px;">
-							<p style="font-size:0.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">Sesi dimulai pukul</p>
-							<p style="font-size:1rem;font-weight:800;color:#f59e0b;">${new Date().toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'})}</p>
-						</div>
+		function renderDashboardHub() {
+			isAtDashboardHub = true;
+			currentEditId = null;
+			
+			// Atur Judul Header Utama
+			document.getElementById("dashboard-title").innerHTML = `<span class="tracking-tight">SOBAT BK | PRO</span>`;
+			document.getElementById("sheet-subtitle").innerText = "Sistem Online Layanan BK & Administrasi";
+
+			const wrapper = document.getElementById("dynamic-content-wrapper");
+			
+			// Sembunyikan bar tombol "Tambah Data Baru" bawaan tabel saat berada di Hub Utama
+			const actionHeader = wrapper.previousElementSibling;
+			if(actionHeader) actionHeader.classList.add("hidden");
+
+			// Desain Layout Grid Kartu Hub Mewah
+			wrapper.innerHTML = `
+			<div class="w-full space-y-10 p-2 md:p-4 bg-slate-50/50 rounded-2xl">
+				
+				<div class="space-y-4">
+					<div class="flex items-center gap-2.5 pb-2 border-b border-slate-200">
+						<div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-blue-600 to-indigo-600"></div>
+						<h4 class="font-extrabold text-slate-800 text-xs tracking-wider uppercase">Blok Layanan BK</h4>
 					</div>
-				`,
-				confirmButtonText: 'Mulai Bekerja',
-				confirmButtonColor: '#1e3a8a',
-				timer: 4000,
-				timerProgressBar: true,
-				showClass: { popup: 'animate__animated animate__fadeInDown' },
-				customClass: { popup: 'rounded-3xl' }
-			});
-            
-            const menuContainer = document.getElementById("sidebar-menu");
-            menuContainer.innerHTML = "";
-            sheetsConfig.forEach((cfg) => {
-                menuContainer.innerHTML += `
-                    <button onclick="loadTableData('${cfg.name}')" class="w-full flex items-center gap-3 px-4 py-3 text-left text-sm font-bold text-slate-400 hover:bg-blue-600 hover:text-white rounded-xl transition group nav-btn" data-sheet="${cfg.name}">
-                        <i class="${cfg.icon} text-xl group-hover:animate-pulse"></i> ${cfg.name}
-                    </button>
-                `;
-            });
-            loadTableData(sheetsConfig[0].name);
-        }
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+						
+						<div onclick="loadTableData('Konsultasi')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-blue-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/10 group-hover:scale-105 transition"><i class="ph-fill ph-chats text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-blue-600 transition truncate">Konsultasi</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Chat komunikasi bimbingan</p></div>
+						</div>
+
+						<div onclick="loadTableData('Laporan')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-red-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white shadow-md shadow-red-500/10 group-hover:scale-105 transition"><i class="ph-fill ph-flag text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-red-600 transition truncate">Laporan</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Kelola aduan perundungan</p></div>
+						</div>
+
+						<div onclick="loadTableData('Saran')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-amber-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-md shadow-amber-500/10 group-hover:scale-105 transition"><i class="ph-fill ph-lightbulb text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-amber-600 transition truncate">Kotak Saran</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Tampungan aspirasi warga</p></div>
+						</div>
+
+						<div onclick="loadTableData('Booking')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-emerald-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/10 group-hover:scale-105 transition"><i class="ph-fill ph-calendar-check text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-emerald-600 transition truncate">Booking Jadwal</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Konseling tatap muka</p></div>
+						</div>
+
+						<div onclick="loadTableData('Izin')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-violet-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white shadow-md shadow-purple-500/10 group-hover:scale-105 transition"><i class="ph-fill ph-door-open text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-violet-600 transition truncate">Izin Siswa</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Persetujuan tidak hadir</p></div>
+						</div>
+
+						<div onclick="loadTableData('Aplikasi')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-indigo-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/10 group-hover:scale-105 transition"><i class="ph-fill ph-app-window text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-indigo-600 transition truncate">Aplikasi</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Sistem aplikasi pendukung</p></div>
+						</div>
+
+						<div onclick="loadTableData('Portal')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-sky-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-sky-500/10 group-hover:scale-105 transition"><i class="ph-fill ph-globe-hemisphere-west text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-sky-600 transition truncate">Portal</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Pintasan tautan eksternal</p></div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="space-y-4">
+					<div class="flex items-center gap-2.5 pb-2 border-b border-slate-200">
+						<div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-purple-600 to-pink-600"></div>
+						<h4 class="font-extrabold text-slate-800 text-xs tracking-wider uppercase">Blok Media & Informasi</h4>
+					</div>
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+						
+						<div onclick="loadTableData('Berita')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-blue-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-newspaper text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-blue-600 transition truncate">Berita & Artikel</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Publikasi kabar sekolah</p></div>
+						</div>
+
+						<div onclick="loadTableData('Pengumuman')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-amber-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-rose-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-megaphone text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-amber-600 transition truncate">Pengumuman</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Kelola papan pengumuman</p></div>
+						</div>
+
+						<div onclick="loadTableData('Video')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-red-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-youtube-logo text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-red-600 transition truncate">Galeri Video</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Media edukasi visual</p></div>
+						</div>
+
+						<div onclick="loadTableData('Media Ajar')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-emerald-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-books text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-emerald-600 transition truncate">Media Ajar</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Upload materi RPL BK</p></div>
+						</div>
+
+						<div onclick="loadTableData('Karya')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-purple-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-palette text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-purple-600 transition truncate">Karya Siswa</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Apresiasi bakat kreativitas</p></div>
+						</div>
+
+						<div onclick="loadTableData('Foto Galeri')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-fuchsia-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-fuchsia-500 to-pink-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-image text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-fuchsia-600 transition truncate">Foto Kegiatan</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Jejak dokumentasi visual</p></div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="space-y-4">
+					<div class="flex items-center gap-2.5 pb-2 border-b border-slate-200">
+						<div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-slate-600 to-slate-800"></div>
+						<h4 class="font-extrabold text-slate-800 text-xs tracking-wider uppercase">Blok Administrasi & Moderasi</h4>
+					</div>
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+						
+						<div onclick="loadTableData('Pengguna')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-slate-400 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-users text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-slate-700 transition truncate">Data Pengguna</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Database Akun Siswa/Ortu</p></div>
+						</div>
+
+						<div onclick="loadTableData('Guru')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-blue-900 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-950 to-blue-800 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-chalkboard-teacher text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-blue-900 transition truncate">Profil Privat</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Kelola data profil Anda</p></div>
+						</div>
+
+						<div onclick="loadTableData('QnA')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-teal-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-question text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-teal-600 transition truncate">Tanya Jawab</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Moderasi & jawab QnA</p></div>
+						</div>
+
+						<div onclick="loadTableData('Testimoni')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-orange-300 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-chat-circle-text text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-orange-600 transition truncate">Testimoni</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Saring ulasan beranda</p></div>
+						</div>
+
+						<div onclick="loadTableData('Pengaturan')" class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4 hover:border-zinc-400 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group shadow-sm">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-500 to-zinc-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition"><i class="ph-fill ph-gear text-2xl"></i></div>
+							<div class="min-w-0 flex-1"><h5 class="font-extrabold text-slate-800 text-sm group-hover:text-zinc-600 transition truncate">Pengaturan</h5><p class="text-slate-400 text-[10px] font-semibold truncate">Konfigurasi kunci sistem</p></div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>`;
+		}
 
         function logout() {
 			Swal.fire({
@@ -2085,34 +2441,45 @@
         // CRUD DINAMIS & TABEL DASHBOARD
         // ==========================================
         async function loadTableData(sheetName) {
-            currentSheet = sheetName;
-            document.getElementById("dashboard-title").innerText = sheetName;
-            document.getElementById("table-name-display").innerText = sheetName;
-            if(window.innerWidth < 768) toggleSidebar(); 
-            
-            document.querySelectorAll('#sidebar-menu .nav-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('text-slate-400');
-                if(btn.dataset.sheet === sheetName) {
-                    btn.classList.remove('text-slate-400');
-                    btn.classList.add('bg-blue-600', 'text-white');
-                }
-            });
+			currentSheet = sheetName;
+			isAtDashboardHub = false;
+			
+			// MODIFIKASI: Mengubah judul header menjadi tombol kembali ke Hub Utama
+			document.getElementById("dashboard-title").innerHTML = `
+				<div class="flex items-center gap-3">
+					<button onclick="renderDashboardHub()" class="flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-xl text-sm transition shadow-sm border border-slate-200" title="Kembali ke Menu Utama">
+						<i class="ph-bold ph-arrow-left"></i>
+					</button>
+					<span class="font-extrabold text-slate-900">${sheetName}</span>
+				</div>
+			`;
+			document.getElementById("table-name-display").innerText = sheetName;
+			document.getElementById("sheet-subtitle").innerText = "Manajemen Data / " + sheetName;
 
-            // Perbaikan 1: Gunakan wrapper dinamis untuk indikator loading agar animasi tidak nyangkut
-            document.getElementById("dynamic-content-wrapper").innerHTML = `<div class="p-8 text-center text-slate-400 font-medium w-full flex flex-col items-center justify-center h-full"><div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>Memuat data...</div>`;
-            
-            try {
-                let res = await fetch(GAS_API_URL, { method: "POST", body: JSON.stringify({ action: "read", sheet: sheetName }) });
-                let result = await res.json();
-                
-                if(result.status === "success") {
-                    tableData = result.data;
-                    tableHeaders = tableData.length > 0 ? Object.keys(tableData[0]) : [];
-                    renderDynamicTable();
-                } else { alertError(result.message); }
-            } catch(e) { alertError(e.message); }
-        }
+			const wrapper = document.getElementById("dynamic-content-wrapper");
+			
+			// MODIFIKASI: Munculkan kembali bar tombol "Tambah Data Baru" bawaan tabel saat masuk menu kerja
+			const actionHeader = wrapper.previousElementSibling;
+			if(actionHeader) actionHeader.classList.remove("hidden");
+
+			wrapper.innerHTML = `<div class="p-8 text-center text-slate-400 font-medium w-full flex flex-col items-center justify-center h-full"><div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>Memuat data...</div>`;
+			
+			try {
+				let res = await fetch(GAS_API_URL, { method: "POST", body: JSON.stringify({ action: "read", sheet: sheetName }) });
+				let result = await res.json();
+				
+				if(result.status === "success") {
+					tableData = result.data;
+					tableHeaders = tableData.length > 0 ? Object.keys(tableData[0]) : [];
+					
+					stateGuruUniversal.data = tableData;
+					stateGuruUniversal.filtered = tableData;
+					stateGuruUniversal.halaman = 1;
+					
+					renderDynamicTable();
+				} else { alertError(result.message); }
+			} catch(e) { alertError(e.message); }
+		}
 
         function renderDynamicTable() {
             const wrapper = document.getElementById("dynamic-content-wrapper");
@@ -2123,10 +2490,13 @@
                 return;
             }
 			
-			// KONDISI VIDEO -> Tampil Berupa Kartu Grid
+			// KONDISI VIDEO -> Tampil Berupa Kartu Grid YouTube (Sudah Paginasi)
 			if(currentSheet === "Video") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
 				let html = `<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full">`;
-				tableData.forEach((row) => {
+				sliceData.forEach((row) => {
 					let vidId = '';
 					if(row.url_youtube && row.url_youtube.includes('v=')) {
 						vidId = row.url_youtube.split('v=')[1].split('&')[0];
@@ -2173,14 +2543,18 @@
 					</div>`;
 				});
 				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
 				wrapper.innerHTML = html;
 				return;
 			}
 			
-			// KONDISI MEDIA AJAR -> Tampil Berupa Kartu Grid
+			// KONDISI MEDIA AJAR -> Kartu Media Ajar RPL (Sudah Paginasi)
 			if(currentSheet === "Media Ajar") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
 				let html = `<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full">`;
-				tableData.forEach((row) => {
+				sliceData.forEach((row) => {
 					const rowId = row[tableHeaders[0]];
 					html += `
 					<div class="glass-card bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition border border-slate-100 group flex flex-col">
@@ -2229,28 +2603,33 @@
 					</div>`;
 				});
 				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
 				wrapper.innerHTML = html;
 				return;
 			}
 
-            // KONDISI 1: MENU APLIKASI -> Kartu Premium Cerah
+            // KONDISI APLIKASI -> Kartu Aplikasi Premium (Sudah Paginasi)
 			if(currentSheet === "Aplikasi") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
 				const accentColors = [
-					{ dot: '#6366f1', light: '#eef2ff', name: 'indigo' },
-					{ dot: '#f59e0b', light: '#fffbeb', name: 'amber' },
-					{ dot: '#8b5cf6', light: '#f5f3ff', name: 'violet' },
-					{ dot: '#10b981', light: '#ecfdf5', name: 'emerald' },
-					{ dot: '#ef4444', light: '#fef2f2', name: 'red' },
-					{ dot: '#ec4899', light: '#fdf2f8', name: 'pink' },
-					{ dot: '#0ea5e9', light: '#f0f9ff', name: 'sky' },
-					{ dot: '#f97316', light: '#fff7ed', name: 'orange' },
+					{ dot: '#6366f1', light: '#eef2ff' },
+					{ dot: '#f59e0b', light: '#fffbeb' },
+					{ dot: '#8b5cf6', light: '#f5f3ff' },
+					{ dot: '#10b981', light: '#ecfdf5' },
+					{ dot: '#ef4444', light: '#fef2f2' },
+					{ dot: '#ec4899', light: '#fdf2f8' },
+					{ dot: '#0ea5e9', light: '#f0f9ff' },
+					{ dot: '#f97316', light: '#fff7ed' },
 				];
 
 				let html = `
 				<div style="background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 40%, #faf5ff 70%, #eff6ff 100%); border-radius: 1.5rem; padding: 1.5rem;">
 					<div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">`;
 
-				tableData.forEach((row, idx) => {
+				sliceData.forEach((row, idx) => {
+					const rowId = row[tableHeaders[0]];
 					const ac = accentColors[idx % accentColors.length];
 					const isTab = (row.mode_buka || 'iframe') === 'tab';
 					html += `
@@ -2265,7 +2644,7 @@
 
 						<div class="ikon-portal-cerah w-14 h-14 rounded-2xl flex items-center justify-center mb-3 overflow-hidden shrink-0 relative z-10">
 							<img src="${fixDriveUrl(row.url_ikon)}"
-								onerror="this.parentElement.innerHTML='<i class=\'ph-fill ph-app-window text-indigo-400 text-xl\'></i>'"
+								onerror="this.parentElement.innerHTML='<i class=\\'ph-fill ph-app-window text-indigo-400 text-xl\\'></i>'"
 								class="w-9 h-9 object-contain">
 						</div>
 
@@ -2274,7 +2653,7 @@
 
 						<span class="badge-portal-cerah relative z-10 inline-flex items-center gap-1 font-bold px-3 py-1 rounded-full text-[8px] uppercase tracking-wider">
 							<i class="ph-bold ${isTab ? 'ph-arrow-square-out' : 'ph-frame-corners'}"></i>
-							${isTab ? 'Tab Baru' : 'Buka'}
+							${isTab ? 'Buka' : 'Buka'}
 						</span>
 
 						<div class="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-500 rounded-b-[1.75rem]"
@@ -2283,24 +2662,32 @@
 				});
 
 				html += `</div></div>`;
+				html += buatTombolPaginasiDashboardUniversal();
 				wrapper.innerHTML = html;
 				return;
 			}
 
-            // KONDISI 2: MENU GURU -> Tampil Berupa Profil Privat Saja
-            if(currentSheet === "Guru") {
-                let myData = tableData.find(r => r.username === loggedInUser.username);
-                if(!myData) {
-                    wrapper.innerHTML = `<div class="p-8 text-center text-red-500 font-bold">Data Anda tidak ditemukan.</div>`;
-                    return;
-                }
+            // KONDISI 2: MENU GURU -> Tampil Berupa Profil Privat Saja (TANPA PAGINASI)
+			if(currentSheet === "Guru") {
+				// Proteksi jika data belum selesai dimuat dari server
+				if(!tableData || tableData.length === 0) {
+					wrapper.innerHTML = `<div class="p-8 text-center text-slate-400 font-medium w-full flex flex-col items-center justify-center h-full"><div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>Memuat data profil...</div>`;
+					return;
+				}
 
-                const rowId = myData[tableHeaders[0]]; 
-                
-                wrapper.innerHTML = `
+				let myData = tableData.find(r => r.username === loggedInUser.username);
+				if(!myData) {
+					wrapper.innerHTML = `<div class="p-8 text-center text-red-500 font-bold">Data Anda tidak ditemukan di dalam sistem.</div>`;
+					return;
+				}
+
+				// Pastikan susunan header aman
+				if(tableHeaders.length === 0) tableHeaders = Object.keys(tableData[0]);
+				const rowId = myData[tableHeaders[0]] || ''; 
+				
+				// Langsung cetak profil tunggal tanpa looping sliceData
+				wrapper.innerHTML = `
 				<div class="max-w-3xl mx-auto w-full mt-6">
-
-					<!-- HERO CARD -->
 					<div class="relative rounded-[2.5rem] overflow-hidden shadow-xl mb-6">
 						<div class="h-44 bg-gradient-to-br from-blue-950 via-blue-800 to-amber-500 relative">
 							<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
@@ -2325,7 +2712,6 @@
 								</button>
 							</div>
 
-							<!-- STATS ROW -->
 							<div class="grid grid-cols-3 gap-4 p-5 bg-gradient-to-r from-blue-950 to-blue-800 rounded-2xl text-center mb-2">
 								<div>
 									<p class="text-[9px] font-bold text-blue-300 uppercase tracking-widest mb-1">Jenis Kelamin</p>
@@ -2343,7 +2729,6 @@
 						</div>
 					</div>
 
-					<!-- DETAIL GRID -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
 							<div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
@@ -2395,10 +2780,9 @@
 							</div>
 						</div>
 					</div>
-
 				</div>`;
-                return;
-            }
+				return; // Keluar dari fungsi agar tidak terkena kode paginasi universal di bawah
+			}
 			
 			// KONDISI PENGGUNA -> Tampilan Kartu Mewah
 			if(currentSheet === "Pengguna") {
@@ -2527,6 +2911,321 @@
 						if(result.status === "success") dataPengguna = result.data;
 						inisialisasiFilterGuru(tableData, 'guru-saran', renderItemSaranGuru);
 					});
+				return;
+			}
+			
+			// KONDISI KONSULTASI -> Layout Terbagi (Split Pane seperti WhatsApp Web)
+            if(currentSheet === "Konsultasi") {
+                // Filter hanya konsultasi yang ditujukan ke guru yang sedang login (kecuali Admin/Superadmin jika ada logika itu, sementara disamakan username guru)
+                const dataKonsultasiSaya = tableData.filter(r => {
+                    try { return JSON.parse(r.data_json).id_guru === loggedInUser.username; } 
+                    catch(e) { return false; }
+                }).sort((a,b) => new Date(b.tanggal_update) - new Date(a.tanggal_update));
+
+                wrapper.innerHTML = `
+                <div class="flex h-[calc(100vh-180px)] w-full gap-4 relative">
+                    <div class="w-full md:w-1/3 bg-white border border-slate-200 rounded-2xl flex flex-col overflow-hidden shadow-sm shrink-0">
+                        <div class="p-4 border-b border-slate-100 bg-slate-50">
+                            <h4 class="font-extrabold text-slate-800 text-sm mb-3"><i class="ph-bold ph-chats-teardrop text-blue-600"></i> Kotak Masuk Konsultasi</h4>
+                            <div class="flex bg-slate-200/50 p-1 rounded-xl">
+                                <button onclick="filterGuruKonsul('Aktif', this)" class="guru-konsul-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg transition bg-white text-blue-600 shadow-sm">Aktif</button>
+                                <button onclick="filterGuruKonsul('Selesai', this)" class="guru-konsul-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg transition text-slate-500 hover:text-slate-700">Selesai</button>
+                            </div>
+                        </div>
+                        <div id="guru-konsul-list" class="flex-1 overflow-y-auto bg-slate-50/50 p-2 space-y-2">
+                            </div>
+                    </div>
+
+                    <div id="guru-konsul-chat-panel" class="hidden md:flex flex-1 bg-slate-50 border border-slate-200 rounded-2xl flex-col overflow-hidden shadow-sm relative">
+                        <div class="flex-1 flex flex-col items-center justify-center text-slate-400">
+                            <i class="ph-fill ph-chats-circle text-6xl text-slate-200 mb-4"></i>
+                            <p class="font-bold text-sm">Pilih sesi konsultasi untuk mulai membalas</p>
+                        </div>
+                    </div>
+                </div>`;
+
+                // Simpan data di global sementara untuk fungsi filter
+                window._guruDataKonsul = dataKonsultasiSaya;
+                filterGuruKonsul('Aktif', document.querySelector('.guru-konsul-tab'));
+                return;
+            }
+			
+			// KONDISI BERITA -> Kartu Berita Mewah (Sudah Paginasi)
+			if(currentSheet === "Berita") {
+				// 1. Rumus Potong Data Per Halaman
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
+				let html = `<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">`;
+				
+				// 2. Ubah dari tableData menjadi sliceData
+				sliceData.forEach((row) => {
+					const rowId = row[tableHeaders[0]];
+					const statusColor = row.status === 'Aktif' ? 'bg-emerald-500' : 'bg-amber-500';
+					html += `
+					<div class="glass-card bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition border border-slate-100 group flex flex-col">
+						<div class="relative h-48 overflow-hidden bg-slate-100">
+							<img src="${fixDriveUrl(row.url_gambar_cover)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+							<span class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold uppercase px-3 py-1 rounded-full shadow-md">${row.kategori_berita}</span>
+							<span class="absolute top-3 right-3 ${statusColor} text-white text-[9px] font-bold uppercase px-3 py-1 rounded-full shadow-md">${row.status}</span>
+						</div>
+						<div class="p-5 flex flex-col flex-1">
+							<h4 class="font-extrabold text-slate-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">${row.judul_berita}</h4>
+							<p class="text-[10px] text-slate-400 font-bold flex items-center gap-1 mb-4">
+								<i class="ph-bold ph-calendar-blank"></i> ${formatTanggal(row.tanggal_publikasi)} <span class="mx-1">·</span> <i class="ph-bold ph-user-circle"></i> ${row.penulis}
+							</p>
+							<div class="mt-auto flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+								<button onclick="showFormModal('view', '${rowId}')" class="bg-slate-100 text-slate-600 p-2 rounded-lg hover:bg-slate-300 transition" title="Lihat"><i class="ph-bold ph-eye text-sm"></i></button>
+								<button onclick="showFormModal('edit', '${rowId}')" class="bg-amber-100 text-amber-600 p-2 rounded-lg hover:bg-amber-500 hover:text-white transition" title="Edit"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
+								<button onclick="hapusData('${rowId}')" class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-500 hover:text-white transition" title="Hapus"><i class="ph-bold ph-trash text-sm"></i></button>
+							</div>
+						</div>
+					</div>`;
+				});
+				html += `</div>`;
+				
+				// 3. Tempelkan komponen mesin tombol halaman di bawah grid kartu
+				html += buatTombolPaginasiDashboardUniversal();
+				
+				wrapper.innerHTML = html;
+				return;
+			}
+
+			// KONDISI PORTAL -> Kartu Layanan Portal (Sudah Paginasi)
+			if(currentSheet === "Portal") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
+				let html = `<div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">`;
+				sliceData.forEach((row, idx) => {
+					const rowId = row[tableHeaders[0]];
+					const isAktif = row.status === 'Aktif';
+					html += `
+					<div class="glass-card bg-white rounded-[1.5rem] p-5 flex flex-col items-center text-center shadow-sm hover:shadow-xl transition border border-slate-100 group relative">
+						<span class="absolute top-3 right-3 w-2 h-2 rounded-full ${isAktif ? 'bg-emerald-500' : 'bg-amber-500'} animate-pulse" title="${row.status}"></span>
+						<div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-3">
+							<img src="${fixDriveUrl(row.url_ikon)}" onerror="this.parentElement.innerHTML='<i class=\\'ph-fill ph-globe-hemisphere-west text-blue-400 text-2xl\\'></i>'" class="w-8 h-8 object-contain">
+						</div>
+						<h4 class="font-extrabold text-slate-800 text-xs mb-1 group-hover:text-blue-600 transition line-clamp-1">${row.nama_layanan}</h4>
+						<p class="text-[9px] text-slate-400 line-clamp-2 mb-3 flex-1">${row.deskripsi}</p>
+						<div class="mt-auto flex items-center justify-center gap-2 pt-3 border-t border-slate-100 w-full">
+							<button onclick="showFormModal('edit', '${rowId}')" class="bg-amber-100 text-amber-600 p-2 rounded-lg hover:bg-amber-500 hover:text-white transition flex-1 flex justify-center"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
+							<button onclick="hapusData('${rowId}')" class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-500 hover:text-white transition shrink-0"><i class="ph-bold ph-trash text-sm"></i></button>
+						</div>
+					</div>`;
+				});
+				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
+				wrapper.innerHTML = html;
+				return;
+			}
+
+			// KONDISI PENGUMUMAN -> Manajemen Timeline Modern (Sudah Paginasi)
+			if(currentSheet === "Pengumuman") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
+				let html = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">`;
+				sliceData.forEach((row) => {
+					const rowId = row[tableHeaders[0]];
+					const isAktif = row.status === 'Aktif';
+					html += `
+					<div class="bg-white rounded-2xl p-5 shadow-sm border ${isAktif ? 'border-blue-200 ring-1 ring-blue-50' : 'border-slate-200'} hover:shadow-md transition flex flex-col relative overflow-hidden">
+						${isAktif ? `<div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>` : `<div class="absolute top-0 left-0 w-1 h-full bg-slate-300"></div>`}
+						<div class="pl-2 flex-1">
+							<div class="flex justify-between items-start mb-2">
+								<h4 class="font-extrabold text-slate-800 text-sm leading-snug pr-4">${row.judul_pengumuman}</h4>
+								<span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${isAktif ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'} shrink-0">${row.status}</span>
+							</div>
+							<p class="text-[10px] text-slate-500 font-bold flex items-center gap-1.5 mb-2 bg-slate-50 w-max px-2 py-1 rounded-lg">
+								<i class="ph-bold ph-calendar-blank text-blue-400"></i> ${formatTanggal(row.tanggal_mulai)} <span class="text-slate-300">→</span> ${formatTanggal(row.tanggal_berakhir)}
+							</p>
+							<p class="text-xs text-slate-600 line-clamp-2 mb-4">${row.deskripsi_pengumuman}</p>
+						</div>
+						<div class="pl-2 flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+							<button onclick="showFormModal('view', '${rowId}')" class="bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-slate-200 transition"><i class="ph-bold ph-eye"></i> Detail</button>
+							<button onclick="showFormModal('edit', '${rowId}')" class="bg-amber-100 text-amber-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-500 hover:text-white transition"><i class="ph-bold ph-pencil-simple"></i> Edit</button>
+							<button onclick="hapusData('${rowId}')" class="bg-red-100 text-red-600 p-1.5 rounded-lg hover:bg-red-500 hover:text-white transition"><i class="ph-bold ph-trash"></i></button>
+						</div>
+					</div>`;
+				});
+				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
+				wrapper.innerHTML = html;
+				return;
+			}
+
+			// KONDISI TESTIMONI -> Panel Moderasi Testimoni (Sudah Paginasi)
+			if(currentSheet === "Testimoni") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
+				let html = `<div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">`;
+				sliceData.forEach((row) => {
+					const rowId = row[tableHeaders[0]];
+					const isTampil = row.status_tampil === 'Tampil';
+					html += `
+					<div class="bg-white rounded-2xl p-6 shadow-sm border ${isTampil ? 'border-amber-200' : 'border-slate-200'} relative flex flex-col">
+						<i class="ph-fill ph-quotes text-slate-100 text-5xl absolute top-3 right-4"></i>
+						<div class="flex gap-1 mb-3 relative z-10">
+							${[1,2,3,4,5].map(() => `<i class="ph-fill ph-star text-amber-400 text-xs"></i>`).join('')}
+						</div>
+						<p class="text-sm text-slate-600 italic line-clamp-4 flex-1 relative z-10">"${row.isi_testimoni}"</p>
+						<div class="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between relative z-10">
+							<div>
+								<p class="text-xs font-bold text-slate-800">${row.nama_pengirim}</p>
+								<p class="text-[9px] font-bold text-amber-500 uppercase">${row.peran}</p>
+							</div>
+						</div>
+						<div class="mt-4 flex items-center justify-between gap-2 relative z-10">
+							<button onclick="toggleModerasi('Testimoni', '${rowId}', '${isTampil ? 'Pending' : 'Tampil'}')" class="flex-1 px-3 py-1.5 rounded-lg text-[10px] font-bold transition border ${isTampil ? 'bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-100' : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'}">
+								<i class="ph-bold ${isTampil ? 'ph-eye' : 'ph-eye-slash'}"></i> ${isTampil ? 'Sembunyikan' : 'Publikasikan'}
+							</button>
+							<button onclick="showFormModal('edit', '${rowId}')" class="bg-blue-50 text-blue-600 p-1.5 rounded-lg hover:bg-blue-500 hover:text-white transition"><i class="ph-bold ph-pencil-simple"></i></button>
+							<button onclick="hapusData('${rowId}')" class="bg-red-50 text-red-500 p-1.5 rounded-lg hover:bg-red-500 hover:text-white transition"><i class="ph-bold ph-trash"></i></button>
+						</div>
+					</div>`;
+				});
+				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
+				wrapper.innerHTML = html;
+				return;
+			}
+
+			// KONDISI QnA -> Kartu Tanya Jawab (Sudah Paginasi)
+			if(currentSheet === "QnA") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
+				let html = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">`;
+				sliceData.forEach((row) => {
+					const rowId = row[tableHeaders[0]];
+					const isDijawab = row.jawaban && row.jawaban.trim() !== '';
+					const isTampil = row.status_tampil === 'Tampil';
+					html += `
+					<div class="bg-white rounded-2xl p-5 shadow-sm border ${isDijawab ? 'border-emerald-200' : 'border-rose-200'} flex flex-col">
+						<div class="flex items-start gap-3 mb-3">
+							<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+								<i class="ph-bold ph-user text-slate-500"></i>
+							</div>
+							<div class="flex-1">
+								<p class="text-[10px] font-bold text-slate-400 mb-0.5">${row.nama_penanya} <span class="mx-1">·</span> ${formatTanggal(row.tanggal_tanya)}</p>
+								<p class="text-sm font-extrabold text-slate-800">${row.pertanyaan}</p>
+							</div>
+						</div>
+						<div class="bg-slate-50 rounded-xl p-4 flex-1 mb-4">
+							<p class="text-[9px] font-bold uppercase tracking-widest mb-1 flex items-center gap-1 ${isDijawab ? 'text-emerald-600' : 'text-rose-500'}">
+								<i class="ph-fill ph-chalkboard-teacher"></i> Jawaban BK
+							</p>
+							<p class="text-xs ${isDijawab ? 'text-slate-700' : 'text-slate-400 italic'}">${isDijawab ? row.jawaban : 'Belum ada jawaban. Silakan edit untuk menjawab.'}</p>
+						</div>
+						<div class="flex items-center justify-between gap-2 border-t border-slate-100 pt-3">
+							<button onclick="toggleModerasi('QnA', '${rowId}', '${isTampil ? 'Pending' : 'Tampil'}')" class="px-3 py-1.5 rounded-lg text-[10px] font-bold transition border ${isTampil ? 'bg-blue-50 text-blue-600 border-blue-200' : 'bg-slate-50 text-slate-500 border-slate-200'}">
+								<i class="ph-bold ${isTampil ? 'ph-eye' : 'ph-eye-slash'}"></i> ${isTampil ? 'Tampil di Web' : 'Disembunyikan'}
+							</button>
+							<div class="flex gap-2">
+								<button onclick="showFormModal('edit', '${rowId}')" class="bg-emerald-100 text-emerald-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition"><i class="ph-bold ph-pencil-simple"></i> ${isDijawab ? 'Edit' : 'Jawab'}</button>
+								<button onclick="hapusData('${rowId}')" class="bg-red-100 text-red-600 p-1.5 rounded-lg hover:bg-red-500 hover:text-white transition"><i class="ph-bold ph-trash"></i></button>
+							</div>
+						</div>
+					</div>`;
+				});
+				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
+				wrapper.innerHTML = html;
+				return;
+			}
+
+			// KONDISI PENGATURAN -> List Menu Konfigurasi Tampil Semua (TANPA PAGINASI)
+			if(currentSheet === "Pengaturan") {
+				if(tableHeaders.length === 0 && tableData.length > 0) tableHeaders = Object.keys(tableData[0]);
+				
+				let html = `<div class="max-w-3xl mx-auto w-full bg-white rounded-[2rem] border border-slate-100 shadow-sm p-2">`;
+				
+				// LANGSUNG panggil tableData asli agar semua pengaturan keluar sekaligus tanpa dipotong halaman
+				tableData.forEach((row) => {
+					const rowId = row[tableHeaders[0]];
+					html += `
+					<div class="flex items-center justify-between p-4 border-b border-slate-50 hover:bg-slate-50 transition rounded-xl group">
+						<div class="flex-1 pr-4">
+							<h4 class="font-bold text-slate-800 text-sm mb-1">${row.kunci_pengaturan.replace(/_/g, ' ').toUpperCase()}</h4>
+							<p class="text-[10px] text-slate-400 mb-2">${row.deskripsi_pengaturan || 'Konfigurasi sistem'}</p>
+							<div class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-700 font-mono truncate max-w-sm">
+								${row.nilai_pengaturan}
+							</div>
+						</div>
+						<button onclick="showFormModal('edit', '${rowId}')" class="shrink-0 bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold hover:border-amber-400 hover:text-amber-500 shadow-sm transition flex items-center gap-2">
+							<i class="ph-bold ph-pencil-simple"></i> Ubah
+						</button>
+					</div>`;
+				});
+				html += `</div>`;
+				wrapper.innerHTML = html;
+				return; // Keluar dari fungsi agar tidak memunculkan tombol halaman universal
+			}
+			
+			// KONDISI KARYA -> Kartu Karya Siswa Mewah (Sudah Paginasi)
+			if(currentSheet === "Karya") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
+				let html = `<div class="grid grid-cols-1 md:grid-cols-4 gap-6 w-full">`;
+				sliceData.forEach((row) => {
+					const rowId = row[tableHeaders[0]];
+					const statusColor = row.status === 'Aktif' ? 'bg-emerald-500' : 'bg-amber-500';
+					html += `
+					<div class="glass-card bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition border border-slate-100 group flex flex-col">
+						<div class="relative h-44 overflow-hidden bg-slate-50">
+							<img src="${fixDriveUrl(row.url_gambar_karya)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+							<span class="absolute top-3 left-3 bg-purple-600 text-white text-[9px] font-bold uppercase px-2.5 py-1 rounded-full shadow-md">${row.kategori_karya}</span>
+							<span class="absolute top-3 right-3 ${statusColor} text-white text-[9px] font-bold uppercase px-2.5 py-1 rounded-full shadow-md">${row.status}</span>
+						</div>
+						<div class="p-4 flex flex-col flex-1">
+							<h4 class="font-extrabold text-slate-800 text-xs mb-1 line-clamp-2 group-hover:text-purple-600 transition leading-snug">${row.judul_karya}</h4>
+							<p class="text-[10px] text-slate-400 font-bold flex items-center gap-1 mb-4">
+								<i class="ph-bold ph-user text-amber-400"></i> Kreator: ${row.pembuat_karya}
+							</p>
+							<div class="mt-auto flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+								<button onclick="showFormModal('view', '${rowId}')" class="bg-slate-100 text-slate-600 p-2 rounded-lg hover:bg-slate-300 transition" title="Lihat"><i class="ph-bold ph-eye text-sm"></i></button>
+								<button onclick="showFormModal('edit', '${rowId}')" class="bg-amber-100 text-amber-600 p-2 rounded-lg hover:bg-amber-500 hover:text-white transition" title="Edit"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
+								<button onclick="hapusData('${rowId}')" class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-500 hover:text-white transition" title="Hapus"><i class="ph-bold ph-trash text-sm"></i></button>
+							</div>
+						</div>
+					</div>`;
+				});
+				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
+				wrapper.innerHTML = html;
+				return;
+			}
+
+			// KONDISI FOTO GALERI -> Grid Dokumentasi Visual Premium (Sudah Paginasi)
+			if(currentSheet === "Foto Galeri") {
+				const start = (stateGuruUniversal.halaman - 1) * stateGuruUniversal.perHalaman;
+				const sliceData = stateGuruUniversal.filtered.slice(start, start + stateGuruUniversal.perHalaman);
+
+				let html = `<div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">`;
+				sliceData.forEach((row) => {
+					const rowId = row[tableHeaders[0]];
+					html += `
+					<div class="glass-card bg-white rounded-[1.75rem] overflow-hidden shadow-sm hover:shadow-xl transition border border-slate-100 group flex flex-col">
+						<div class="relative aspect-video overflow-hidden bg-slate-50 cursor-pointer" onclick="Swal.fire({imageUrl: '${fixDriveUrl(row.url_foto)}', title: '${row.judul_foto}', confirmButtonColor: '#1e3a8a', customClass: {popup: 'rounded-3xl'}})">
+							<img src="${fixDriveUrl(row.url_foto)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+							<span class="absolute bottom-2 right-2 bg-black/60 backdrop-blur text-white text-[8px] font-bold px-2 py-0.5 rounded-md">${formatTanggal(row.tanggal_upload)}</span>
+						</div>
+						<div class="p-3 flex flex-col flex-1">
+							<h4 class="font-bold text-slate-800 text-xs line-clamp-1 mb-0.5">${row.judul_foto}</h4>
+							<p class="text-[9px] text-slate-400 line-clamp-1 mb-3">${row.keterangan_foto || '-'}</p>
+							<div class="mt-auto flex items-center justify-end gap-1.5 pt-2 border-t border-slate-100">
+								<button onclick="showFormModal('edit', '${rowId}')" class="bg-amber-50 text-amber-600 p-2 rounded-lg hover:bg-amber-500 hover:text-white transition" title="Edit"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
+								<button onclick="hapusData('${rowId}')" class="bg-red-50 text-red-600 p-2 rounded-lg hover:bg-red-500 hover:text-white transition" title="Hapus"><i class="ph-bold ph-trash text-sm"></i></button>
+							</div>
+						</div>
+					</div>`;
+				});
+				html += `</div>`;
+				html += buatTombolPaginasiDashboardUniversal();
+				wrapper.innerHTML = html;
 				return;
 			}
 
@@ -2715,10 +3414,12 @@
                         `;
                     }
                 } else if(col.includes("isi_") || col.includes("deskripsi")) {
+					const safeVal = val ? val.replace(/"/g, '&quot;') : '';
+					
 					if(col === 'isi_berita' && !isReadOnly) {
 						htmlForm += `
 							<div id="quill-editor-${col}" style="background:white;"></div>
-							<input type="hidden" id="input-${col}" value="">
+							<input type="hidden" id="input-${col}" value="${safeVal}">
 						`;
 					} else if(col === 'isi_berita' && isReadOnly) {
 						htmlForm += `<div class="prose max-w-none bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 leading-relaxed">${val}</div>`;
@@ -2771,8 +3472,8 @@
 					placeholder: 'Tulis isi berita di sini...'
 				});
 
-				// Isi konten awal saat Edit
-				const existingVal = document.getElementById('input-isi_berita').getAttribute('value') || '';
+				/// Isi konten awal saat Edit
+				const existingVal = document.getElementById('input-isi_berita').value || '';
 				if(existingVal) quill.root.innerHTML = existingVal;
 
 				// Sync nilai ke hidden input setiap kali konten berubah
@@ -2941,7 +3642,13 @@
 				return matchStatus && getNamaPengirim(item).toLowerCase().includes(keyword);
 			});
 			loadMoreStateGuru.halaman = 1;
-			renderDataGuru(currentSheet === 'Saran' ? 'guru-saran' : 'guru-data');
+			
+			// PERBAIKAN: Deteksi prefix ID secara dinamis sesuai menu yang aktif
+			let prefix = 'guru-data';
+			if (currentSheet === 'Laporan') prefix = 'guru-laporan';
+			if (currentSheet === 'Saran') prefix = 'guru-saran';
+			
+			renderDataGuru(prefix);
 		}
 
 		function filterLayananGuru() {
@@ -2953,7 +3660,13 @@
 				return matchStatus && getNamaPengirim(item).toLowerCase().includes(keyword);
 			});
 			loadMoreStateGuru.halaman = 1;
-			renderDataGuru(currentSheet === 'Saran' ? 'guru-saran' : 'guru-data');
+			
+			// PERBAIKAN: Deteksi prefix ID secara dinamis saat mengetik di kolom pencarian
+			let prefix = 'guru-data';
+			if (currentSheet === 'Laporan') prefix = 'guru-laporan';
+			if (currentSheet === 'Saran') prefix = 'guru-saran';
+			
+			renderDataGuru(prefix);
 		}
 
 		function renderDataGuru(prefix) {
@@ -3801,6 +4514,7 @@
 			// Inisialisasi halaman layanan saat dibuka
 			if(targetId === 'layanan-saran') bukaLayananSaran();
 			if(targetId === 'layanan-lapor') bukaLayananLapor();
+			if(targetId === 'layanan-konsultasi') bukaLayananKonsultasi();
 		}
 
 		// ==========================================
@@ -4552,25 +5266,109 @@
 		}
 
 		async function muatRiwayatLaporan() {
-			const container = document.getElementById('riwayat-laporan');
+			const container = document.getElementById('lapor-pengguna-list');
+			const paginasiEl = document.getElementById('lapor-pengguna-paginasi');
 			if (!container) return;
+			
 			container.innerHTML = `<div class="flex items-center justify-center gap-2 py-4"><div class="w-4 h-4 border-2 border-red-400 border-t-transparent rounded-full animate-spin"></div><p class="text-blue-300/60 text-xs">Memuat...</p></div>`;
+			if (paginasiEl) paginasiEl.innerHTML = '';
+
 			try {
 				const res = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'read', sheet: 'Laporan' }) });
 				const result = await res.json();
 				if (result.status === 'success') {
+					// Filter laporan milik user yang sedang login
 					const milik = result.data.filter(d => d.id_pengguna === penggunaLogin.id_pengguna);
-					if (milik.length === 0) {
-						container.innerHTML = `<p class="text-blue-300/60 text-sm text-center py-6 italic">Belum ada laporan yang dikirim.</p>`;
-						return;
-					}
-					// Urutkan terbaru
+					// Urutkan dari laporan terbaru
 					milik.sort((a, b) => b.tanggal_lapor.localeCompare(a.tanggal_lapor));
-					container.innerHTML = milik.map(renderItemLaporanPengguna).join('');
+					
+					// Simpan ke state global laporan
+					stateLaporPengguna.data = milik;
+					stateLaporPengguna.filtered = milik;
+					stateLaporPengguna.halaman = 1;
+
+					// Reset tombol filter ke posisi 'Semua'
+					document.querySelectorAll('.lapor-filter-btn').forEach((btn, i) => {
+						if(i === 0) {
+							btn.className = "lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-amber-500 text-blue-900 border-amber-500";
+						} else {
+							btn.className = "lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white";
+						}
+					});
+
+					renderDataLaporanPengguna();
 				}
 			} catch (e) {
 				container.innerHTML = `<p class="text-red-400/60 text-sm text-center py-6">Gagal memuat riwayat.</p>`;
 			}
+		}
+
+		function filterLaporanPengguna(status, elBtn) {
+			document.querySelectorAll('.lapor-filter-btn').forEach(btn => {
+				btn.className = "lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white";
+			});
+			elBtn.className = "lapor-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-amber-500 text-blue-900 border-amber-500";
+
+			if (status === 'Semua') {
+				stateLaporPengguna.filtered = stateLaporPengguna.data;
+			} else {
+				stateLaporPengguna.filtered = stateLaporPengguna.data.filter(item => item.status === status);
+			}
+			stateLaporPengguna.halaman = 1;
+			renderDataLaporanPengguna();
+		}
+
+		function renderDataLaporanPengguna() {
+			const listEl = document.getElementById('lapor-pengguna-list');
+			const paginasiEl = document.getElementById('lapor-pengguna-paginasi');
+			if (!listEl) return;
+
+			const { filtered, halaman, perHalaman } = stateLaporPengguna;
+			const totalHalaman = Math.ceil(filtered.length / perHalaman);
+			const start = (halaman - 1) * perHalaman;
+			const slice = filtered.slice(start, start + perHalaman);
+
+			if (filtered.length === 0) {
+				listEl.innerHTML = `<p class="text-blue-300/60 text-sm text-center py-6 italic">Tidak ada laporan dengan status ini.</p>`;
+				if (paginasiEl) paginasiEl.innerHTML = '';
+				return;
+			}
+
+			// Render item laporan menggunakan fungsi renderItemLaporanPengguna yang sudah Anda miliki sebelumnya
+			listEl.innerHTML = slice.map(renderItemLaporanPengguna).join('');
+
+			// Render komponen tombol paginasi
+			if (paginasiEl) {
+				if (totalHalaman <= 1) {
+					paginasiEl.innerHTML = `<p class="text-[9px] font-bold text-blue-300/40 text-center">Menampilkan semua data laporan</p>`;
+				} else {
+					let tombol = [];
+					for (let i = 1; i <= totalHalaman; i++) {
+						tombol.push(`
+							<button onclick="gantiHalamanLaporPengguna(${i})"
+								class="w-7 h-7 rounded-lg text-[10px] font-extrabold transition
+								${i === halaman ? 'bg-amber-500 text-blue-900 shadow-md' : 'bg-white/5 text-white/60 hover:bg-white/10'}">
+								${i}
+							</button>
+						`);
+					}
+					paginasiEl.innerHTML = `
+						<div class="flex items-center justify-center gap-1">
+							<button onclick="gantiHalamanLaporPengguna(${halaman - 1})" ${halaman === 1 ? 'disabled' : ''}
+								class="w-7 h-7 rounded-lg text-[10px] font-extrabold transition ${halaman === 1 ? 'text-white/20 cursor-not-allowed' : 'bg-white/5 text-white/60 hover:bg-white/10'}">«</button>
+							${tombol.join('')}
+							<button onclick="gantiHalamanLaporPengguna(${halaman + 1})" ${halaman === totalHalaman ? 'disabled' : ''}
+								class="w-7 h-7 rounded-lg text-[10px] font-extrabold transition ${halaman === totalHalaman ? 'text-white/20 cursor-not-allowed' : 'bg-white/5 text-white/60 hover:bg-white/10'}">»</button>
+						</div>
+					`;
+				}
+			}
+		}
+
+		function gantiHalamanLaporPengguna(h) {
+			stateLaporPengguna.halaman = h;
+			renderDataLaporanPengguna();
+			document.getElementById('lapor-pengguna-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
 
 		function renderItemLaporanPengguna(item) {
@@ -4818,6 +5616,599 @@
 					sessionStorage.removeItem('sobatbk_pengguna');
 				}
 			}
+		}
+		
+		// ==========================================
+		// LAYANAN KONSULTASI (SISI PENGGUNA)
+		// ==========================================
+
+		async function bukaLayananKonsultasi() {
+			if(!penggunaLogin) return;
+			
+			// Reset form
+			document.getElementById('konsultasi-topik').value = '';
+			document.getElementById('konsultasi-deskripsi').value = '';
+			document.getElementById('konsultasi-topik-counter').innerText = '0/100';
+			document.getElementById('konsultasi-desk-counter').innerText = '0/500';
+			
+			await muatDaftarGuruBK();
+			await muatSesiKonsultasi();
+		}
+
+		// Menarik daftar Guru BK aktif dari Sheet 'Guru'
+		async function muatDaftarGuruBK() {
+			const container = document.getElementById('konsultasi-list-guru');
+			try {
+				let res = await fetch(GAS_API_URL, { method: "POST", body: JSON.stringify({ action: "read", sheet: "Guru" }) });
+				let result = await res.json();
+				if(result.status === "success") {
+					dataGuruBKAktif = result.data.filter(g => g.status_akun === "Aktif");
+					
+					if(dataGuruBKAktif.length === 0) {
+						container.innerHTML = `<p class="text-xs text-red-400 italic">Mohon maaf, saat ini tidak ada Guru BK yang aktif.</p>`;
+						return;
+					}
+
+					container.innerHTML = dataGuruBKAktif.map((g, i) => `
+						<label class="flex items-center gap-3 p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition group">
+							<input type="radio" name="pilih_guru" value="${g.username}" class="w-4 h-4 text-amber-500 bg-transparent border-white/20 focus:ring-amber-500 focus:ring-2">
+							<div class="flex items-center gap-3 flex-1">
+								<img src="${fixDriveUrl(g.url_foto_profil)}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(g.nama_lengkap)}&background=1e3a8a&color=fff'" class="w-8 h-8 rounded-full object-cover">
+								<div>
+									<p class="text-white text-xs font-bold">${g.nama_lengkap}</p>
+									<p class="text-blue-300/60 text-[10px]">${g.jenis_kelamin === 'Perempuan' ? 'Ibu Guru' : 'Bapak Guru'}</p>
+								</div>
+							</div>
+						</label>
+					`).join('');
+				}
+			} catch(e) {
+				container.innerHTML = `<p class="text-xs text-red-400">Gagal memuat daftar guru.</p>`;
+			}
+		}
+
+		// Counter karakter input baru
+		document.getElementById('konsultasi-topik').addEventListener('input', function() { document.getElementById('konsultasi-topik-counter').innerText = `${this.value.length}/100`; });
+		document.getElementById('konsultasi-deskripsi').addEventListener('input', function() { document.getElementById('konsultasi-desk-counter').innerText = `${this.value.length}/500`; });
+
+		async function kirimSesiKonsultasi() {
+			if(!penggunaLogin) return;
+
+			const guruTerpilih = document.querySelector('input[name="pilih_guru"]:checked');
+			const topik = document.getElementById('konsultasi-topik').value.trim();
+			const deskripsi = document.getElementById('konsultasi-deskripsi').value.trim();
+
+			if(!guruTerpilih) { alertError("Silakan pilih Guru BK terlebih dahulu!"); return; }
+			if(!topik) { alertError("Topik konsultasi tidak boleh kosong!"); return; }
+			if(!deskripsi) { alertError("Ceritakan masalahmu secara singkat!"); return; }
+
+			const guruData = dataGuruBKAktif.find(g => g.username === guruTerpilih.value);
+			
+			// Cek limit 3 sesi aktif
+			const sesiAktif = sesiKonsultasiList.filter(s => s.status === 'Aktif');
+			if(sesiAktif.length >= 3) {
+				alertError("Kamu sudah memiliki 3 sesi aktif. Selesaikan sesi sebelumnya untuk membuka yang baru.");
+				return;
+			}
+
+			alertLoading("Membuat sesi konsultasi...");
+			const now = new Date();
+			const idBaru = 'KNS-' + Date.now();
+
+			// PERBAIKAN: Ambil status pengguna dengan cara yang aman
+			let statusPengguna = penggunaLogin.status || "Siswa";
+			try {
+				if (penggunaLogin.data_json && typeof penggunaLogin.data_json === 'string') {
+					statusPengguna = JSON.parse(penggunaLogin.data_json).status || statusPengguna;
+				}
+			} catch(e) {}
+
+			const dataJson = {
+				judul_konsultasi: topik,
+				id_guru: guruData.username,
+				nama_guru: guruData.nama_lengkap,
+				nip_guru: guruData.nip_nuptk || "-",
+				nama_pengguna: penggunaLogin.nama || penggunaLogin.username,
+				status_pengguna: statusPengguna,
+				riwayat_chat: [
+					{ dari: "siswa", nama: penggunaLogin.nama || "Siswa", pesan: deskripsi, waktu: now.toISOString() }
+				],
+				ditutup_oleh: "",
+				alasan_tutup: ""
+			};
+
+			const payload = {
+				action: 'create',
+				sheet: 'Konsultasi',
+				data: {
+					id_konsultasi: idBaru,
+					id_pengguna: penggunaLogin.id_pengguna,
+					status: 'Aktif',
+					tanggal_mulai: now.toISOString().split('T')[0],
+					tanggal_update: now.toISOString(),
+					data_json: JSON.stringify(dataJson)
+				}
+			};
+
+			try {
+				const res = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify(payload) });
+				const result = await res.json();
+				if(result.status === 'success') {
+					Swal.fire({ icon: 'success', title: 'Sesi Berhasil Dibuat!', text: 'Guru BK akan segera membalas pesanmu.', timer: 2000, showConfirmButton: false, customClass: { popup: 'rounded-3xl' } });
+					document.getElementById('konsultasi-topik').value = '';
+					document.getElementById('konsultasi-deskripsi').value = '';
+					document.querySelector('input[name="pilih_guru"]:checked').checked = false;
+					await muatSesiKonsultasi();
+				} else { alertError(result.message); }
+			} catch(e) { alertError("Gagal menghubungi server."); }
+		}
+
+		async function muatSesiKonsultasi() {
+			const container = document.getElementById('konsultasi-sesi-list');
+			container.innerHTML = `<div class="flex items-center justify-center gap-2 py-4"><div class="w-4 h-4 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></div><p class="text-blue-300/60 text-xs">Memuat sesi...</p></div>`;
+			
+			try {
+				const res = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'read', sheet: 'Konsultasi' }) });
+				const result = await res.json();
+				
+				if(result.status === 'success') {
+					sesiKonsultasiList = result.data.filter(d => d.id_pengguna === penggunaLogin.id_pengguna);
+					// Urutkan berdasarkan tanggal update terbaru
+					sesiKonsultasiList.sort((a, b) => new Date(b.tanggal_update) - new Date(a.tanggal_update));
+					
+					// Cek limit sesi
+					const sesiAktif = sesiKonsultasiList.filter(s => s.status === 'Aktif');
+					const infoBatas = document.getElementById('konsultasi-info-batas');
+					if(sesiAktif.length >= 3) infoBatas.classList.remove('hidden'); else infoBatas.classList.add('hidden');
+
+					renderListKonsultasi('semua');
+				}
+			} catch(e) { container.innerHTML = `<p class="text-red-400/60 text-xs text-center py-4">Gagal memuat data.</p>`; }
+		}
+
+		function filterSesiKonsultasi(filter, elBtn) {
+			document.querySelectorAll('.sesi-filter-btn').forEach(btn => {
+				btn.classList.remove('bg-amber-500', 'text-blue-900', 'border-amber-500');
+				btn.classList.add('bg-white/5', 'text-white/60', 'border-white/15');
+			});
+			elBtn.classList.remove('bg-white/5', 'text-white/60', 'border-white/15');
+			elBtn.classList.add('bg-amber-500', 'text-blue-900', 'border-amber-500');
+			renderListKonsultasi(filter);
+		}
+
+		function renderListKonsultasi(filter) {
+			const container = document.getElementById('konsultasi-sesi-list');
+			let dataRender = sesiKonsultasiList;
+			if(filter !== 'semua') dataRender = dataRender.filter(s => s.status === filter);
+
+			if(dataRender.length === 0) {
+				container.innerHTML = `<p class="text-white/40 text-sm text-center py-6 italic">Tidak ada sesi ditemukan.</p>`;
+				return;
+			}
+
+			const wWarna = { 'Aktif': 'bg-blue-500 text-white', 'Selesai': 'bg-emerald-500 text-white', 'Dibatalkan': 'bg-red-500 text-white' };
+
+			container.innerHTML = dataRender.map(item => {
+				let dj = {}; try { dj = JSON.parse(item.data_json); } catch(e){}
+				const lastMsg = dj.riwayat_chat && dj.riwayat_chat.length > 0 ? dj.riwayat_chat[dj.riwayat_chat.length - 1] : null;
+				
+				return `
+				<div onclick="bukaPanelChat('${item.id_konsultasi}')" class="bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 cursor-pointer transition flex items-center gap-4">
+					<div class="w-12 h-12 rounded-full bg-blue-900/50 flex items-center justify-center border border-blue-500/30 shrink-0">
+						<i class="ph-fill ph-user-circle text-blue-400 text-2xl"></i>
+					</div>
+					<div class="flex-1 min-w-0">
+						<div class="flex justify-between items-start mb-1">
+							<p class="text-white text-sm font-bold truncate">${dj.judul_konsultasi || 'Konsultasi'}</p>
+							<span class="text-[8px] font-bold uppercase px-2 py-0.5 rounded-full ${wWarna[item.status]} ml-2 shrink-0">${item.status}</span>
+						</div>
+						<p class="text-blue-300/70 text-[10px] mb-1"><i class="ph-bold ph-chalkboard-teacher"></i> ${dj.nama_guru}</p>
+						<p class="text-white/50 text-xs truncate italic">${lastMsg ? (lastMsg.dari === 'siswa' ? 'Kamu: ' : 'Guru: ') + lastMsg.pesan : 'Belum ada pesan'}</p>
+					</div>
+				</div>`;
+			}).join('');
+		}
+
+		// Logika Chat di Sisi Pengguna
+		function bukaPanelChat(idSesi) {
+			const sesi = sesiKonsultasiList.find(s => s.id_konsultasi === idSesi);
+			if(!sesi) return;
+			aktifKonsultasiId = idSesi;
+			let dj = JSON.parse(sesi.data_json);
+
+			document.getElementById('chat-judul').innerText = dj.judul_konsultasi;
+			document.getElementById('chat-guru').innerText = "Bersama: " + dj.nama_guru;
+			document.getElementById('chat-deskripsi-awal').innerText = dj.riwayat_chat[0].pesan;
+			
+			// Set status badge
+			const badge = document.getElementById('chat-status-badge');
+			badge.innerText = sesi.status;
+			badge.className = `text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
+				sesi.status === 'Aktif' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' : 
+				sesi.status === 'Selesai' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-red-500/20 text-red-300 border-red-500/30'
+			}`;
+
+			// Tampilkan tombol batal jika aktif
+			const btnBatal = document.getElementById('btn-batalkan-sesi');
+			const inputArea = document.getElementById('chat-input-area');
+			if(sesi.status === 'Aktif') {
+				btnBatal.classList.remove('hidden');
+				inputArea.classList.remove('hidden');
+			} else {
+				btnBatal.classList.add('hidden');
+				inputArea.classList.add('hidden');
+			}
+
+			renderIsiChat(dj.riwayat_chat, dj.alasan_tutup);
+			document.getElementById('konsultasi-panel-chat').classList.remove('hidden');
+		}
+
+		function tutupPanelChat() {
+			aktifKonsultasiId = null;
+			document.getElementById('konsultasi-panel-chat').classList.add('hidden');
+		}
+
+		function renderIsiChat(riwayat, alasanTutup = "") {
+			const container = document.getElementById('chat-messages');
+			let html = '';
+			
+			// Mulai dari index 1 karena index 0 adalah deskripsi awal
+			for(let i = 1; i < riwayat.length; i++) {
+				const chat = riwayat[i];
+				const isSaya = chat.dari === 'siswa';
+				const wkt = new Date(chat.waktu).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+				
+				html += `
+				<div class="flex flex-col ${isSaya ? 'items-end' : 'items-start'} mb-3">
+					<div class="max-w-[80%] ${isSaya ? 'bg-amber-500 text-blue-950 rounded-l-2xl rounded-tr-2xl' : 'bg-white/10 border border-white/10 text-white rounded-r-2xl rounded-tl-2xl'} p-3 shadow-sm">
+						<p class="text-xs leading-relaxed break-words whitespace-pre-wrap">${chat.pesan}</p>
+					</div>
+					<span class="text-[9px] text-white/40 mt-1 mx-1">${wkt}</span>
+				</div>`;
+			}
+
+			if(alasanTutup) {
+				html += `<div class="text-center mt-6 mb-2">
+					<span class="bg-red-500/20 border border-red-500/30 text-red-300 text-[10px] px-4 py-1.5 rounded-full font-bold">
+						Sesi ditutup: ${alasanTutup}
+					</span>
+				</div>`;
+			}
+
+			if(html === '') html = `<p class="text-blue-300/40 text-xs text-center py-10 italic">Belum ada balasan...</p>`;
+			
+			container.innerHTML = html;
+			container.scrollTop = container.scrollHeight;
+
+			// Batas 20 pesan per sesi
+			const infoBatasChat = document.getElementById('chat-batas-info');
+			if(riwayat.length >= 21 && document.getElementById('chat-status-badge').innerText === 'AKTIF') { // 1 desc + 20 pesan
+				infoBatasChat.classList.remove('hidden');
+				document.getElementById('chat-input-area').classList.add('hidden');
+			} else {
+				infoBatasChat.classList.add('hidden');
+			}
+		}
+
+		function autoResizeChatInput(el) {
+			el.style.height = 'auto';
+			el.style.height = (el.scrollHeight) + 'px';
+		}
+
+		function hitungKarakterChat(el) {
+			document.getElementById('chat-karakter-counter').innerText = `${el.value.length}/500`;
+		}
+
+		async function kirimPesanKonsultasi() {
+			const input = document.getElementById('chat-input-pesan');
+			const pesan = input.value.trim();
+			if(!pesan || !aktifKonsultasiId) return;
+
+			const sesi = sesiKonsultasiList.find(s => s.id_konsultasi === aktifKonsultasiId);
+			let dj = JSON.parse(sesi.data_json);
+
+			// Update UI Local dulu biar kerasa cepat
+			const newChat = { dari: 'siswa', nama: penggunaLogin.nama, pesan: pesan, waktu: new Date().toISOString() };
+			dj.riwayat_chat.push(newChat);
+			renderIsiChat(dj.riwayat_chat);
+			
+			input.value = '';
+			autoResizeChatInput(input);
+			hitungKarakterChat(input);
+
+			// Disable button send temporarily
+			const btn = document.getElementById('btn-kirim-pesan');
+			btn.disabled = true;
+			btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i>`;
+
+			// Kirim ke backend
+			try {
+				await fetch(GAS_API_URL, {
+					method: 'POST',
+					body: JSON.stringify({
+						action: 'update',
+						sheet: 'Konsultasi',
+						idField: 'id_konsultasi',
+						idValue: aktifKonsultasiId,
+						data: { tanggal_update: new Date().toISOString(), data_json: JSON.stringify(dj) }
+					})
+				});
+			} catch(e) {
+				alertError("Pesan gagal terkirim (Jaringan error)");
+			}
+			
+			btn.disabled = false;
+			btn.innerHTML = `<i class="ph-bold ph-paper-plane-tilt text-base"></i>`;
+			muatSesiKonsultasi(); // reload in background
+		}
+
+		async function konfirmasiBatalkanSesi() {
+			Swal.fire({
+				title: 'Batalkan Sesi?',
+				text: "Kamu tidak bisa mengirim pesan lagi setelah sesi dibatalkan.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#ef4444',
+				cancelButtonColor: '#94a3b8',
+				confirmButtonText: 'Ya, Batalkan'
+			}).then(async (result) => {
+				if(result.isConfirmed) {
+					alertLoading("Membatalkan sesi...");
+					const sesi = sesiKonsultasiList.find(s => s.id_konsultasi === aktifKonsultasiId);
+					let dj = JSON.parse(sesi.data_json);
+					dj.ditutup_oleh = "Siswa";
+					dj.alasan_tutup = "Dibatalkan oleh siswa";
+
+					try {
+						const res = await fetch(GAS_API_URL, {
+							method: 'POST',
+							body: JSON.stringify({
+								action: 'update',
+								sheet: 'Konsultasi',
+								idField: 'id_konsultasi',
+								idValue: aktifKonsultasiId,
+								data: { status: 'Dibatalkan', tanggal_update: new Date().toISOString(), data_json: JSON.stringify(dj) }
+							})
+						});
+						const responseJson = await res.json();
+						if(responseJson.status === 'success') {
+							Swal.fire({ toast:true, position:'top-end', icon:'success', title:'Sesi dibatalkan', showConfirmButton:false, timer:1500 });
+							tutupPanelChat();
+							muatSesiKonsultasi();
+						}
+					} catch(e) { alertError("Gagal menghubungi server"); }
+				}
+			});
+		}
+		
+		// ==========================================
+		// KONSULTASI - SISI GURU (DASHBOARD)
+		// ==========================================
+		let aktifKonsulGuruId = null;
+
+		function filterGuruKonsul(status, elBtn) {
+			document.querySelectorAll('.guru-konsul-tab').forEach(b => { b.classList.remove('bg-white', 'text-blue-600', 'shadow-sm'); b.classList.add('text-slate-500'); });
+			if(elBtn) { elBtn.classList.remove('text-slate-500'); elBtn.classList.add('bg-white', 'text-blue-600', 'shadow-sm'); }
+
+			const container = document.getElementById('guru-konsul-list');
+			let dataShow = window._guruDataKonsul.filter(d => d.status === status || (status==='Selesai' && d.status==='Dibatalkan'));
+
+			if(dataShow.length === 0) {
+				container.innerHTML = `<p class="text-center text-slate-400 text-xs italic py-10">Kosong</p>`;
+				return;
+			}
+
+			container.innerHTML = dataShow.map(item => {
+				let dj = JSON.parse(item.data_json);
+				let unread = item.status === 'Aktif' && dj.riwayat_chat[dj.riwayat_chat.length-1].dari === 'siswa';
+				
+				return `
+				<div onclick="bukaChatGuru('${item.id_konsultasi}')" class="p-3 rounded-xl border border-slate-100 cursor-pointer transition bg-white hover:bg-blue-50 relative ${aktifKonsulGuruId === item.id_konsultasi ? 'ring-2 ring-blue-500' : ''}">
+					${unread ? `<span class="absolute top-3 right-3 w-2.5 h-2.5 bg-red-500 rounded-full"></span>` : ''}
+					<p class="font-bold text-slate-800 text-xs truncate pr-4">${dj.judul_konsultasi}</p>
+					<p class="text-[10px] text-slate-500 mt-1 flex justify-between">
+						<span><i class="ph-bold ph-user text-amber-500"></i> ${dj.nama_pengguna}</span>
+						<span>${new Date(item.tanggal_update).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</span>
+					</p>
+				</div>`;
+			}).join('');
+		}
+
+		function bukaChatGuru(id) {
+			aktifKonsulGuruId = id;
+			const item = window._guruDataKonsul.find(d => d.id_konsultasi === id);
+			let dj = JSON.parse(item.data_json);
+			
+			// Refresh list style
+			filterGuruKonsul(item.status === 'Aktif' ? 'Aktif' : 'Selesai', null); 
+
+			const panel = document.getElementById('guru-konsul-chat-panel');
+			panel.classList.remove('hidden');
+
+			let chatHtml = `
+			<div class="h-16 bg-white border-b border-slate-200 px-4 flex items-center justify-between shrink-0">
+				<div>
+					<h3 class="font-extrabold text-slate-800 text-sm">${dj.judul_konsultasi}</h3>
+					<p class="text-[10px] text-slate-500 font-bold">Siswa: ${dj.nama_pengguna} (${dj.status_pengguna})</p>
+				</div>
+				${item.status === 'Aktif' ? `
+				<button onclick="tutupSesiOlehGuru('${id}')" class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-500 hover:text-white transition">
+					<i class="ph-bold ph-check-square-offset"></i> Tutup Sesi
+				</button>` : `<span class="px-3 py-1 bg-slate-200 text-slate-500 text-[10px] font-bold rounded-lg">${item.status}</span>`}
+			</div>
+
+			<div id="guru-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-[#E2E8F0]/30 relative">
+				<div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm mb-4 mx-auto w-11/12 text-center">
+					<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Deskripsi Awal Siswa</p>
+					<p class="text-xs text-slate-700 italic">"${dj.riwayat_chat[0].pesan}"</p>
+				</div>
+			`;
+
+			for(let i=1; i<dj.riwayat_chat.length; i++) {
+				let c = dj.riwayat_chat[i];
+				let isGuru = c.dari === 'guru';
+				chatHtml += `
+				<div class="flex flex-col ${isGuru ? 'items-end' : 'items-start'}">
+					<div class="max-w-[75%] ${isGuru ? 'bg-blue-600 text-white rounded-l-xl rounded-tr-xl' : 'bg-white text-slate-700 border border-slate-200 rounded-r-xl rounded-tl-xl'} p-2.5 shadow-sm">
+						<p class="text-xs break-words whitespace-pre-wrap">${c.pesan}</p>
+					</div>
+					<span class="text-[9px] text-slate-400 mt-0.5 mx-1">${new Date(c.waktu).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</span>
+				</div>`;
+			}
+
+			if(item.status !== 'Aktif') {
+				chatHtml += `<div class="text-center mt-4"><span class="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-[10px] font-bold">Sesi ditutup: ${dj.alasan_tutup}</span></div>`;
+			}
+
+			chatHtml += `</div>`;
+
+			// Footer / Input Area
+			if(item.status === 'Aktif') {
+				chatHtml += `
+				<div class="bg-white border-t border-slate-200 p-3 shrink-0 flex gap-2">
+					<textarea id="guru-input-pesan" rows="1" class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none resize-none max-h-24" placeholder="Ketik balasan untuk siswa..."></textarea>
+					<button onclick="kirimPesanGuru('${id}')" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-blue-700 shadow-sm shrink-0">
+						<i class="ph-bold ph-paper-plane-tilt"></i>
+					</button>
+				</div>`;
+			} else {
+				chatHtml += `<div class="bg-slate-100 border-t border-slate-200 p-3 shrink-0 text-center text-xs text-slate-400 font-bold">Sesi ini telah berakhir dan tidak dapat dibalas.</div>`;
+			}
+
+			panel.innerHTML = chatHtml;
+			const msgContainer = document.getElementById('guru-chat-messages');
+			msgContainer.scrollTop = msgContainer.scrollHeight;
+		}
+
+		async function kirimPesanGuru(id) {
+			const input = document.getElementById('guru-input-pesan');
+			const pesan = input.value.trim();
+			if(!pesan) return;
+
+			const itemIndex = window._guruDataKonsul.findIndex(d => d.id_konsultasi === id);
+			let item = window._guruDataKonsul[itemIndex];
+			let dj = JSON.parse(item.data_json);
+
+			dj.riwayat_chat.push({ dari: 'guru', nama: loggedInUser.nama_lengkap, pesan: pesan, waktu: new Date().toISOString() });
+			
+			// Update local state untuk UI Realtime feel
+			item.data_json = JSON.stringify(dj);
+			item.tanggal_update = new Date().toISOString();
+			bukaChatGuru(id); // re-render chat
+			filterGuruKonsul('Aktif', document.querySelector('.guru-konsul-tab.text-blue-600')); // refresh sort
+
+			// Simpan ke DB
+			fetch(GAS_API_URL, {
+				method: 'POST',
+				body: JSON.stringify({ action: 'update', sheet: 'Konsultasi', idField: 'id_konsultasi', idValue: id, data: { tanggal_update: item.tanggal_update, data_json: item.data_json } })
+			});
+		}
+
+		function tutupSesiOlehGuru(id) {
+			Swal.fire({
+				title: 'Tutup Sesi Konsultasi?',
+				input: 'text',
+				inputLabel: 'Tulis ringkasan/alasan penutupan sesi',
+				inputPlaceholder: 'Contoh: Masalah terselesaikan, siswa sudah paham.',
+				showCancelButton: true,
+				confirmButtonText: 'Tutup Sesi',
+				confirmButtonColor: '#10b981',
+				cancelButtonText: 'Batal',
+				preConfirm: (alasan) => {
+					if(!alasan) Swal.showValidationMessage("Alasan/ringkasan wajib diisi!");
+					return alasan;
+				}
+			}).then((res) => {
+				if(res.isConfirmed) {
+					alertLoading("Menutup Sesi...");
+					const item = window._guruDataKonsul.find(d => d.id_konsultasi === id);
+					let dj = JSON.parse(item.data_json);
+					dj.ditutup_oleh = "Guru BK";
+					dj.alasan_tutup = res.value;
+
+					fetch(GAS_API_URL, {
+						method: 'POST',
+						body: JSON.stringify({ action: 'update', sheet: 'Konsultasi', idField: 'id_konsultasi', idValue: id, data: { status: 'Selesai', tanggal_update: new Date().toISOString(), data_json: JSON.stringify(dj) } })
+					}).then(r => r.json()).then(resp => {
+						if(resp.status === 'success') {
+							Swal.fire({toast:true, icon:'success', title:'Sesi berhasil ditutup', timer:2000, showConfirmButton:false});
+							loadTableData("Konsultasi"); // Reload full data
+						}
+					});
+				}
+			});
+		}
+		
+		async function toggleModerasi(sheetMenu, idValue, statusBaru) {
+			alertLoading("Memperbarui status...");
+			let idField = sheetMenu === "Testimoni" ? "id_testimoni" : "id_qna";
+			
+			try {
+				let res = await fetch(GAS_API_URL, {
+					method: "POST",
+					body: JSON.stringify({
+						action: "update",
+						sheet: sheetMenu,
+						idField: idField,
+						idValue: idValue,
+						data: { status_tampil: statusBaru }
+					})
+				});
+				let result = await res.json();
+				if(result.status === "success") {
+					Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Status diperbarui', showConfirmButton: false, timer: 1500 });
+					loadTableData(sheetMenu);
+				} else {
+					alertError(result.message);
+				}
+			} catch(e) {
+				alertError("Gagal memperbarui status.");
+			}
+		}
+		
+		// ==========================================
+		// INDUK MESIN PAGINASI UNIVERSAL (DASHBOARD GURU)
+		// ==========================================
+		function buatTombolPaginasiDashboardUniversal() {
+			const { filtered, halaman, perHalaman } = stateGuruUniversal;
+			const totalHalaman = Math.ceil(filtered.length / perHalaman);
+			if (totalHalaman <= 1) return '';
+
+			const start = (halaman - 1) * perHalaman;
+			const akhir = Math.min(start + perHalaman, filtered.length);
+
+			let tombol = [];
+			for (let i = 1; i <= totalHalaman; i++) {
+				tombol.push(`
+					<button onclick="gantiHalamanDashboardUniversal(${i})"
+						class="w-8 h-8 rounded-xl text-xs font-extrabold transition
+						${i === halaman 
+							? 'bg-blue-900 text-white shadow-md shadow-blue-900/20' 
+							: 'bg-slate-100 text-slate-500 hover:bg-blue-50'}">
+						${i}
+					</button>
+				`);
+			}
+
+			return `
+			<div class="w-full mt-8 pt-4 border-t border-slate-100 flex flex-col items-center gap-2 shrink-0">
+				<div class="flex items-center gap-1">
+					<button onclick="gantiHalamanDashboardUniversal(${halaman - 1})" ${halaman === 1 ? 'disabled' : ''}
+						class="w-8 h-8 rounded-xl text-xs font-extrabold transition ${halaman === 1 ? 'text-slate-300 cursor-not-allowed' : 'bg-slate-100 text-slate-500 hover:bg-blue-50'}">«</button>
+					${tombol.join('')}
+					<button onclick="gantiHalamanDashboardUniversal(${halaman + 1})" ${halaman === totalHalaman ? 'disabled' : ''}
+						class="w-8 h-8 rounded-xl text-xs font-extrabold transition ${halaman === totalHalaman ? 'text-slate-300 cursor-not-allowed' : 'bg-slate-100 text-slate-500 hover:bg-blue-50'}">»</button>
+				</div>
+				<p class="text-[10px] font-bold text-slate-400">
+					Menampilkan ${start + 1}–${akhir} dari ${filtered.length} data ${currentSheet}
+				</p>
+			</div>`;
+		}
+
+		function gantiHalamanDashboardUniversal(nomorHalaman) {
+			stateGuruUniversal.halaman = nomorHalaman;
+			renderDynamicTable(); // Panggil ulang render untuk memotong data halaman baru
+			document.getElementById("dynamic-content-wrapper")?.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 		
 		if ('serviceWorker' in navigator) {
