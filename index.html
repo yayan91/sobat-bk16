@@ -1076,15 +1076,167 @@
 					</div>
 				</div>
 				<div id="layanan-izin" class="layanan-sub hidden">
-					<div class="min-h-screen flex items-center justify-center px-4">
-						<div class="text-center text-white">
-							<i class="ph-fill ph-door-open text-6xl text-violet-400 mb-4 block"></i>
-							<h3 class="text-2xl font-extrabold mb-2">Izin</h3>
-							<p class="text-blue-200/60 mb-6">Segera hadir di Tahap 3</p>
-							<button onclick="navigasiLayanan('layanan-dashboard')" class="bg-white/10 border border-white/20 text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-white/20 transition flex items-center gap-2 mx-auto">
-								<i class="ph-bold ph-arrow-left"></i> Kembali
+					<div class="min-h-screen px-4 py-10 max-w-2xl mx-auto">
+
+						<!-- Header -->
+						<div class="flex items-center gap-4 mb-8">
+							<button onclick="navigasiLayanan('layanan-dashboard')"
+								class="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition shrink-0">
+								<i class="ph-bold ph-arrow-left"></i>
 							</button>
+							<div>
+								<h3 class="text-xl font-extrabold text-white">Pengajuan Izin</h3>
+								<p class="text-blue-200/60 text-xs mt-0.5">Ajukan izin tidak hadir atau sakit</p>
+							</div>
 						</div>
+
+						<!-- FORM PENGAJUAN -->
+						<div class="bg-white/10 backdrop-blur border border-white/15 rounded-[2rem] p-6 mb-6">
+							<h4 class="font-extrabold text-white text-sm mb-5 flex items-center gap-2">
+								<i class="ph-fill ph-door-open text-violet-400"></i> Buat Pengajuan Baru
+							</h4>
+
+							<div class="space-y-4">
+
+								<!-- Pilih Guru BK -->
+								<div>
+									<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+										Pilih Guru BK <span class="text-red-400">*</span>
+									</label>
+									<div id="izin-list-guru" class="grid grid-cols-1 gap-2">
+										<div class="flex items-center gap-2 text-blue-300/60 text-xs py-3">
+											<div class="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+											Memuat daftar Guru BK...
+										</div>
+									</div>
+								</div>
+
+								<!-- Jenis Izin -->
+								<div>
+									<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+										Jenis Izin <span class="text-red-400">*</span>
+									</label>
+									<div class="grid grid-cols-2 gap-3">
+										<button onclick="pilihJenisIzin('Tidak Hadir', this)"
+											id="izin-btn-tidakhadir"
+											class="izin-jenis-btn py-3 rounded-xl text-xs font-bold border-2 border-white/15 text-white/60 hover:border-violet-400/50 hover:text-white transition flex items-center justify-center gap-2">
+											<i class="ph-fill ph-calendar-x text-base"></i> Tidak Hadir
+										</button>
+										<button onclick="pilihJenisIzin('Sakit', this)"
+											id="izin-btn-sakit"
+											class="izin-jenis-btn py-3 rounded-xl text-xs font-bold border-2 border-white/15 text-white/60 hover:border-violet-400/50 hover:text-white transition flex items-center justify-center gap-2">
+											<i class="ph-fill ph-first-aid text-base"></i> Sakit
+										</button>
+									</div>
+								</div>
+
+								<!-- Tanggal Mulai & Selesai -->
+								<div class="grid grid-cols-2 gap-3">
+									<div>
+										<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+											Tanggal Mulai <span class="text-red-400">*</span>
+										</label>
+										<input id="izin-tgl-mulai" type="date"
+											class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-violet-400/50 focus:bg-white/10 transition [color-scheme:dark]">
+									</div>
+									<div>
+										<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+											Tanggal Selesai <span class="text-red-400">*</span>
+										</label>
+										<input id="izin-tgl-selesai" type="date"
+											class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-violet-400/50 focus:bg-white/10 transition [color-scheme:dark]">
+									</div>
+								</div>
+
+								<!-- Keterangan -->
+								<div>
+									<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+										Keterangan <span class="text-red-400">*</span>
+									</label>
+									<textarea id="izin-keterangan" rows="3" maxlength="300"
+										placeholder="Jelaskan alasan izinmu secara singkat..."
+										class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-violet-400/50 focus:bg-white/10 transition resize-none"></textarea>
+									<p class="text-white/30 text-[10px] mt-1 text-right" id="izin-ket-counter">0/300</p>
+								</div>
+
+								<!-- Upload Surat (muncul jika Sakit) -->
+								<div id="izin-upload-wrap" class="hidden">
+									<label class="block text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+										Surat Keterangan Sakit
+										<span class="text-white/30 normal-case font-normal">(opsional, maks. 200 KB)</span>
+									</label>
+									<input id="izin-surat-input" type="file" accept="image/*,application/pdf" class="hidden"
+										onchange="handleUploadSuratIzin(this)">
+									<button onclick="document.getElementById('izin-surat-input').click()"
+										id="izin-surat-btn"
+										class="w-full bg-white/5 border-2 border-dashed border-white/20 rounded-xl px-4 py-5 text-sm text-white/40 hover:border-violet-400/50 hover:text-white/60 hover:bg-white/10 transition flex flex-col items-center gap-2">
+										<i class="ph-fill ph-upload-simple text-2xl"></i>
+										<span class="text-xs">Klik untuk unggah surat (PNG/JPG/PDF)</span>
+									</button>
+									<!-- Preview -->
+									<div id="izin-surat-preview" class="hidden mt-3 relative">
+										<div class="flex items-center gap-3 bg-violet-500/20 border border-violet-500/30 rounded-xl px-4 py-3">
+											<i class="ph-fill ph-file-check text-violet-400 text-2xl shrink-0"></i>
+											<div class="flex-1 min-w-0">
+												<p id="izin-surat-nama" class="text-white text-xs font-bold truncate">-</p>
+												<p class="text-violet-300/60 text-[10px]">File berhasil diunggah</p>
+											</div>
+											<button onclick="hapusSuratIzin()"
+												class="w-7 h-7 bg-red-500/20 text-red-400 rounded-lg flex items-center justify-center hover:bg-red-500 hover:text-white transition shrink-0">
+												<i class="ph-bold ph-x text-xs"></i>
+											</button>
+										</div>
+									</div>
+									<input type="hidden" id="izin-surat-url" value="">
+								</div>
+
+								<!-- Tombol Kirim -->
+								<button onclick="kirimPengajuanIzin()"
+									class="w-full bg-gradient-to-r from-violet-600 to-purple-600 text-white font-extrabold py-4 rounded-xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition flex items-center justify-center gap-2">
+									<i class="ph-bold ph-paper-plane-tilt"></i> Kirim Pengajuan Izin
+								</button>
+
+							</div>
+						</div>
+
+						<!-- RIWAYAT IZIN -->
+						<div class="bg-white/10 backdrop-blur border border-white/15 rounded-[2rem] p-6">
+							<div class="flex items-center justify-between mb-5">
+								<h4 class="font-extrabold text-white text-sm flex items-center gap-2">
+									<i class="ph-fill ph-clock-countdown text-amber-400"></i> Riwayat Izinku
+								</h4>
+								<button onclick="muatRiwayatIzin()"
+									class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white/70 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-bold transition">
+									<i class="ph-bold ph-arrows-clockwise"></i> Refresh
+								</button>
+							</div>
+
+							<!-- Filter -->
+							<div class="flex gap-2 mb-4 flex-wrap">
+								<button onclick="filterIzinPengguna('Semua', this)"
+									class="izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-amber-500 text-blue-900 border-amber-500">
+									Semua
+								</button>
+								<button onclick="filterIzinPengguna('Masuk', this)"
+									class="izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Menunggu
+								</button>
+								<button onclick="filterIzinPengguna('Disetujui', this)"
+									class="izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Disetujui
+								</button>
+								<button onclick="filterIzinPengguna('Ditolak', this)"
+									class="izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white">
+									Ditolak
+								</button>
+							</div>
+
+							<div id="izin-pengguna-list" class="space-y-3">
+								<p class="text-blue-300/60 text-sm text-center py-6 italic">Memuat riwayat...</p>
+							</div>
+							<div id="izin-pengguna-paginasi" class="mt-4"></div>
+						</div>
+
 					</div>
 				</div>
 
@@ -2926,6 +3078,39 @@
 				return;
 			}
 			
+			// KONDISI IZIN -> Tampilan Kartu Khusus Guru
+			if(currentSheet === "Izin") {
+				wrapper.innerHTML = `
+				<div class="w-full" id="guru-izin-wrap">
+					<div class="mb-4 space-y-3">
+						<div class="relative">
+							<input id="lm-search" type="text" placeholder="Cari nama pengaju..."
+								oninput="filterLayananGuru()"
+								class="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 pl-10 text-sm outline-none focus:border-violet-400 transition">
+							<i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-base"></i>
+						</div>
+						<div class="flex gap-2 flex-wrap" id="lm-filter-btns">
+							${['Semua','Masuk','Disetujui','Ditolak'].map((s,i) => `
+							<button onclick="setFilterStatusGuru('${s}', this)"
+								class="lm-filter-btn px-4 py-2 rounded-full text-xs font-bold border transition
+								${i===0 ? 'bg-blue-900 text-white border-blue-900' : 'bg-slate-100 text-slate-500 border-slate-200 hover:border-violet-400 hover:text-violet-600'}">
+								${s}
+							</button>`).join('')}
+						</div>
+					</div>
+					<div id="guru-izin-list" class="space-y-4"></div>
+					<div id="guru-izin-paginasi" class="mt-5"></div>
+				</div>`;
+
+				fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'read', sheet: 'Pengguna' }) })
+					.then(r => r.json())
+					.then(result => {
+						if(result.status === 'success') dataPengguna = result.data;
+						inisialisasiFilterGuru(tableData, 'guru-izin', renderItemIzinGuru);
+					});
+				return;
+			}
+			
 			// KONDISI KONSULTASI -> Layout Terbagi (Split Pane seperti WhatsApp Web)
             if(currentSheet === "Konsultasi") {
                 // Filter hanya konsultasi yang ditujukan ke guru yang sedang login (kecuali Admin/Superadmin jika ada logika itu, sementara disamakan username guru)
@@ -3677,6 +3862,7 @@
 			let prefix = 'guru-data';
 			if (currentSheet === 'Laporan') prefix = 'guru-laporan';
 			if (currentSheet === 'Saran') prefix = 'guru-saran';
+			if (currentSheet === 'Izin') prefix = 'guru-izin';
 			
 			renderDataGuru(prefix);
 		}
@@ -4545,6 +4731,7 @@
 			if(targetId === 'layanan-saran') bukaLayananSaran();
 			if(targetId === 'layanan-lapor') bukaLayananLapor();
 			if(targetId === 'layanan-konsultasi') bukaLayananKonsultasi();
+			if(targetId === 'layanan-izin') bukaLayananIzin();
 		}
 
 		// ==========================================
@@ -6370,6 +6557,612 @@
 				}
 			} catch(e) {
 				alertError("Gagal memperbarui status.");
+			}
+		}
+		
+		// ==========================================
+		// LAYANAN IZIN (SISI PENGGUNA)
+		// ==========================================
+		let izinJenisPilihan = '';
+		let izinSuratUploading = false;
+		let stateIzinPengguna = { data: [], filtered: [], halaman: 1, perHalaman: 3 };
+
+		function pilihJenisIzin(jenis, elBtn) {
+			izinJenisPilihan = jenis;
+			document.querySelectorAll('.izin-jenis-btn').forEach(btn => {
+				btn.classList.remove('border-violet-400', 'bg-violet-500/20', 'text-violet-300');
+				btn.classList.add('border-white/15', 'text-white/60');
+			});
+			elBtn.classList.remove('border-white/15', 'text-white/60');
+			elBtn.classList.add('border-violet-400', 'bg-violet-500/20', 'text-violet-300');
+
+			// Tampilkan upload surat hanya jika Sakit
+			const uploadWrap = document.getElementById('izin-upload-wrap');
+			if(jenis === 'Sakit') {
+				uploadWrap.classList.remove('hidden');
+			} else {
+				uploadWrap.classList.add('hidden');
+				hapusSuratIzin();
+			}
+		}
+
+		async function handleUploadSuratIzin(input) {
+			const file = input.files[0];
+			if(!file) return;
+			if(file.size > 200 * 1024) {
+				alertError('Ukuran file maksimal 200 KB!');
+				input.value = '';
+				return;
+			}
+			izinSuratUploading = true;
+			alertLoading('Mengunggah surat...');
+			try {
+				const base64 = await toBase64(file);
+				const res = await fetch(GAS_API_URL, {
+					method: 'POST',
+					body: JSON.stringify({ action: 'upload', fileName: file.name, mimeType: file.type, base64Data: base64.split(',')[1] })
+				});
+				const result = await res.json();
+				if(result.status === 'success') {
+					document.getElementById('izin-surat-url').value = result.url;
+					document.getElementById('izin-surat-nama').innerText = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+					document.getElementById('izin-surat-preview').classList.remove('hidden');
+					document.getElementById('izin-surat-btn').classList.add('hidden');
+					Swal.fire({ icon: 'success', title: 'Surat terunggah!', timer: 1200, showConfirmButton: false, customClass: { popup: 'rounded-3xl' } });
+				} else {
+					alertError(result.message);
+					input.value = '';
+				}
+			} catch(e) {
+				alertError('Gagal mengunggah. Periksa koneksi.');
+				input.value = '';
+			} finally {
+				izinSuratUploading = false;
+			}
+		}
+
+		function hapusSuratIzin() {
+			document.getElementById('izin-surat-url').value = '';
+			document.getElementById('izin-surat-input').value = '';
+			document.getElementById('izin-surat-preview').classList.add('hidden');
+			document.getElementById('izin-surat-btn').classList.remove('hidden');
+			document.getElementById('izin-surat-nama').innerText = '-';
+		}
+
+		async function bukaLayananIzin() {
+			if(!penggunaLogin) return;
+			izinJenisPilihan = '';
+			document.querySelectorAll('.izin-jenis-btn').forEach(btn => {
+				btn.classList.remove('border-violet-400', 'bg-violet-500/20', 'text-violet-300');
+				btn.classList.add('border-white/15', 'text-white/60');
+			});
+			document.getElementById('izin-tgl-mulai').value = '';
+			document.getElementById('izin-tgl-selesai').value = '';
+			document.getElementById('izin-keterangan').value = '';
+			document.getElementById('izin-ket-counter').innerText = '0/300';
+			document.getElementById('izin-upload-wrap').classList.add('hidden');
+			hapusSuratIzin();
+
+			// Muat daftar guru (reuse dataGuruBKAktif jika sudah ada)
+			await muatDaftarGuruIzin();
+			await muatRiwayatIzin();
+		}
+
+		async function muatDaftarGuruIzin() {
+			const container = document.getElementById('izin-list-guru');
+			try {
+				if(dataGuruBKAktif.length === 0) {
+					const res = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'read', sheet: 'Guru' }) });
+					const result = await res.json();
+					if(result.status === 'success') dataGuruBKAktif = result.data.filter(g => g.status_akun === 'Aktif');
+				}
+				if(dataGuruBKAktif.length === 0) {
+					container.innerHTML = `<p class="text-xs text-red-400 italic">Tidak ada Guru BK aktif.</p>`;
+					return;
+				}
+				container.innerHTML = dataGuruBKAktif.map(g => `
+					<label class="flex items-center gap-3 p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition">
+						<input type="radio" name="pilih_guru_izin" value="${g.username}" class="w-4 h-4 text-violet-500 bg-transparent border-white/20 focus:ring-violet-500 focus:ring-2">
+						<div class="flex items-center gap-3 flex-1">
+							<img src="${fixDriveUrl(g.url_foto_profil)}"
+								onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(g.nama_lengkap)}&background=1e3a8a&color=fff'"
+								class="w-8 h-8 rounded-full object-cover shrink-0">
+							<div>
+								<p class="text-white text-xs font-bold">${g.nama_lengkap}</p>
+								<p class="text-blue-300/60 text-[10px]">NIP: ${g.nip_nuptk || '-'}</p>
+							</div>
+						</div>
+					</label>`).join('');
+			} catch(e) {
+				container.innerHTML = `<p class="text-xs text-red-400">Gagal memuat daftar guru.</p>`;
+			}
+		}
+
+		// Counter keterangan
+		document.addEventListener('DOMContentLoaded', () => {
+			const ketEl = document.getElementById('izin-keterangan');
+			if(ketEl) ketEl.addEventListener('input', function() {
+				document.getElementById('izin-ket-counter').innerText = `${this.value.length}/300`;
+			});
+		});
+
+		async function kirimPengajuanIzin() {
+			if(!penggunaLogin) return;
+
+			const guruTerpilih = document.querySelector('input[name="pilih_guru_izin"]:checked');
+			const tglMulai    = document.getElementById('izin-tgl-mulai').value;
+			const tglSelesai  = document.getElementById('izin-tgl-selesai').value;
+			const keterangan  = document.getElementById('izin-keterangan').value.trim();
+			const suratUrl    = document.getElementById('izin-surat-url').value;
+
+			if(!guruTerpilih)  { alertError('Pilih Guru BK terlebih dahulu!'); return; }
+			if(!izinJenisPilihan) { alertError('Pilih jenis izin terlebih dahulu!'); return; }
+			if(!tglMulai)      { alertError('Tanggal mulai wajib diisi!'); return; }
+			if(!tglSelesai)    { alertError('Tanggal selesai wajib diisi!'); return; }
+			if(tglSelesai < tglMulai) { alertError('Tanggal selesai tidak boleh sebelum tanggal mulai!'); return; }
+			if(!keterangan)    { alertError('Keterangan wajib diisi!'); return; }
+			if(izinSuratUploading) { alertError('Tunggu surat selesai diunggah!'); return; }
+
+			const guruData = dataGuruBKAktif.find(g => g.username === guruTerpilih.value);
+			alertLoading('Mengirim pengajuan izin...');
+
+			const now = new Date();
+			const idBaru = 'IZN-' + Date.now();
+
+			const payload = {
+				action: 'create',
+				sheet: 'Izin',
+				data: {
+					id_izin: idBaru,
+					id_pengguna: penggunaLogin.id_pengguna,
+					status: 'Masuk',
+					tanggal_izin: now.toISOString().split('T')[0],
+					data_json: JSON.stringify({
+						jenis_izin: izinJenisPilihan,
+						nama_pengguna: penggunaLogin.nama,
+						status_pengguna: penggunaLogin.status || '-',
+						kelas: penggunaLogin.kelas || '-',
+						tanggal_izin_mulai: tglMulai,
+						tanggal_izin_selesai: tglSelesai,
+						keterangan: keterangan,
+						url_surat: suratUrl,
+						id_guru: guruData.username,
+						nama_guru: guruData.nama_lengkap,
+						catatan_guru: '',
+						tanggal_proses: ''
+					})
+				}
+			};
+
+			try {
+				const res = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify(payload) });
+				const result = await res.json();
+				if(result.status === 'success') {
+					Swal.fire({
+						icon: 'success',
+						title: 'Pengajuan Terkirim! 📋',
+						html: `<p style="color:#64748b;font-size:0.9rem;">Izin <strong>${izinJenisPilihan}</strong> kamu telah dikirim ke <strong>${guruData.nama_lengkap}</strong> dan menunggu konfirmasi.</p>`,
+						confirmButtonText: 'Pantau Status',
+						confirmButtonColor: '#1e3a8a',
+						customClass: { popup: 'rounded-3xl' }
+					});
+					// Reset form
+					izinJenisPilihan = '';
+					document.querySelectorAll('.izin-jenis-btn').forEach(btn => {
+						btn.classList.remove('border-violet-400', 'bg-violet-500/20', 'text-violet-300');
+						btn.classList.add('border-white/15', 'text-white/60');
+					});
+					document.getElementById('izin-tgl-mulai').value = '';
+					document.getElementById('izin-tgl-selesai').value = '';
+					document.getElementById('izin-keterangan').value = '';
+					document.getElementById('izin-ket-counter').innerText = '0/300';
+					document.getElementById('izin-upload-wrap').classList.add('hidden');
+					hapusSuratIzin();
+					document.querySelector('input[name="pilih_guru_izin"]:checked').checked = false;
+					await muatRiwayatIzin();
+				} else { alertError(result.message); }
+			} catch(e) { alertError('Gagal menghubungi server.'); }
+		}
+
+		async function muatRiwayatIzin() {
+			const container  = document.getElementById('izin-pengguna-list');
+			const paginasiEl = document.getElementById('izin-pengguna-paginasi');
+			if(!container) return;
+			container.innerHTML = `<div class="flex items-center justify-center gap-2 py-4"><div class="w-4 h-4 border-2 border-violet-400 border-t-transparent rounded-full animate-spin"></div><p class="text-blue-300/60 text-xs">Memuat...</p></div>`;
+			if(paginasiEl) paginasiEl.innerHTML = '';
+
+			try {
+				const res = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'read', sheet: 'Izin' }) });
+				const result = await res.json();
+				if(result.status === 'success') {
+					const milik = result.data
+						.filter(d => d.id_pengguna === penggunaLogin.id_pengguna)
+						.sort((a, b) => b.tanggal_izin.localeCompare(a.tanggal_izin));
+
+					stateIzinPengguna.data     = milik;
+					stateIzinPengguna.filtered = milik;
+					stateIzinPengguna.halaman  = 1;
+
+					// Reset filter ke Semua
+					document.querySelectorAll('.izin-filter-btn').forEach((btn, i) => {
+						btn.className = i === 0
+							? "izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-amber-500 text-blue-900 border-amber-500"
+							: "izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white";
+					});
+					renderDataIzinPengguna();
+				}
+			} catch(e) {
+				container.innerHTML = `<p class="text-red-400/60 text-sm text-center py-6">Gagal memuat riwayat.</p>`;
+			}
+		}
+
+		function filterIzinPengguna(status, elBtn) {
+			document.querySelectorAll('.izin-filter-btn').forEach(btn => {
+				btn.className = "izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-white/5 text-white/60 border-white/15 hover:border-amber-400/50 hover:text-white";
+			});
+			elBtn.className = "izin-filter-btn px-4 py-1.5 rounded-full text-[10px] font-bold border transition bg-amber-500 text-blue-900 border-amber-500";
+
+			stateIzinPengguna.filtered = status === 'Semua'
+				? stateIzinPengguna.data
+				: stateIzinPengguna.data.filter(d => d.status === status);
+			stateIzinPengguna.halaman = 1;
+			renderDataIzinPengguna();
+		}
+
+		function renderDataIzinPengguna() {
+			const listEl     = document.getElementById('izin-pengguna-list');
+			const paginasiEl = document.getElementById('izin-pengguna-paginasi');
+			if(!listEl) return;
+
+			const { filtered, halaman, perHalaman } = stateIzinPengguna;
+			const totalHalaman = Math.ceil(filtered.length / perHalaman);
+			const start = (halaman - 1) * perHalaman;
+			const slice = filtered.slice(start, start + perHalaman);
+
+			if(filtered.length === 0) {
+				listEl.innerHTML = `<p class="text-blue-300/60 text-sm text-center py-6 italic">Tidak ada izin ditemukan.</p>`;
+				if(paginasiEl) paginasiEl.innerHTML = '';
+				return;
+			}
+
+			listEl.innerHTML = slice.map(renderItemIzinPengguna).join('');
+
+			if(paginasiEl) {
+				if(totalHalaman <= 1) {
+					paginasiEl.innerHTML = '';
+				} else {
+					let tombol = [];
+					for(let i = 1; i <= totalHalaman; i++) {
+						tombol.push(`<button onclick="gantiHalamanIzinPengguna(${i})"
+							class="w-7 h-7 rounded-lg text-[10px] font-extrabold transition ${i === halaman ? 'bg-amber-500 text-blue-900' : 'bg-white/5 text-white/60 hover:bg-white/10'}">${i}</button>`);
+					}
+					paginasiEl.innerHTML = `
+					<div class="flex items-center justify-center gap-1 mt-2">
+						<button onclick="gantiHalamanIzinPengguna(${halaman-1})" ${halaman===1?'disabled':''}
+							class="w-7 h-7 rounded-lg text-[10px] font-extrabold transition ${halaman===1?'text-white/20 cursor-not-allowed':'bg-white/5 text-white/60 hover:bg-white/10'}">«</button>
+						${tombol.join('')}
+						<button onclick="gantiHalamanIzinPengguna(${halaman+1})" ${halaman===totalHalaman?'disabled':''}
+							class="w-7 h-7 rounded-lg text-[10px] font-extrabold transition ${halaman===totalHalaman?'text-white/20 cursor-not-allowed':'bg-white/5 text-white/60 hover:bg-white/10'}">»</button>
+					</div>`;
+				}
+			}
+		}
+
+		function gantiHalamanIzinPengguna(h) {
+			stateIzinPengguna.halaman = h;
+			renderDataIzinPengguna();
+			document.getElementById('izin-pengguna-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+
+		function renderItemIzinPengguna(item) {
+			let dj = {};
+			try { dj = JSON.parse(item.data_json); } catch(e){}
+
+			const statusWarna = {
+				'Masuk':     'bg-blue-500/20 text-blue-300 border-blue-500/30',
+				'Disetujui': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+				'Ditolak':   'bg-red-500/20 text-red-300 border-red-500/30',
+			};
+			const sw = statusWarna[item.status] || 'bg-slate-500/20 text-slate-300 border-slate-500/30';
+			const stripColor = item.status === 'Disetujui' ? 'bg-emerald-400' : item.status === 'Ditolak' ? 'bg-red-500' : 'bg-violet-400';
+			const ikonJenis  = dj.jenis_izin === 'Sakit' ? 'ph-first-aid' : 'ph-calendar-x';
+
+			return `
+			<div class="bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:bg-white/10 transition">
+				<div class="h-1 w-full ${stripColor}"></div>
+				<div class="p-5">
+					<div class="flex items-start justify-between gap-3 mb-4">
+						<div class="flex items-center gap-3">
+							<div class="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center shrink-0">
+								<i class="ph-fill ${ikonJenis} text-violet-400 text-xl"></i>
+							</div>
+							<div>
+								<p class="text-white font-extrabold text-sm">${dj.jenis_izin || '-'}</p>
+								<p class="text-blue-300/60 text-[10px] mt-0.5 flex items-center gap-1">
+									<i class="ph-bold ph-calendar-blank"></i>
+									${formatTanggal(dj.tanggal_izin_mulai)}
+									${dj.tanggal_izin_mulai !== dj.tanggal_izin_selesai ? ` <span class="text-white/30">→</span> ${formatTanggal(dj.tanggal_izin_selesai)}` : ''}
+								</p>
+							</div>
+						</div>
+						<span class="shrink-0 text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${sw}">${item.status}</span>
+					</div>
+
+					<div class="bg-white/5 rounded-xl p-3 mb-3">
+						<p class="text-[9px] font-bold text-blue-300/60 uppercase tracking-widest mb-1">Keterangan</p>
+						<p class="text-white/80 text-xs leading-relaxed">${dj.keterangan || '-'}</p>
+					</div>
+
+					<div class="flex items-center justify-between text-[10px] text-blue-300/50 font-bold mb-3">
+						<span class="flex items-center gap-1">
+							<i class="ph-bold ph-chalkboard-teacher text-amber-400"></i> ${dj.nama_guru || '-'}
+						</span>
+						${dj.url_surat ? `
+						<a href="${dj.url_surat}" target="_blank"
+							class="flex items-center gap-1 text-violet-400 hover:text-violet-300 transition">
+							<i class="ph-bold ph-file-text"></i> Lihat Surat
+						</a>` : ''}
+					</div>
+
+					${dj.catatan_guru ? `
+					<div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
+						<p class="text-[9px] font-bold text-emerald-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+							<i class="ph-fill ph-chalkboard-teacher"></i> Catatan Guru BK
+						</p>
+						<p class="text-white/80 text-xs leading-relaxed">${dj.catatan_guru}</p>
+						<p class="text-emerald-400/50 text-[9px] mt-1">
+							<i class="ph-bold ph-calendar-check"></i> ${formatTanggal(dj.tanggal_proses)}
+						</p>
+					</div>` : ''}
+
+					${item.status === 'Ditolak' && dj.catatan_guru ? `
+					<div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 mt-3">
+						<p class="text-[9px] font-bold text-red-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+							<i class="ph-fill ph-x-circle"></i> Alasan Penolakan
+						</p>
+						<p class="text-white/80 text-xs">${dj.catatan_guru}</p>
+					</div>` : ''}
+				</div>
+			</div>`;
+		}
+		
+		// ==========================================
+		// IZIN - RENDER & PROSES SISI GURU
+		// ==========================================
+		function renderItemIzinGuru(row) {
+			let dj = {};
+			try { dj = JSON.parse(row.data_json); } catch(e) {}
+			const rowId = row[tableHeaders[0]];
+
+			const statusWarna = {
+				'Masuk':     { badge: 'bg-violet-50 text-violet-600 border-violet-200', strip: 'bg-violet-400' },
+				'Disetujui': { badge: 'bg-emerald-50 text-emerald-600 border-emerald-200', strip: 'bg-emerald-400' },
+				'Ditolak':   { badge: 'bg-red-50 text-red-600 border-red-200', strip: 'bg-red-500' },
+			};
+			const sw = statusWarna[row.status] || statusWarna['Masuk'];
+			const ikonJenis = dj.jenis_izin === 'Sakit' ? 'ph-first-aid' : 'ph-calendar-x';
+			const namaPeran = getInfoPengguna(row.id_pengguna);
+
+			return `
+			<div class="bg-white rounded-[1.5rem] border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden">
+				<div class="h-1.5 w-full ${sw.strip}"></div>
+				<div class="p-6">
+
+					<!-- Header -->
+					<div class="flex items-start justify-between gap-4 mb-5">
+						<div class="flex items-start gap-3 flex-1">
+							<div class="w-11 h-11 rounded-2xl bg-violet-50 flex items-center justify-center shrink-0">
+								<i class="ph-fill ${ikonJenis} text-violet-500 text-xl"></i>
+							</div>
+							<div>
+								<p class="font-extrabold text-slate-900 text-sm">${dj.jenis_izin || '-'}</p>
+								<p class="text-slate-400 text-[10px] mt-0.5 font-bold flex items-center gap-1.5 flex-wrap">
+									<span class="flex items-center gap-1">
+										<i class="ph-bold ph-user text-blue-400"></i> ${dj.nama_pengguna || '-'}
+									</span>
+									<span class="text-slate-200">·</span>
+									<span>${namaPeran}</span>
+									<span class="text-slate-200">·</span>
+									<span class="flex items-center gap-1">
+										<i class="ph-bold ph-calendar-blank text-blue-400"></i>
+										${formatTanggal(row.tanggal_izin)}
+									</span>
+								</p>
+							</div>
+						</div>
+						<span class="shrink-0 text-[9px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border ${sw.badge}">
+							${row.status}
+						</span>
+					</div>
+
+					<!-- Detail Tanggal Izin -->
+					<div class="bg-slate-50 rounded-2xl p-4 mb-4 grid grid-cols-2 md:grid-cols-3 gap-3">
+						<div>
+							<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Jenis</p>
+							<p class="text-slate-800 text-xs font-bold">${dj.jenis_izin || '-'}</p>
+						</div>
+						<div>
+							<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Mulai</p>
+							<p class="text-slate-800 text-xs font-bold">${formatTanggal(dj.tanggal_izin_mulai)}</p>
+						</div>
+						<div>
+							<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Selesai</p>
+							<p class="text-slate-800 text-xs font-bold">${formatTanggal(dj.tanggal_izin_selesai)}</p>
+						</div>
+					</div>
+
+					<!-- Keterangan -->
+					<div class="bg-slate-50 rounded-xl p-4 mb-4">
+						<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Keterangan Pengaju</p>
+						<p class="text-slate-700 text-sm leading-relaxed italic">"${dj.keterangan || '-'}"</p>
+					</div>
+
+					<!-- Surat (jika ada) -->
+					${dj.url_surat ? `
+					<div class="mb-4">
+						<a href="${dj.url_surat}" target="_blank"
+							class="inline-flex items-center gap-2 bg-violet-50 text-violet-600 border border-violet-200 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-violet-100 transition">
+							<i class="ph-fill ph-file-text text-base"></i> Lihat Surat Keterangan
+							<i class="ph-bold ph-arrow-square-out text-xs"></i>
+						</a>
+					</div>` : ''}
+
+					<!-- Catatan Guru (jika sudah diproses) -->
+					${dj.catatan_guru ? `
+					<div class="${row.status === 'Disetujui' ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'} border rounded-xl p-4 mb-4">
+						<p class="text-[9px] font-bold ${row.status === 'Disetujui' ? 'text-emerald-600' : 'text-red-600'} uppercase tracking-widest mb-1.5 flex items-center gap-1">
+							<i class="ph-fill ph-chalkboard-teacher"></i>
+							${row.status === 'Disetujui' ? 'Catatan Persetujuan' : 'Alasan Penolakan'}
+						</p>
+						<p class="text-slate-700 text-xs leading-relaxed">${dj.catatan_guru}</p>
+						<p class="text-slate-400 text-[9px] mt-2 flex items-center gap-1">
+							<i class="ph-bold ph-calendar-check"></i> Diproses: ${formatTanggal(dj.tanggal_proses)}
+						</p>
+					</div>` : ''}
+
+					<!-- Tombol Aksi Guru -->
+					<div class="flex items-center gap-2 pt-4 border-t border-slate-100 flex-wrap">
+						${row.status === 'Masuk' ? `
+						<button onclick="formProsesIzin('${rowId}', 'Disetujui')"
+							class="flex items-center gap-2 bg-emerald-500 text-white px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-600 hover:-translate-y-0.5 transition shadow-sm">
+							<i class="ph-bold ph-check-circle"></i> Setujui
+						</button>
+						<button onclick="formProsesIzin('${rowId}', 'Ditolak')"
+							class="flex items-center gap-2 bg-red-100 text-red-600 px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-red-500 hover:text-white transition">
+							<i class="ph-bold ph-x-circle"></i> Tolak
+						</button>` : `
+						<span class="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-xl border
+							${row.status === 'Disetujui'
+								? 'text-emerald-500 bg-emerald-50 border-emerald-200'
+								: 'text-red-500 bg-red-50 border-red-200'}">
+							<i class="ph-fill ${row.status === 'Disetujui' ? 'ph-check-circle' : 'ph-x-circle'}"></i>
+							${row.status === 'Disetujui' ? 'Izin Disetujui' : 'Izin Ditolak'}
+						</span>
+						<button onclick="formProsesIzin('${rowId}', 'edit')"
+							class="flex items-center gap-2 bg-slate-100 text-slate-600 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-200 transition">
+							<i class="ph-bold ph-pencil-simple"></i> Edit
+						</button>`}
+
+						<div class="ml-auto">
+							<button onclick="hapusData('${rowId}')"
+								class="w-9 h-9 bg-red-50 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition flex items-center justify-center"
+								title="Hapus">
+								<i class="ph-bold ph-trash text-sm"></i>
+							</button>
+						</div>
+					</div>
+
+				</div>
+			</div>`;
+		}
+
+		async function formProsesIzin(idIzin, aksi) {
+			const row = tableData.find(r => r[tableHeaders[0]] === idIzin);
+			if(!row) return;
+			let dj = {};
+			try { dj = JSON.parse(row.data_json); } catch(e) {}
+
+			const judulMap = {
+				'Disetujui': '✅ Setujui Izin',
+				'Ditolak':   '❌ Tolak Izin',
+				'edit':      '✏️ Edit Keputusan'
+			};
+
+			const { value: formValues } = await Swal.fire({
+				title: judulMap[aksi] || 'Proses Izin',
+				html: `
+				<div style="text-align:left;display:flex;flex-direction:column;gap:12px;">
+
+					<!-- Info Ringkas -->
+					<div style="background:#f8fafc;border-radius:0.75rem;padding:12px 16px;border:1px solid #e2e8f0;">
+						<p style="font-size:0.65rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Pengaju</p>
+						<p style="font-size:0.875rem;font-weight:700;color:#0f172a;margin-bottom:2px;">${dj.nama_pengguna} — ${dj.jenis_izin}</p>
+						<p style="font-size:0.75rem;color:#64748b;">
+							${formatTanggal(dj.tanggal_izin_mulai)}
+							${dj.tanggal_izin_mulai !== dj.tanggal_izin_selesai ? ' s/d ' + formatTanggal(dj.tanggal_izin_selesai) : ''}
+						</p>
+					</div>
+
+					<!-- Keputusan (jika edit, bisa ubah) -->
+					${aksi === 'edit' ? `
+					<div>
+						<label style="font-size:0.65rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Ubah Keputusan</label>
+						<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+							<button type="button" onclick="document.getElementById('izin-keputusan-edit').value='Disetujui';this.style.background='#d1fae5';this.style.color='#059669';document.querySelectorAll('.izin-keputusan-opt')[1].style.background='';document.querySelectorAll('.izin-keputusan-opt')[1].style.color='';"
+								class="izin-keputusan-opt" style="padding:10px;border:2px solid #e2e8f0;border-radius:0.75rem;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s;background:${row.status === 'Disetujui' ? '#d1fae5' : ''};color:${row.status === 'Disetujui' ? '#059669' : ''};">
+								✅ Disetujui
+							</button>
+							<button type="button" onclick="document.getElementById('izin-keputusan-edit').value='Ditolak';this.style.background='#fee2e2';this.style.color='#dc2626';document.querySelectorAll('.izin-keputusan-opt')[0].style.background='';document.querySelectorAll('.izin-keputusan-opt')[0].style.color='';"
+								class="izin-keputusan-opt" style="padding:10px;border:2px solid #e2e8f0;border-radius:0.75rem;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s;background:${row.status === 'Ditolak' ? '#fee2e2' : ''};color:${row.status === 'Ditolak' ? '#dc2626' : ''};">
+								❌ Ditolak
+							</button>
+						</div>
+						<input type="hidden" id="izin-keputusan-edit" value="${row.status}">
+					</div>` : ''}
+
+					<!-- Catatan -->
+					<div>
+						<label style="font-size:0.65rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">
+							${aksi === 'Ditolak' ? 'Alasan Penolakan' : 'Catatan untuk Siswa'}
+							<span style="color:#ef4444;"> *</span>
+						</label>
+						<textarea id="izin-catatan-guru" rows="3"
+							style="width:100%;background:#f8fafc;border:2px solid #e2e8f0;border-radius:0.875rem;padding:12px 16px;font-size:0.875rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none;resize:none;box-sizing:border-box;"
+							placeholder="${aksi === 'Ditolak' ? 'Tuliskan alasan penolakan...' : 'Tuliskan catatan untuk siswa...'}"
+						>${dj.catatan_guru || ''}</textarea>
+					</div>
+
+				</div>`,
+				showCancelButton: true,
+				confirmButtonText: aksi === 'Ditolak' ? 'Tolak Izin' : aksi === 'edit' ? 'Simpan' : 'Setujui Izin',
+				cancelButtonText: 'Batal',
+				confirmButtonColor: aksi === 'Ditolak' ? '#ef4444' : '#10b981',
+				cancelButtonColor: '#94a3b8',
+				customClass: { popup: 'rounded-3xl' },
+				focusConfirm: false,
+				preConfirm: () => {
+					const catatan = document.getElementById('izin-catatan-guru').value.trim();
+					if(!catatan) { Swal.showValidationMessage('Catatan wajib diisi!'); return false; }
+					const keputusan = aksi === 'edit'
+						? document.getElementById('izin-keputusan-edit').value
+						: aksi;
+					return { catatan, keputusan };
+				}
+			});
+
+			if(formValues) {
+				alertLoading('Memproses izin...');
+				const now = new Date().toISOString().split('T')[0];
+				const djBaru = JSON.stringify({
+					...dj,
+					catatan_guru: formValues.catatan,
+					id_guru: loggedInUser.username,
+					nama_guru: loggedInUser.nama_lengkap,
+					tanggal_proses: now
+				});
+
+				try {
+					const res = await fetch(GAS_API_URL, {
+						method: 'POST',
+						body: JSON.stringify({
+							action: 'update',
+							sheet: 'Izin',
+							idField: tableHeaders[0],
+							idValue: idIzin,
+							data: { status: formValues.keputusan, data_json: djBaru }
+						})
+					});
+					const result = await res.json();
+					if(result.status === 'success') {
+						Swal.fire({
+							toast: true, position: 'top-end', icon: 'success',
+							title: `Izin berhasil ${formValues.keputusan === 'Disetujui' ? 'disetujui' : 'ditolak'}!`,
+							showConfirmButton: false, timer: 2000,
+							customClass: { popup: 'rounded-2xl' }
+						});
+						loadTableData('Izin');
+					} else { alertError(result.message); }
+				} catch(e) { alertError('Gagal menyimpan.'); }
 			}
 		}
 		
