@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
 	<link rel="stylesheet" href="style.min.css">
 
+    
 </head>
 <body class="text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900 flex flex-col min-h-screen">
 
@@ -44,7 +45,7 @@
 						<div>
 							<p class="text-[8px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-0.5">UPT SPF SMP Negeri 16 Makassar</p>
 							<h1 class="font-extrabold text-blue-900 text-sm leading-none tracking-tight">SOBAT BK</h1>
-							<p class="text-[9px] font-bold text-amber-600 uppercase tracking-tight leading-none mt-0.5">Sistem Online Layanan BK & Administrasi</p>
+							<p class="text-[9px] font-bold text-amber-600 uppercase tracking-tight leading-none mt-0.5">Sistem Online Layanan BK & Administrasi Terpadu</p>
 						</div>
 					</div>
                 </div>
@@ -77,74 +78,424 @@
             <div id="page-beranda" class="public-page block">
 
 				<!-- HERO -->
-				<header class="relative pt-20 pb-28 md:pt-32 md:pb-36 overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-center px-4 shadow-inner">
-					<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-					<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-					<div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-amber-500/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
-					<div class="relative z-10 max-w-4xl mx-auto">
-						<div class="flex items-center justify-center gap-3 mb-6">
-							<div class="w-16 h-16 rounded-2xl overflow-hidden shadow-xl border-2 border-amber-400/50">
-								<img src="https://drive.google.com/thumbnail?id=1jA8C9RLNHSxlumS1NfyIrNTi3VHv7N-u&sz=w128"
-									class="w-full h-full object-cover"
-									onerror="this.style.display='none'">
+				<header class="relative overflow-hidden bg-[#020917] text-center" style="min-height: 100svh; display: flex; flex-direction: column; justify-content: center;">
+
+					<!-- LAYER 1: Grid Lines Blueprint -->
+					<div class="absolute inset-0 pointer-events-none" style="
+						background-image: 
+							linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px),
+							linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px);
+						background-size: 40px 40px;
+					"></div>
+
+					<!-- LAYER 2: Gradient Mesh Glow -->
+					<div class="absolute inset-0 pointer-events-none overflow-hidden">
+						<!-- Glow kiri bawah -->
+						<div class="absolute rounded-full pointer-events-none" style="
+							width: 600px; height: 600px;
+							background: radial-gradient(circle, rgba(30,58,138,0.5) 0%, transparent 70%);
+							bottom: -200px; left: -150px;
+							filter: blur(40px);
+						"></div>
+						<!-- Glow kanan atas -->
+						<div class="absolute rounded-full pointer-events-none" style="
+							width: 500px; height: 500px;
+							background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+							top: -100px; right: -100px;
+							filter: blur(50px);
+						"></div>
+						<!-- Glow tengah amber -->
+						<div class="absolute rounded-full pointer-events-none" style="
+							width: 400px; height: 400px;
+							background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+							top: 50%; left: 50%;
+							transform: translate(-50%, -50%);
+							filter: blur(60px);
+						"></div>
+						<!-- Glow biru cyan kecil -->
+						<div class="absolute rounded-full pointer-events-none" style="
+							width: 200px; height: 200px;
+							background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%);
+							top: 30%; right: 20%;
+							filter: blur(30px);
+						"></div>
+					</div>
+
+					<!-- LAYER 3: Noise Texture -->
+					<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="
+						background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+					"></div>
+
+					<!-- KONTEN UTAMA -->
+					<div class="relative z-10 max-w-5xl mx-auto px-4 py-20 md:py-28 flex flex-col items-center">
+
+						<!-- Logo + Badge Institusi -->
+						<div class="flex flex-col items-center gap-4 mb-8" style="animation: fadeSlideUp 0.6s ease forwards; opacity: 0;">
+							<!-- Logo dengan ring glow -->
+							<div class="relative">
+								<div class="absolute inset-0 rounded-2xl animate-pulse" style="
+									background: radial-gradient(circle, rgba(245,158,11,0.4) 0%, transparent 70%);
+									filter: blur(12px);
+									transform: scale(1.3);
+								"></div>
+								<div class="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border-2 shadow-2xl" style="border-color: rgba(245,158,11,0.6);">
+									<img src="https://drive.google.com/thumbnail?id=1jA8C9RLNHSxlumS1NfyIrNTi3VHv7N-u&sz=w128"
+										class="w-full h-full object-cover"
+										onerror="this.style.display='none'">
+								</div>
+							</div>
+
+							<!-- Badge institusi -->
+							<div class="flex items-center gap-2 px-5 py-2 rounded-full border text-xs font-bold tracking-widest uppercase" style="
+								background: rgba(255,255,255,0.05);
+								backdrop-filter: blur(16px);
+								border-color: rgba(255,255,255,0.15);
+								color: rgba(255,255,255,0.8);
+							">
+								<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-lg" style="box-shadow: 0 0 8px #4ade80;"></span>
+								UPT SPF SMP Negeri 16 Makassar
 							</div>
 						</div>
-						<span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-full text-[11px] font-bold tracking-widest uppercase mb-4 text-white shadow-sm">
-							<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> UPT SPF SMP Negeri 16 Makassar
-						</span>
-						<h2 class="text-4xl md:text-6xl font-extrabold text-white mb-2 leading-tight tracking-tight drop-shadow-md">
-							SOBAT BK
-						</h2>
-						<p class="text-amber-300 font-bold text-sm md:text-base tracking-widest uppercase mb-6">
-							Sistem Online Layanan BK dan Administrasi Terpadu
-						</p>
-						<p class="text-blue-100/90 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-light mb-10">
-							Pusat layanan informasi BK, konsultasi online, laporan, asesmen dan manajemen administrasi BK terpadu.
-						</p>
-						<div class="flex flex-col sm:flex-row gap-3 justify-center">
-							<button onclick="navigasiPublic('page-portal', document.querySelectorAll('.nav-btn-public')[1])"
-								class="bg-amber-500 text-blue-900 font-extrabold px-8 py-3.5 rounded-full shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 hover:-translate-y-1 transition flex items-center justify-center gap-2">
-								<i class="ph-bold ph-globe-hemisphere-west"></i> Akses Layanan Portal
-							</button>
-							<button onclick="navigasiPublic('page-layanan', null)"
-								class="bg-emerald-400 text-emerald-950 font-extrabold px-8 py-3.5 rounded-full shadow-lg shadow-emerald-400/40 hover:shadow-emerald-400/70 hover:bg-emerald-300 hover:-translate-y-1 transition flex items-center justify-center gap-2">
-								<i class="ph-bold ph-hand-heart"></i> Layanan BK
-							</button>
+
+						<!-- Judul Utama -->
+						<div class="mb-3" style="animation: fadeSlideUp 0.7s ease 0.1s forwards; opacity: 0;">
+							<h2 class="font-extrabold leading-none tracking-tight" style="
+								font-size: clamp(3rem, 12vw, 6rem);
+								background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 40%, #93c5fd 70%, #ffffff 100%);
+								-webkit-background-clip: text;
+								-webkit-text-fill-color: transparent;
+								background-clip: text;
+								filter: drop-shadow(0 0 40px rgba(59,130,246,0.4));
+							">SOBAT BK</h2>
 						</div>
+
+						<!-- Subtitle -->
+						<div class="mb-4" style="animation: fadeSlideUp 0.7s ease 0.15s forwards; opacity: 0;">
+							<p class="text-xs md:text-sm font-extrabold uppercase tracking-[0.25em]" style="color: #f59e0b;">
+								Sistem Online Layanan BK & Administrasi Terpadu
+							</p>
+						</div>
+
+						<!-- Deskripsi -->
+						<div class="mb-12 max-w-2xl" style="animation: fadeSlideUp 0.7s ease 0.2s forwards; opacity: 0;">
+							<p class="text-sm md:text-base leading-relaxed font-light" style="color: rgba(191,219,254,0.8);">
+								Pusat layanan informasi BK, konsultasi online, laporan, asesmen dan manajemen administrasi BK terpadu.
+							</p>
+						</div>
+
+						<!-- KARTU CTA MEWAH -->
+						<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl" style="animation: fadeSlideUp 0.7s ease 0.25s forwards; opacity: 0;">
+
+							<!-- KARTU 1: PORTAL -->
+							<button onclick="navigasiPublic('page-portal', document.querySelectorAll('.nav-btn-public')[2])"
+								class="group relative overflow-hidden text-left rounded-2xl p-5 md:p-6 transition-all duration-500 hover:-translate-y-1"
+								style="
+									background: rgba(255,255,255,0.04);
+									backdrop-filter: blur(20px);
+									border: 1px solid rgba(59,130,246,0.3);
+									box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+								">
+
+								<!-- Hover glow background -->
+								<div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" style="
+									background: linear-gradient(135deg, rgba(30,58,138,0.4) 0%, rgba(59,130,246,0.15) 100%);
+								"></div>
+
+								<!-- Border gradient animasi -->
+								<div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style="
+									background: linear-gradient(135deg, rgba(59,130,246,0.5), rgba(245,158,11,0.3)) border-box;
+									-webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+									-webkit-mask-composite: destination-out;
+									mask-composite: exclude;
+									border: 1px solid transparent;
+								"></div>
+
+								<div class="relative z-10 flex items-start gap-4">
+									<!-- Ikon -->
+									<div class="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110" style="
+										background: linear-gradient(135deg, rgba(30,58,138,0.8), rgba(59,130,246,0.6));
+										border: 1px solid rgba(59,130,246,0.5);
+										box-shadow: 0 0 20px rgba(59,130,246,0.3);
+									">
+										<i class="ph-fill ph-globe-hemisphere-west text-2xl md:text-3xl" style="color: #93c5fd;"></i>
+									</div>
+
+									<div class="flex-1 min-w-0">
+										<!-- Label kecil -->
+										<p class="text-[9px] font-extrabold uppercase tracking-[0.2em] mb-1" style="color: rgba(147,197,253,0.7);">Layanan Terpadu</p>
+										<!-- Judul kartu -->
+										<h3 class="font-extrabold text-white text-base md:text-lg leading-tight mb-1.5 group-hover:text-blue-200 transition-colors">
+											Akses Portal
+										</h3>
+										<!-- Deskripsi -->
+										<p class="text-xs leading-relaxed mb-4" style="color: rgba(191,219,254,0.6);">
+											Pintasan layanan BK, aplikasi, dan sistem terpadu dalam satu portal.
+										</p>
+										<!-- Tombol kecil -->
+										<div class="flex items-center gap-2 text-xs font-extrabold transition-all duration-300 group-hover:gap-3" style="color: #60a5fa;">
+											<span>Buka Sekarang</span>
+											<i class="ph-bold ph-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
+										</div>
+									</div>
+								</div>
+
+								<!-- Dekorasi sudut -->
+								<div class="absolute top-3 right-3 w-1.5 h-1.5 rounded-full opacity-60 group-hover:opacity-100 group-hover:scale-150 transition-all duration-300" style="background: #3b82f6;"></div>
+								<div class="absolute bottom-3 right-5 w-1 h-1 rounded-full opacity-30" style="background: #f59e0b;"></div>
+
+								<!-- Garis bawah animasi -->
+								<div class="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 rounded-b-2xl" style="background: linear-gradient(90deg, #3b82f6, #f59e0b, #3b82f6);"></div>
+							</button>
+
+							<!-- KARTU 2: LAYANAN BK -->
+							<button onclick="navigasiPublic('page-layanan', null)"
+								class="group relative overflow-hidden text-left rounded-2xl p-5 md:p-6 transition-all duration-500 hover:-translate-y-1"
+								style="
+									background: rgba(255,255,255,0.04);
+									backdrop-filter: blur(20px);
+									border: 1px solid rgba(245,158,11,0.3);
+									box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+								">
+
+								<!-- Hover glow background -->
+								<div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" style="
+									background: linear-gradient(135deg, rgba(120,53,15,0.3) 0%, rgba(245,158,11,0.1) 100%);
+								"></div>
+
+								<div class="relative z-10 flex items-start gap-4">
+									<!-- Ikon -->
+									<div class="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110" style="
+										background: linear-gradient(135deg, rgba(120,53,15,0.8), rgba(245,158,11,0.5));
+										border: 1px solid rgba(245,158,11,0.5);
+										box-shadow: 0 0 20px rgba(245,158,11,0.25);
+									">
+										<i class="ph-fill ph-hand-heart text-2xl md:text-3xl" style="color: #fcd34d;"></i>
+									</div>
+
+									<div class="flex-1 min-w-0">
+										<!-- Label kecil -->
+										<p class="text-[9px] font-extrabold uppercase tracking-[0.2em] mb-1" style="color: rgba(253,211,77,0.7);">Bimbingan & Konseling</p>
+										<!-- Judul kartu -->
+										<h3 class="font-extrabold text-white text-base md:text-lg leading-tight mb-1.5 group-hover:text-amber-200 transition-colors">
+											Layanan BK
+										</h3>
+										<!-- Deskripsi -->
+										<p class="text-xs leading-relaxed mb-4" style="color: rgba(253,211,77,0.5);">
+											Konsultasi, laporan, booking jadwal, saran, dan izin online.
+										</p>
+										<!-- Tombol kecil -->
+										<div class="flex items-center gap-2 text-xs font-extrabold transition-all duration-300 group-hover:gap-3" style="color: #f59e0b;">
+											<span>Mulai Sekarang</span>
+											<i class="ph-bold ph-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
+										</div>
+									</div>
+								</div>
+
+								<!-- Dekorasi sudut -->
+								<div class="absolute top-3 right-3 w-1.5 h-1.5 rounded-full opacity-60 group-hover:opacity-100 group-hover:scale-150 transition-all duration-300" style="background: #f59e0b;"></div>
+								<div class="absolute bottom-3 right-5 w-1 h-1 rounded-full opacity-30" style="background: #3b82f6;"></div>
+
+								<!-- Garis bawah animasi -->
+								<div class="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 rounded-b-2xl" style="background: linear-gradient(90deg, #f59e0b, #3b82f6, #f59e0b);"></div>
+							</button>
+
+						</div>
+
+						<!-- Scroll indicator -->
+						<div class="mt-12 flex flex-col items-center gap-2" style="animation: fadeSlideUp 0.7s ease 0.35s forwards; opacity: 0;">
+							<p class="text-[10px] font-bold uppercase tracking-widest" style="color: rgba(255,255,255,0.2);">Gulir ke Bawah</p>
+							<div class="w-5 h-8 rounded-full border flex items-start justify-center p-1" style="border-color: rgba(255,255,255,0.15);">
+								<div class="w-1 h-2 rounded-full" style="background: rgba(255,255,255,0.4); animation: scrollDot 1.5s ease infinite;"></div>
+							</div>
+						</div>
+
 					</div>
 				</header>
 
 				<!-- STATISTIK -->
 				<section class="max-w-5xl mx-auto px-4 -mt-10 relative z-10 mb-16">
 					<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-						<div class="bg-white rounded-[1.5rem] p-5 shadow-xl shadow-slate-200/80 border border-slate-100 text-center group hover:-translate-y-1 transition">
-							<div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-600 transition">
-								<i class="ph-fill ph-newspaper text-blue-600 text-2xl group-hover:text-white transition"></i>
+
+						<!-- BERITA -->
+						<div class="group relative overflow-hidden rounded-[1.75rem] p-5 md:p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+							style="
+								background: linear-gradient(135deg, #f0f7ff 0%, #e8f0fe 100%);
+								border: 1px solid rgba(59,130,246,0.2);
+								box-shadow: 0 8px 32px rgba(59,130,246,0.1);
+							">
+							<!-- Ambient glow -->
+							<div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[1.75rem]"
+								style="background: radial-gradient(circle at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 70%);"></div>
+
+							<!-- Dekorasi lingkaran besar -->
+							<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500"
+								style="background: #3b82f6;"></div>
+
+							<!-- Ikon -->
+							<div class="relative z-10 mb-4">
+								<div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+									style="
+										background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+										box-shadow: 0 8px 24px rgba(59,130,246,0.4), 0 0 0 4px rgba(59,130,246,0.1);
+									">
+									<i class="ph-fill ph-newspaper text-white text-2xl md:text-3xl"></i>
+								</div>
 							</div>
-							<p id="stat-berita" class="text-3xl font-extrabold text-slate-900">0</p>
-							<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Berita</p>
-						</div>
-						<div class="bg-white rounded-[1.5rem] p-5 shadow-xl shadow-slate-200/80 border border-slate-100 text-center group hover:-translate-y-1 transition">
-							<div class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-red-500 transition">
-								<i class="ph-fill ph-youtube-logo text-red-500 text-2xl group-hover:text-white transition"></i>
+
+							<!-- Angka -->
+							<div class="relative z-10">
+								<p id="stat-berita" class="font-extrabold leading-none mb-1"
+									style="
+										font-size: clamp(1.75rem, 5vw, 2.5rem);
+										background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+										-webkit-background-clip: text;
+										-webkit-text-fill-color: transparent;
+										background-clip: text;
+									">0</p>
+								<p class="text-[10px] font-extrabold uppercase tracking-[0.2em]"
+									style="color: #3b82f6;">Berita</p>
 							</div>
-							<p id="stat-video" class="text-3xl font-extrabold text-slate-900">0</p>
-							<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Video</p>
+
+							<!-- Garis bawah animasi -->
+							<div class="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-500 rounded-b-[1.75rem]"
+								style="background: linear-gradient(90deg, #1e3a8a, #3b82f6);"></div>
 						</div>
-						<div class="bg-white rounded-[1.5rem] p-5 shadow-xl shadow-slate-200/80 border border-slate-100 text-center group hover:-translate-y-1 transition">
-							<div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-500 transition">
-								<i class="ph-fill ph-palette text-purple-500 text-2xl group-hover:text-white transition"></i>
+
+						<!-- VIDEO -->
+						<div class="group relative overflow-hidden rounded-[1.75rem] p-5 md:p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+							style="
+								background: linear-gradient(135deg, #fff5f5 0%, #fee2e2 100%);
+								border: 1px solid rgba(239,68,68,0.2);
+								box-shadow: 0 8px 32px rgba(239,68,68,0.1);
+							">
+							<!-- Ambient glow -->
+							<div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[1.75rem]"
+								style="background: radial-gradient(circle at 50% 0%, rgba(239,68,68,0.1) 0%, transparent 70%);"></div>
+
+							<!-- Dekorasi lingkaran besar -->
+							<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500"
+								style="background: #ef4444;"></div>
+
+							<!-- Ikon -->
+							<div class="relative z-10 mb-4">
+								<div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+									style="
+										background: linear-gradient(135deg, #991b1b, #ef4444);
+										box-shadow: 0 8px 24px rgba(239,68,68,0.4), 0 0 0 4px rgba(239,68,68,0.1);
+									">
+									<i class="ph-fill ph-youtube-logo text-white text-2xl md:text-3xl"></i>
+								</div>
 							</div>
-							<p id="stat-karya" class="text-3xl font-extrabold text-slate-900">0</p>
-							<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Karya Siswa</p>
-						</div>
-						<div class="bg-white rounded-[1.5rem] p-5 shadow-xl shadow-slate-200/80 border border-slate-100 text-center group hover:-translate-y-1 transition">
-							<div class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-amber-500 transition">
-								<i class="ph-fill ph-globe-hemisphere-west text-amber-500 text-2xl group-hover:text-white transition"></i>
+
+							<!-- Angka -->
+							<div class="relative z-10">
+								<p id="stat-video" class="font-extrabold leading-none mb-1"
+									style="
+										font-size: clamp(1.75rem, 5vw, 2.5rem);
+										background: linear-gradient(135deg, #991b1b, #ef4444);
+										-webkit-background-clip: text;
+										-webkit-text-fill-color: transparent;
+										background-clip: text;
+									">0</p>
+								<p class="text-[10px] font-extrabold uppercase tracking-[0.2em]"
+									style="color: #ef4444;">Video</p>
 							</div>
-							<p id="stat-portal" class="text-3xl font-extrabold text-slate-900">0</p>
-							<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Layanan</p>
+
+							<!-- Garis bawah animasi -->
+							<div class="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-500 rounded-b-[1.75rem]"
+								style="background: linear-gradient(90deg, #991b1b, #ef4444);"></div>
 						</div>
+
+						<!-- KARYA -->
+						<div class="group relative overflow-hidden rounded-[1.75rem] p-5 md:p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+							style="
+								background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+								border: 1px solid rgba(139,92,246,0.2);
+								box-shadow: 0 8px 32px rgba(139,92,246,0.1);
+							">
+							<!-- Ambient glow -->
+							<div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[1.75rem]"
+								style="background: radial-gradient(circle at 50% 0%, rgba(139,92,246,0.1) 0%, transparent 70%);"></div>
+
+							<!-- Dekorasi lingkaran besar -->
+							<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500"
+								style="background: #8b5cf6;"></div>
+
+							<!-- Ikon -->
+							<div class="relative z-10 mb-4">
+								<div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+									style="
+										background: linear-gradient(135deg, #5b21b6, #8b5cf6);
+										box-shadow: 0 8px 24px rgba(139,92,246,0.4), 0 0 0 4px rgba(139,92,246,0.1);
+									">
+									<i class="ph-fill ph-palette text-white text-2xl md:text-3xl"></i>
+								</div>
+							</div>
+
+							<!-- Angka -->
+							<div class="relative z-10">
+								<p id="stat-karya" class="font-extrabold leading-none mb-1"
+									style="
+										font-size: clamp(1.75rem, 5vw, 2.5rem);
+										background: linear-gradient(135deg, #5b21b6, #8b5cf6);
+										-webkit-background-clip: text;
+										-webkit-text-fill-color: transparent;
+										background-clip: text;
+									">0</p>
+								<p class="text-[10px] font-extrabold uppercase tracking-[0.2em]"
+									style="color: #8b5cf6;">Karya Siswa</p>
+							</div>
+
+							<!-- Garis bawah animasi -->
+							<div class="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-500 rounded-b-[1.75rem]"
+								style="background: linear-gradient(90deg, #5b21b6, #8b5cf6);"></div>
+						</div>
+
+						<!-- LAYANAN -->
+						<div class="group relative overflow-hidden rounded-[1.75rem] p-5 md:p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+							style="
+								background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+								border: 1px solid rgba(245,158,11,0.2);
+								box-shadow: 0 8px 32px rgba(245,158,11,0.1);
+							">
+							<!-- Ambient glow -->
+							<div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[1.75rem]"
+								style="background: radial-gradient(circle at 50% 0%, rgba(245,158,11,0.12) 0%, transparent 70%);"></div>
+
+							<!-- Dekorasi lingkaran besar -->
+							<div class="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500"
+								style="background: #f59e0b;"></div>
+
+							<!-- Ikon -->
+							<div class="relative z-10 mb-4">
+								<div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+									style="
+										background: linear-gradient(135deg, #92400e, #f59e0b);
+										box-shadow: 0 8px 24px rgba(245,158,11,0.4), 0 0 0 4px rgba(245,158,11,0.1);
+									">
+									<i class="ph-fill ph-globe-hemisphere-west text-white text-2xl md:text-3xl"></i>
+								</div>
+							</div>
+
+							<!-- Angka -->
+							<div class="relative z-10">
+								<p id="stat-portal" class="font-extrabold leading-none mb-1"
+									style="
+										font-size: clamp(1.75rem, 5vw, 2.5rem);
+										background: linear-gradient(135deg, #92400e, #f59e0b);
+										-webkit-background-clip: text;
+										-webkit-text-fill-color: transparent;
+										background-clip: text;
+									">0</p>
+								<p class="text-[10px] font-extrabold uppercase tracking-[0.2em]"
+									style="color: #f59e0b;">Layanan</p>
+							</div>
+
+							<!-- Garis bawah animasi -->
+							<div class="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-500 rounded-b-[1.75rem]"
+								style="background: linear-gradient(90deg, #92400e, #f59e0b);"></div>
+						</div>
+
 					</div>
 				</section>
 
@@ -814,6 +1165,12 @@
 									<p id="chat-guru" class="text-blue-300/60 text-[10px] mt-0.5 truncate">-</p>
 								</div>
 								<div class="flex items-center gap-2 shrink-0">
+									<!-- TOMBOL REFRESH PENGGUNA -->
+									<button onclick="refreshChatPengguna()" id="btn-refresh-chat-pengguna"
+										class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center transition"
+										title="Refresh pesan">
+										<i class="ph-bold ph-arrows-clockwise text-sm" id="icon-refresh-chat-pengguna"></i>
+									</button>
 									<span id="chat-status-badge" class="text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border">-</span>
 									<button onclick="konfirmasiBatalkanSesi()"
 										id="btn-batalkan-sesi"
@@ -829,9 +1186,15 @@
 								<p id="chat-deskripsi-awal" class="text-white/70 text-xs leading-relaxed">-</p>
 							</div>
 
-							<!-- Area Pesan -->
-							<div id="chat-messages" class="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-								<p class="text-blue-300/60 text-xs text-center py-4 italic">Memuat pesan...</p>
+							<!-- Area Pesan + Toast -->
+							<div class="flex-1 overflow-hidden flex flex-col relative">
+								<!-- Toast pesan baru pengguna -->
+								<div id="toast-pesan-baru-pengguna"
+									class="hidden absolute top-3 left-1/2 -translate-x-1/2 z-10 bg-amber-500 text-blue-900 text-xs font-extrabold px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-bounce">
+									<i class="ph-fill ph-bell-ringing"></i> Ada pesan baru!
+								</div>
+								<div id="chat-messages" class="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+								</div>
 							</div>
 
 							<!-- Info batas pesan -->
@@ -1497,7 +1860,11 @@
             </div>
         </div>
     </div>
+	
+	<!-- POPUP CHAT MOBILE GURU - dibuat sekali, konten diupdate -->
+	<div id="guru-chat-popup-mobile" class="hidden fixed inset-0 z-[200] flex flex-col bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800"></div>
 	<script src="script.obfuscated.js"></script>
 
+    
 </body>
 </html>
